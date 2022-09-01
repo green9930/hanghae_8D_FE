@@ -19,7 +19,7 @@ const Textarea = ({ Label,isHide, onChangeHandler,placeholder }) => {
 };
 
 Textarea.defaultProps = {
-  Label: '내용',
+  Label: "",
   isHide: false,
   changeHandler: null,
   placeholder:"품목에 대한 설명을 작성해 주세요 (400자 이내)"
@@ -35,9 +35,8 @@ const StTextareaContainer = styled.div`
 
 const StTextarea = styled.textarea`
   width: 100%;
-  border: 1px solid #999999;
-  border-radius: 5px;
-  padding: 12px 20px;
+  border: 0.5px solid #999999;
+
   `;
 
 export default Textarea;

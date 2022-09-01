@@ -38,7 +38,7 @@ Input.defaultProps = {
   type: "text",
   name: "",
   placeholder: "placeholder",
-  width: "",
+  width: "100%",
   onChangeHandler: null,
 };
 
@@ -52,6 +52,7 @@ const StInput = styled.input`
   ::placeholder {
     font-size: 16px;
   }
+  width: ${(props) => `${props.width}`};
 `;
 
 export default Input;
