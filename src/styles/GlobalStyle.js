@@ -37,10 +37,14 @@ const GlobalStyle = createGlobalStyle`
 
   ul {
     list-style: none;
+    margin: 0;
   }
 
   p {
-    font-size: 18px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19px;
     margin: 0;
   }
 
@@ -64,6 +68,22 @@ const GlobalStyle = createGlobalStyle`
       font-size: 16px;
       font-family: 'Noto Sans KR', sans-serif;
     }
+  }
+
+  select{
+    height: 40px;
+    border: 0.5px solid gray;
+    border-radius: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 12px 0px 12px 20px; 
+  }
+
+  textarea{
+    height: 40px;
+    border: 0.5px solid gray;
+    border-radius: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 12px 0px 12px 20px; 
   }
 
   button, input, textarea {
