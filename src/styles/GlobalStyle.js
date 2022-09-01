@@ -37,10 +37,14 @@ const GlobalStyle = createGlobalStyle`
 
   ul {
     list-style: none;
+    margin: 0;
   }
 
   p {
-    font-size: 18px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19px;
     margin: 0;
   }
 

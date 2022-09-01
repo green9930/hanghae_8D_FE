@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ReactComponent as Arrow } from "../../assets/arrow.svg";
+// import { ReactComponent as Arrow } from "../../assets/arrow.svg";
 import arrow from "../../assets/arrow.png";
 
 const SelectBox = ({ data, onChangeHandler, ...rest }) => {
