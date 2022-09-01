@@ -66,6 +66,22 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  select{
+    height: 40px;
+    border: 0.5px solid gray;
+    border-radius: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 12px 0px 12px 20px; 
+  }
+
+  textarea{
+    height: 40px;
+    border: 0.5px solid gray;
+    border-radius: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 12px 0px 12px 20px; 
+  }
+
   button, input, textarea {
     :focus {
       outline: none;
