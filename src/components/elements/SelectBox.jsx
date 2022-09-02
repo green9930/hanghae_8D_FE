@@ -24,6 +24,7 @@ SelectBox.defaultProps = {
   borderRadius: "5px",
   onChangeHandler: null,
   height: "40px",
+  fontSize:"15px"
 };
 
 const StSelectContainer = styled.div``;
@@ -34,7 +35,7 @@ const StSelect = styled.select`
   appearance: none;
   background: url(${arrow}) no-repeat left 20px center;
   text-align: center;
-  font-size: 15px;
+  font-size: ${(props) => `${props.font}`};
   overflow: auto;
   height: ${(props) => `${props.height}`};
   border: 0.5px solid ${(props) => `${props.borderColor}`};
