@@ -52,25 +52,21 @@ const StSubInfo = styled.div`
 
 const StName = styled.span`
   display: inline-block;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-weight: 500;
 `;
 
 const StTime = styled.span`
   display: inline-block;
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
 `;
 
 const StText = styled.p`
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 12px;
   line-height: 19px;
 `;
 
 const StPrice = styled.span`
-  font-family: "Noto Sans KR", sans-serif;
   text-align: center;
   span {
     font-size: 18px;
