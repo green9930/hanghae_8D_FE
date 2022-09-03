@@ -34,7 +34,6 @@ const SelectBox = ({ data, size }) => {
       size={size}
     >
       <StArrow size={size}>
-        {" "}
         <Arrow
           width={size === "small" ? "14px" : "20px"}
           height={size === "small" ? "14px" : "20px"}
@@ -68,11 +67,9 @@ const StSelectBox = styled.div`
   align-self: center;
   border: 0.5px solid #999999;
   border-radius: 5px;
-  box-sizing: border-box;
   height: 40px;
   cursor: pointer;
   z-index: 10;
-
   ${(props) => {
     return (
       props.size === "small" &&
@@ -88,8 +85,9 @@ const StSelectBox = styled.div`
 `;
 const StArrow = styled.div`
   position: absolute;
-  top: 9px;
-  left: 22px;
+  top: 50%;
+  left: 5%;
+  transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
 
@@ -97,8 +95,8 @@ const StArrow = styled.div`
     return (
       props.size === "small" &&
       css`
-        top: 3px;
-        left: 3px;
+        left: 13%;
+        top: 60%;
       `
     );
   }}
@@ -127,9 +125,9 @@ const StLabel = styled.label`
 const StSelectOptions = styled.ul`
   position: absolute;
   list-style: none;
-  box-sizing: border-box;
-  top: 39px;
-  left: 0;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 0%);
   width: 100%;
   overflow: scroll;
   height: 190px;
