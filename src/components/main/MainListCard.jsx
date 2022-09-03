@@ -53,9 +53,8 @@ const StMainDesc = styled.div`
   justify-content: center;
 `;
 const StMainProcess = styled.div`
-  width: 18%;
+  width: 55px;
   height: 20px;
-  margin-top: 9px;
   font-size: 10px;
   text-align: center;
   line-height: 20px;
