@@ -44,7 +44,6 @@ const StDetailDesc = styled.div`
   width: 100%;
   overflow: visible;
   h2 {
-    font-family: "Noto Sans KR", sans-serif;
     font-size: 18px;
     margin: 2px 0;
   }
@@ -55,12 +54,10 @@ const StSubInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   span {
-    font-family: "Noto Sans KR", sans-serif;
   }
 `;
 
 const StPrice = styled.div`
-  font-family: "Noto Sans KR", sans-serif;
   text-align: right;
 
   span {
@@ -87,7 +84,6 @@ const StDesc = styled.p`
     align-items: center;
     justify-content: center;
     span {
-      font-family: "Noto Sans KR", sans-serif;
       font-size: 14px;
       font-weight: 500;
       text-decoration: underline;

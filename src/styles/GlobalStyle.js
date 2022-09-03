@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-  // tway
+  /* tway 폰트 적용 필요한 경우 */
   /* font-family: 'twayair', 'Noto Sans KR', sans-serif; */
   @font-face {
       font-family: 'twayair';
@@ -43,11 +43,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   p {
+    margin: 0;
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 19px;
-    margin: 0;
   }
 
   a {
@@ -62,13 +62,13 @@ const GlobalStyle = createGlobalStyle`
     height: 40px;
     border: 0.5px solid gray;
     border-radius: 5px;
-    font-family: 'Noto Sans KR', sans-serif;
     padding: 12px 0px 12px 20px; 
+    font-family: 'Noto Sans KR', sans-serif;
 
     ::placeholder,
     ::-webkit-input-placeholder {
-      font-size: 16px;
       font-family: 'Noto Sans KR', sans-serif;
+      font-size: 16px;
     }
   }
 
