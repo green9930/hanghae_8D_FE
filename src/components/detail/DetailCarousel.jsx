@@ -2,8 +2,15 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { ReactComponent as IconTrash } from "assets/icon_trash.svg";
 
-const DetailCarousel = ({ children, width, height }) => {
+const DetailCarousel = ({
+  children,
+  width,
+  height,
+  createdAt,
+  isMyArticles,
+}) => {
   const settings = {
     dots: true,
     infinite: false,
@@ -16,6 +23,10 @@ const DetailCarousel = ({ children, width, height }) => {
 
   return (
     <StCarousel>
+      <StTime>
+        <span>{createdAt}</span>
+        {isMyArticles && <IconTrash width="20px" height="20px" />}
+      </StTime>
       <Slider {...settings}>
         {children?.map((val) => {
           return (
@@ -30,6 +41,7 @@ const DetailCarousel = ({ children, width, height }) => {
 };
 
 const StCarousel = styled.div`
+  position: relative;
   background-color: white;
   height: 230px;
 
@@ -49,6 +61,18 @@ const StCarousel = styled.div`
       }
     }
   }
+`;
+
+const StTime = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 8px;
+  right: 18px;
+  z-index: 11;
+  font-family: "Roboto", "Noto Sans KR", sans-serif;
+  font-size: 12px;
+  gap: 4px;
 `;
 
 const StImg = styled.div`
