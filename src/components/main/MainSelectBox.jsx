@@ -10,16 +10,20 @@ const MainSelectBox = () => {
     { key: 3, value: "스포츠/레저" },
     { key: 4, value: "가구/인테리어" },
     { key: 5, value: "도서/여행/취미" },
-    { key: 6, value: "반려동물,반려식물" },
+    { key: 6, value: "반려동물/식물" },
     { key: 7, value: "식품" },
     { key: 8, value: "기타" },
   ];
   return (
     <StSelectList>
-     <SelectBox size={"small"}data={data}/>
+      <SelectBox size={"small"} data={data} />
       <StMainBtns>
-        <Button children={"전체 보기"} size={"small_round"} theme={"p_outline"} />
-        <Button children={"진행중"}size={"small_round"} theme={"p_outline"}  />
+        <Button
+          children={"전체 보기"}
+          size={"small_round"}
+          theme={"p_outline"}
+        />
+        <Button children={"진행중"} size={"small_round"} theme={"p_outline"} />
         <Button children={"완료"} size={"small_round"} theme={"p_outline"} />
       </StMainBtns>
     </StSelectList>

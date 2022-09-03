@@ -43,7 +43,7 @@ const SelectBox = ({ data, size }) => {
         />
       </StArrow>
       <StLabel size={size} currentValue={currentValue}>
-        {currentValue}
+        <span>{currentValue}</span>
       </StLabel>
       <StSelectOptions size={size} show={showOptions}>
         {data.map((d) => (
@@ -75,8 +75,7 @@ const StSelectBox = styled.div`
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: center;
-
+  justify-content: flex-start;
   ${(props) => {
     return (
       props.size === "small" &&
@@ -91,10 +90,10 @@ const StSelectBox = styled.div`
   }}
 `;
 const StArrow = styled.div`
-  position: absolute;
+  /* position: absolute;
   top: 50%;
   left: 5%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
   width: 20px;
   height: 20px;
   ${(props) => {
@@ -107,23 +106,33 @@ const StArrow = styled.div`
     );
   }}
 `;
+
 const StLabel = styled.label`
-  font-size: 16px;
-  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  color: ${(props) =>
-    props.currentValue === "카테고리를 선택해 주세요." ? "gray" : "black"};
-  ${(props) => {
-    return (
-      props.size === "small" &&
-      css`
-        color: ${(props) =>
-          props.currentValue === "카테고리 전체" ? "gray" : "black"};
-        font-size: 12px;
-        padding-left: 11px;
-      `
-    );
-  }};
+  flex-grow: 1;
+
+  span {
+    display: inline-block;
+    font-family: "twayfly", "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    letter-spacing: -0.5px;
+    text-align: center;
+    color: ${(props) =>
+      props.currentValue === "카테고리를 선택해 주세요." ? "gray" : "black"};
+    ${(props) => {
+      return (
+        props.size === "small" &&
+        css`
+          color: ${(props) =>
+            props.currentValue === "카테고리 전체" ? "gray" : "black"};
+          font-size: 12px;
+        `
+      );
+    }};
+  }
 `;
 
 const StSelectOptions = styled.ul`
