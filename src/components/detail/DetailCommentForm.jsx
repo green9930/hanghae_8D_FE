@@ -15,7 +15,6 @@ const DetailCommentForm = () => {
 
 const StCommentForm = styled.form`
   background: darkgray;
-  max-width: 375px;
   width: 100%;
   position: absolute;
   bottom: 0;

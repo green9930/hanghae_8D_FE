@@ -19,7 +19,7 @@ const Detail = () => {
     category: "디지털/생활가전",
     price: "100,000",
     isMyArticles: true,
-    userRank: "Bronze",
+    userRank: "B",
     process: "process",
     createdAt: "0000.00.00 00:00",
     images: [test01, test02, test03, test04, test05],
@@ -34,7 +34,7 @@ const Detail = () => {
     category: "디지털/생활가전",
     price: "10,000,000",
     isMyArticles: false,
-    userRank: "Bronze",
+    userRank: "B",
     process: "process",
     createdAt: "0000.00.00 00:00",
     images: [test01, test02, test03, test04, test05],
@@ -56,7 +56,12 @@ const Detail = () => {
 
   return (
     <StDetail>
-      <DetailCarousel width="100%" height="230px">
+      <DetailCarousel
+        width="100%"
+        height="230px"
+        createdAt={createdAt}
+        isMyArticles={isMyArticles}
+      >
         {images}
       </DetailCarousel>
       <DetailDesc
@@ -71,10 +76,14 @@ const Detail = () => {
         process
         createdAt
       />
-      <StCommentList>
-        <DetailCommentList />
-      </StCommentList>
-      <DetailCommentForm />
+      <StCommment>
+        <StCommentList>
+          <DetailCommentList />
+        </StCommentList>
+        <StCommentForm>
+          <DetailCommentForm />
+        </StCommentForm>
+      </StCommment>
     </StDetail>
   );
 };
@@ -84,8 +93,19 @@ const StDetail = styled.div`
   flex-direction: column;
 `;
 
+const StCommment = styled.div`
+  position: relative;
+`;
+
 const StCommentList = styled.div`
   flex-grow: 1;
+`;
+
+const StCommentForm = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 `;
 
 export default Detail;

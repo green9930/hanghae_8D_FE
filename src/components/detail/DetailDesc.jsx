@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-
+import handleRankColor from "utils/handleRankColor";
 const DetailDesc = ({
   nickName,
   articlesId,
@@ -22,7 +22,10 @@ const DetailDesc = ({
       <StSubInfo>
         <span>카테고리&gt;{category}</span>
         <span>
-          {userRank}/{nickName}
+          <StUserRank rankColor={handleRankColor(userRank)}>
+            {userRank}
+          </StUserRank>
+          {nickName}
         </span>
       </StSubInfo>
       <h2>{title}</h2>
@@ -53,8 +56,10 @@ const StSubInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  span {
-  }
+`;
+
+const StUserRank = styled.span`
+  color: ${({ rankColor }) => `${rankColor}`};
 `;
 
 const StPrice = styled.div`
