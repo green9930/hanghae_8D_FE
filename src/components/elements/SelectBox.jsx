@@ -1,61 +1,176 @@
-import styled from "styled-components";
-// import { ReactComponent as Arrow } from "../../assets/arrow.svg";
-import arrow from "../../assets/arrow.png";
+import React, { useEffect, useRef, useState } from "react";
+import styled, { css } from "styled-components";
+import { ReactComponent as Arrow } from "../../assets/icon_20.svg";
 
-const SelectBox = ({ data, onChangeHandler, ...rest }) => {
+const SelectBox = ({ data, size }) => {
+  const [showOptions, setShowOptions] = useState(false);
+  const [currentValue, setCurrentValue] = useState(
+    size === "small" ? "카테고리 전체" : "카테고리를 선택해 주세요."
+  );
+  const handleOnChangeSelectValue = (e) => {
+    setCurrentValue(e.target.getAttribute("value"));
+  };
+
+  const modalRef = useRef();
+
+  useEffect(() => {
+    document.addEventListener("mousedown", clickModalOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", clickModalOutside);
+    };
+  });
+
+  const clickModalOutside = (event) => {
+    if (showOptions && !modalRef.current.contains(event.target)) {
+      setShowOptions(false);
+    }
+  };
+
   return (
-    <StSelectContainer>
-      <StSelect onChange={onChangeHandler} {...rest}>
-        {data.map((item) => (
-          <StOption key={item.key} disabled={item.disabled} value={item.value}>
-            {item.value === "" ? item.placeholder : item.value}
+    <StSelectBox
+      onClick={() => setShowOptions((prev) => !prev)}
+      ref={modalRef}
+      size={size}
+    >
+      <StArrow size={size}>
+        {" "}
+        <Arrow
+          width={size === "small" ? "14px" : "20px"}
+          height={size === "small" ? "14px" : "20px"}
+        />
+      </StArrow>
+      <StLabel size={size} currentValue={currentValue}>
+        {currentValue}
+      </StLabel>
+      <StSelectOptions size={size} show={showOptions}>
+        {data.map((d) => (
+          <StOption
+            size={size}
+            key={d.key}
+            value={d.value}
+            onClick={handleOnChangeSelectValue}
+          >
+            {d.value}
           </StOption>
         ))}
-      </StSelect>
-    </StSelectContainer>
+      </StSelectOptions>
+    </StSelectBox>
   );
 };
 
-SelectBox.defaultProps = {
-  data: "",
-  borderColor: "#999999",
-  padding: "auto",
-  width: "100%",
-  borderRadius: "5px",
-  onChangeHandler: null,
-  height: "40px",
-  fontSize:"15px"
-};
-
-const StSelectContainer = styled.div``;
-
-const StSelect = styled.select`
-  -webkit-appearance: none; /* for chrome */
-  -moz-appearance: none; /*for firefox*/
-  appearance: none;
-  background: url(${arrow}) no-repeat left 20px center;
+const StSelectBox = styled.div`
+  position: relative;
+  width: 100%;
+  padding: 12px 35px;
   text-align: center;
-  font-size: ${(props) => `${props.font}`};
-  overflow: auto;
-  height: ${(props) => `${props.height}`};
-  border: 0.5px solid ${(props) => `${props.borderColor}`};
-  padding: ${(props) => `${props.padding}`};
-  width: ${(props) => `${props.width}`};
-  height: ${(props) => `${props.height}`};
-  border-radius: ${(props) => `${props.borderRadius}`};
-  :focus {
-    outline: none;
-  }
-  :first-child {
-    color: gray;
-  }
+  background-color: #ffffff;
+  align-self: center;
+  border: 0.5px solid #999999;
+  border-radius: 5px;
+  box-sizing: border-box;
+  height: 40px;
+  cursor: pointer;
+  z-index: 10;
+
+  ${(props) => {
+    return (
+      props.size === "small" &&
+      css`
+        height: 24px;
+        border-radius: 30px;
+        width: 115px;
+        border: 1px solid #9083f7;
+        padding: 3px 5px;
+      `
+    );
+  }}
+`;
+const StArrow = styled.div`
+  position: absolute;
+  top: 9px;
+  left: 22px;
+  width: 20px;
+  height: 20px;
+
+  ${(props) => {
+    return (
+      props.size === "small" &&
+      css`
+        top: 3px;
+        left: 3px;
+      `
+    );
+  }}
+`;
+const StLabel = styled.label`
+  font-size: 16px;
+  letter-spacing: -0.5px;
+  text-align: center;
+  letter-spacing: -0.5px;
+  color: ${(props) =>
+    props.currentValue === "카테고리를 선택해 주세요." ? "gray" : "black"};
+
+  ${(props) => {
+    return (
+      props.size === "small" &&
+      css`
+        color: ${(props) =>
+          props.currentValue === "카테고리 전체" ? "gray" : "black"};
+        font-size: 12px;
+        padding-left: 11px;
+      `
+    );
+  }};
 `;
 
-const StOption = styled.option`
-  text-align-last: center;
+const StSelectOptions = styled.ul`
+  position: absolute;
+  list-style: none;
+  box-sizing: border-box;
+  top: 39px;
+  left: 0;
+  width: 100%;
+  overflow: scroll;
+  height: 190px;
+  max-height: ${(props) => (props.show ? "none" : "0")};
+  padding: 0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #333333;
+  border: ${(props) => (props.show ? "0.5px solid #999999" : 0)};
+
+  ${(props) => {
+    return (
+      props.size === "small" &&
+      css`
+        top: 23px;
+        height: 100px;
+        width: 115px;
+        border: ${(props) => (props.show ? " 1px solid #9083f7" : 0)};
+      `
+    );
+  }};
+`;
+
+const StOption = styled.li`
+  padding: 12px 35px;
+  font-size: 16px;
   text-align: center;
-  -ms-text-align-last: center;
-  -moz-text-align-last: center;
+  letter-spacing: -0.5px;
+  &:hover {
+    font-weight: 600;
+  }
+
+  ${(props) => {
+    return (
+      props.size === "small" &&
+      css`
+        padding: 6px 10px;
+        font-size: 12px;
+      `
+    );
+  }}
 `;
 
 export default SelectBox;
