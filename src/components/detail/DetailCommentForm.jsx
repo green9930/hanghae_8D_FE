@@ -1,12 +1,16 @@
 import Button from "components/elements/Button";
 import Input from "components/elements/Input";
+import { useState } from "react";
 import styled from "styled-components";
 
 const DetailCommentForm = () => {
+  const [comment, setComment] = useState("");
+
+  const handleChange = () => {};
   return (
     <StCommentForm>
       <StInput>
-        <Input />
+        <Input value={comment} onChangeHandler={handleChange} />
         <Button />
       </StInput>
     </StCommentForm>

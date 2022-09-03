@@ -2,7 +2,9 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ReactComponent as IconTrash } from "assets/icon_trash.svg";
+import icons from "assets";
+import { colors } from "styles/theme";
+import Button from "components/elements/Button";
 
 const DetailCarousel = ({
   children,
@@ -21,11 +23,17 @@ const DetailCarousel = ({
     initialSlide: 0,
   };
 
+  const { IconTrash } = icons;
+
   return (
     <StCarousel>
       <StTime>
         <span>{createdAt}</span>
-        {isMyArticles && <IconTrash width="20px" height="20px" />}
+        {isMyArticles && (
+          <Button variant="image">
+            <IconTrash width="20px" height="20px" fill={`${colors.grey3}`} />
+          </Button>
+        )}
       </StTime>
       <Slider {...settings}>
         {children?.map((val) => {
@@ -42,12 +50,12 @@ const DetailCarousel = ({
 
 const StCarousel = styled.div`
   position: relative;
-  background-color: white;
+  background-color: ${colors.white};
   height: 230px;
 
   .slick-dots {
     bottom: 10px;
-    color: white;
+    color: ${colors.white};
 
     li,
     .slick-active {
@@ -70,6 +78,7 @@ const StTime = styled.div`
   top: 8px;
   right: 18px;
   z-index: 11;
+  color: ${colors.grey3};
   font-family: "Roboto", "Noto Sans KR", sans-serif;
   font-size: 12px;
   gap: 4px;

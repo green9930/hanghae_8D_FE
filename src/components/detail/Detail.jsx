@@ -20,7 +20,7 @@ const Detail = () => {
     price: "100,000",
     isMyArticles: true,
     userRank: "B",
-    process: "process",
+    process: "done",
     createdAt: "0000.00.00 00:00",
     images: [test01, test02, test03, test04, test05],
   };
@@ -30,11 +30,11 @@ const Detail = () => {
     articlesId: 3,
     title: "맥북 싸게 팝니다. 보고 가세요.",
     content:
-      "설명설명설명설명설명설명설명설명설명설명설명설명일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십",
+      "설명설명설명설명설명설명설명설명설명설명설명설명 일이삼사오육칠팔구 십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구 십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십",
     category: "디지털/생활가전",
     price: "10,000,000",
     isMyArticles: false,
-    userRank: "B",
+    userRank: "P",
     process: "process",
     createdAt: "0000.00.00 00:00",
     images: [test01, test02, test03, test04, test05],
@@ -52,7 +52,7 @@ const Detail = () => {
     process,
     createdAt,
     images,
-  } = data1;
+  } = data2;
 
   return (
     <StDetail>
@@ -73,8 +73,8 @@ const Detail = () => {
         price={price}
         isMyArticles={isMyArticles}
         userRank={userRank}
-        process
-        createdAt
+        process={process}
+        createdAt={createdAt}
       />
       <StCommment>
         <StCommentList>
