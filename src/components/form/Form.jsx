@@ -67,7 +67,7 @@ const Form = () => {
           </StImageList>
         </StPreview>
         <StSecondWrap>
-          <Input placeholder={"제목을 입력해 주세요."} />
+          <Input theme="grey" placeholder={"제목을 입력해 주세요."} />
           <SelectBox data={data} />
           <Input placeholder={"가격을 입력해 주세요."} />
         </StSecondWrap>

@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { ReactComponent as Arrow } from "../../assets/icon_20.svg";
+import icons from "assets";
 
 const SelectBox = ({ data, size }) => {
   const [showOptions, setShowOptions] = useState(false);
   const [currentValue, setCurrentValue] = useState(
     size === "small" ? "카테고리 전체" : "카테고리를 선택해 주세요."
   );
+
+  const { IconArrow } = icons;
+
   const handleOnChangeSelectValue = (e) => {
     setCurrentValue(e.target.getAttribute("value"));
   };
@@ -34,7 +37,7 @@ const SelectBox = ({ data, size }) => {
       size={size}
     >
       <StArrow size={size}>
-        <Arrow
+        <IconArrow
           width={size === "small" ? "14px" : "20px"}
           height={size === "small" ? "14px" : "20px"}
         />
@@ -70,6 +73,10 @@ const StSelectBox = styled.div`
   height: 40px;
   cursor: pointer;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   ${(props) => {
     return (
       props.size === "small" &&
@@ -90,13 +97,12 @@ const StArrow = styled.div`
   transform: translate(-50%, -50%);
   width: 20px;
   height: 20px;
-
   ${(props) => {
     return (
       props.size === "small" &&
       css`
-        left: 13%;
-        top: 60%;
+        left: 10%;
+        top: 50%;
       `
     );
   }}
@@ -105,10 +111,8 @@ const StLabel = styled.label`
   font-size: 16px;
   letter-spacing: -0.5px;
   text-align: center;
-  letter-spacing: -0.5px;
   color: ${(props) =>
     props.currentValue === "카테고리를 선택해 주세요." ? "gray" : "black"};
-
   ${(props) => {
     return (
       props.size === "small" &&
@@ -137,7 +141,6 @@ const StSelectOptions = styled.ul`
   background-color: #ffffff;
   color: #333333;
   border: ${(props) => (props.show ? "0.5px solid #999999" : 0)};
-
   ${(props) => {
     return (
       props.size === "small" &&
@@ -159,7 +162,6 @@ const StOption = styled.li`
   &:hover {
     font-weight: 600;
   }
-
   ${(props) => {
     return (
       props.size === "small" &&

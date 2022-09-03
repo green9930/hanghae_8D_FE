@@ -4,7 +4,7 @@ import test01 from "assets/test01.jpg";
 import test02 from "assets/test02.jpg";
 import test03 from "assets/test03.jpg";
 import test04 from "assets/test04.jpg";
-import { ReactComponent as Arrow } from "../../assets/mainArrow.svg";
+import icons from "assets";
 
 const MainCarousel = () => {
   const datas = [
@@ -34,10 +34,12 @@ const MainCarousel = () => {
     },
   ];
 
+  const { IconArrow } = icons;
+
   return (
     <StMainRandomContainer>
       <StMainRandomTitle>
-        <Arrow />
+        <IconArrow />
         <StMainTitleSpan>책첵</StMainTitleSpan> 진행 중 체크
       </StMainRandomTitle>
       <StMainRandomImg>

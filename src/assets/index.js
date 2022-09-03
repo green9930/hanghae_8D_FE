@@ -1,29 +1,29 @@
-import { ReactComponent as Alarm } from "assets/alarm.svg";
-import { ReactComponent as Arrow } from "assets/arrow.svg";
-import { ReactComponent as BSalectPurple } from "assets/B_salect_purple.svg";
-import { ReactComponent as BSalectWhite } from "assets/B_salect_white.svg";
-import { ReactComponent as HeaderLogo } from "assets/headerLogo.svg";
-import { ReactComponent as IconArrow } from "assets/icon_arrow.svg";
-import { ReactComponent as IconTrash } from "assets/icon_trash.svg";
-import { ReactComponent as IconX } from "assets/icon_x.svg";
-import { ReactComponent as List } from "assets/list.svg";
-import { ReactComponent as LogoGoogle } from "assets/logo_google.svg";
-import { ReactComponent as LogoKakao } from "assets/logo_kakao.svg";
-import { ReactComponent as LogoNaver } from "assets/logo_naver.svg";
-import { ReactComponent as Logout } from "assets/logout.svg";
-import { ReactComponent as MainArrow } from "assets/mainArrow.svg";
-import { ReactComponent as MyPageLogo } from "assets/myPageLogo.svg";
-import { ReactComponent as RankList } from "assets/ranklist.svg";
-import { ReactComponent as SendMessage } from "assets/send_message.svg";
-import { ReactComponent as Unregister } from "assets/unregister.svg";
+import { ReactComponent as Alarm } from "assets/svg/alarm.svg";
+import { ReactComponent as BSalectPurple } from "assets/svg/B_salect_purple.svg";
+import { ReactComponent as BSalectWhite } from "assets/svg/B_salect_white.svg";
+import { ReactComponent as HeaderLogo } from "assets/svg/headerLogo.svg";
+import { ReactComponent as IconArrow } from "assets/svg/icon_arrow.svg";
+import { ReactComponent as IconPlus } from "assets/svg/icon_plus.svg";
+import { ReactComponent as IconTrash } from "assets/svg/icon_trash.svg";
+import { ReactComponent as IconX } from "assets/svg/icon_x.svg";
+import { ReactComponent as List } from "assets/svg/list.svg";
+import { ReactComponent as LogoGoogle } from "assets/svg/logo_google.svg";
+import { ReactComponent as LogoKakao } from "assets/svg/logo_kakao.svg";
+import { ReactComponent as LogoNaver } from "assets/svg/logo_naver.svg";
+import { ReactComponent as Logout } from "assets/svg/logout.svg";
+import { ReactComponent as MainArrow } from "assets/svg/mainArrow.svg";
+import { ReactComponent as MyPageLogo } from "assets/svg/myPageLogo.svg";
+import { ReactComponent as RankList } from "assets/svg/ranklist.svg";
+import { ReactComponent as SendMessage } from "assets/svg/send_message.svg";
+import { ReactComponent as Unregister } from "assets/svg/unregister.svg";
 
 const icons = {
   Alarm: Alarm,
-  Arrow: Arrow,
   BSalectPurple: BSalectPurple,
   BSalectWhite: BSalectWhite,
   HeaderLogo: HeaderLogo,
   IconArrow: IconArrow,
+  IconPlus: IconPlus,
   IconTrash: IconTrash,
   IconX: IconX,
   List: List,

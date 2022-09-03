@@ -23,6 +23,7 @@ export const colors = {
 export const fontSize = {
   small10: "10px",
   small12: "12px",
+  regular14: "14px",
   regular16: "16px",
   regular18: "18px",
   large24: "24px",
