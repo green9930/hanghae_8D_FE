@@ -1,10 +1,12 @@
+import icons from "assets";
 import styled from "styled-components";
-import { ReactComponent as Logo } from "../../assets/headerLogo.svg";
-import { ReactComponent as MyPageLogo } from "../../assets/myPageLogo.svg";
+
 const Header = ({ title }) => {
+  const { HeaderLogo, MyPageLogo } = icons;
+
   return (
     <StHeader>
-      <Logo />
+      <HeaderLogo />
       <StHeaderTitle>{title}</StHeaderTitle>
       <MyPageLogo />
     </StHeader>

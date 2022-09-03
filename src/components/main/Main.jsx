@@ -1,16 +1,16 @@
-import React from 'react'
-import MainCarousel from './MainCarousel'
-import MainList from './MainList'
-import MainSelectBox from './MainSelectBox'
+import Button from "components/elements/Button";
+import React from "react";
+import MainCarousel from "./MainCarousel";
+import MainList from "./MainList";
+import MainSelectBox from "./MainSelectBox";
 
- const Main = () => {
+const Main = () => {
   return (
     <>
-    <MainCarousel/>
-    <MainSelectBox/>
-    <MainList/>
+      <MainCarousel />
+      <MainSelectBox />
+      <MainList />
     </>
-
-  )
-}
+  );
+};
 export default Main;

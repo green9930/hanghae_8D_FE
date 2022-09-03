@@ -14,6 +14,6 @@ export default MobileLayout;
 
 const StLayout = styled.div`
   width: 100%;
-  background: lightgray;
+  /* background: lightgray; */
   margin: 0 auto;
 `;
