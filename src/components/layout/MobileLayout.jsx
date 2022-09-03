@@ -13,7 +13,6 @@ const MobileLayout = (props) => {
 export default MobileLayout;
 
 const StLayout = styled.div`
-  max-width: 375px;
   width: 100%;
   background: lightgray;
   margin: 0 auto;

@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
+  // tway
+  /* font-family: 'twayair', 'Noto Sans KR', sans-serif; */
   @font-face {
       font-family: 'twayair';
       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twayair.woff') format('woff');
@@ -11,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   * {
     font-size: 14px;
     box-sizing: border-box;
-    font-family: 'twayair', 'Noto Sans KR', sans-serif;
+    font-family:  'Noto Sans KR', sans-serif;
   }
   
   body {
