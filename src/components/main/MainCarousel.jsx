@@ -52,7 +52,7 @@ const StMainRandomContainer = styled.div`
   background-color: #9083f7;
   width: 100%;
   padding-bottom: 30px;
-  /* height: 240px; */
+  height: 240px;
 `;
 const StMainRandomTitle = styled.div`
   text-align: center;

@@ -21,18 +21,19 @@ Textarea.defaultProps = {
   Label: "",
   isHide: false,
   changeHandler: null,
-  placeholder: "품목에 대한 설명을 작성해 주세요 (400자 이내)",
+  placeholder: "품목에 대한 설명을 작성해 주세요",
 };
 
 const StTextareaContainer = styled.div`
-  display: flex;
   .a11y-hidden {
     ${a11yHidden}
-  }
+  };
 `;
 
 const StTextarea = styled.textarea`
-  width: 100%;
+width:100%;
+height:120px;
+resize: none;
   border: 0.5px solid #999999;
 `;
 
