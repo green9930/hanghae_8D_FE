@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
 const DetailDesc = ({
   nickName,
@@ -14,7 +15,7 @@ const DetailDesc = ({
   createdAt,
 }) => {
   const [isShow, setIsShow] = useState(false);
-  const MAX_LENGTH = 48;
+  const MAX_LENGTH = 44;
   const styledPrice = content.substr(0, MAX_LENGTH);
 
   return (
@@ -23,14 +24,17 @@ const DetailDesc = ({
         <span>카테고리&gt;{category}</span>
         <span>
           <StUserRank rankColor={handleRankColor(userRank)}>
-            {userRank}
+            {userRank}&nbsp;
           </StUserRank>
           {nickName}
         </span>
       </StSubInfo>
       <h2>{title}</h2>
-      <StPrice>
-        책정가 <span>{price}</span> 원
+      <StPrice process={process}>
+        {process === "done" && <StSelectedMessage>채택 완료</StSelectedMessage>}
+        <StPriceText>
+          책정가 <span>{price}</span> 원
+        </StPriceText>
       </StPrice>
       <StDesc isShow={isShow}>
         {isShow ? `${content}` : `${styledPrice}⋯`}
@@ -56,6 +60,8 @@ const StSubInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: ${colors.grey2};
+  font-weight: 400;
 `;
 
 const StUserRank = styled.span`
@@ -63,19 +69,35 @@ const StUserRank = styled.span`
 `;
 
 const StPrice = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: ${({ process }) => {
+    if (process === "process") return "flex-end";
+    if (process === "done") return "space-between";
+  }};
+  color: ${({ process }) => process === "done" && `${colors.mainP}`};
   text-align: right;
+`;
 
+const StPriceText = styled.span`
   span {
     font-family: "Roboto", sans-serif;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 700;
   }
+`;
+
+const StSelectedMessage = styled.span`
+  color: ${colors.mainP};
+  font-weight: 700;
+  letter-spacing: 0.5px;
 `;
 
 const StDesc = styled.p`
   margin-top: 14px;
   height: ${({ isShow }) => (isShow ? "100%" : "40px")};
   position: relative;
+  color: ${colors.grey1};
 
   button {
     display: ${({ isShow }) => (isShow ? "none" : "flex")};
@@ -88,6 +110,7 @@ const StDesc = styled.p`
     background: transparent;
     align-items: center;
     justify-content: center;
+
     span {
       font-size: 14px;
       font-weight: 500;

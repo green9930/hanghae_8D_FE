@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { ReactComponent as BSalectPurple } from "assets/B_salect_purple.svg";
-import { ReactComponent as BSalectWhite } from "assets/B_salect_white.svg";
-import { ReactComponent as IconTrash } from "assets/icon_trash.svg";
 import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
+import icons from "assets/index";
+import Button from "components/elements/Button";
 
 const DetailComment = ({ commentVal, isMyArticles }) => {
   const {
@@ -16,6 +15,8 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
     isSelected,
     isMyComment,
   } = commentVal;
+
+  const { BSalectPurple, BSalectWhite, IconTrash } = icons;
 
   return (
     <>
@@ -32,7 +33,11 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
             <StText>{comment}</StText>
           </StTextContainer>
           <StTextBtnContainer>
-            {isMyComment && <IconTrash />}
+            {isMyComment && (
+              <Button variant="image">
+                <IconTrash fill={`${colors.black}`} />
+              </Button>
+            )}
           </StTextBtnContainer>
         </StTextComment>
       ) : (
@@ -49,9 +54,13 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
               <span>{comment}</span> 원
             </StPrice>
             <StBtnContainer>
-              {isMyArticles && !isSelected ? <BSalectPurple /> : null}
-              {isSelected && <BSalectWhite />}
-              {isMyComment && <IconTrash />}
+              {isMyArticles && !isSelected ? <BSalectWhite /> : null}
+              {isSelected && <BSalectPurple />}
+              {isMyComment && (
+                <Button variant="image">
+                  <IconTrash fill={`${colors.black}`} />
+                </Button>
+              )}
             </StBtnContainer>
           </StPriceContainer>
         </StPriceComment>
@@ -107,6 +116,7 @@ const StTime = styled.span`
 const StText = styled.p`
   font-size: 12px;
   line-height: 19px;
+  margin-right: 4px;
 `;
 
 const StTextBtnContainer = styled.div`
