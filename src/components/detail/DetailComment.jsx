@@ -3,8 +3,11 @@ import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
 import icons from "assets/index";
 import Button from "components/elements/Button";
+import { useState } from "react";
 
 const DetailComment = ({ commentVal, isMyArticles }) => {
+  const [selected, setSelected] = useState(false);
+
   const {
     commentsId,
     type,
@@ -17,6 +20,15 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
   } = commentVal;
 
   const { BSalectPurple, BSalectWhite, IconTrash } = icons;
+
+  const handleSelect = () => {
+    console.log("SELECT COMMENT");
+    setSelected(!selected);
+  };
+
+  const handleDeleteComment = () => {
+    console.log("DELETE COMMENT");
+  };
 
   return (
     <>
@@ -34,8 +46,8 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
           </StTextContainer>
           <StTextBtnContainer>
             {isMyComment && (
-              <Button variant="image">
-                <IconTrash fill={`${colors.black}`} />
+              <Button variant="image" onClickHandler={handleDeleteComment}>
+                <IconTrash fill={`${colors.grey1}`} />
               </Button>
             )}
           </StTextBtnContainer>
@@ -54,11 +66,17 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
               <span>{comment}</span> 원
             </StPrice>
             <StBtnContainer>
-              {isMyArticles && !isSelected ? <BSalectWhite /> : null}
+              {isMyArticles && !isSelected ? (
+                isMyComment ? null : (
+                  <Button variant="image" onClickHandler={handleSelect}>
+                    <BSalectWhite />
+                  </Button>
+                )
+              ) : null}
               {isSelected && <BSalectPurple />}
               {isMyComment && (
-                <Button variant="image">
-                  <IconTrash fill={`${colors.black}`} />
+                <Button variant="image" onClickHandler={handleDeleteComment}>
+                  <IconTrash fill={`${colors.grey1}`} />
                 </Button>
               )}
             </StBtnContainer>
