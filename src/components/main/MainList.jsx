@@ -4,8 +4,10 @@ import test02 from "assets/test02.jpg";
 import test03 from "assets/test03.jpg";
 import test04 from "assets/test04.jpg";
 import MainListCard from "./MainListCard";
+import icons from "assets"
 
 const MainList = () => {
+  const {IconPlus}=icons;
   const datas = [
     {
       articlesId: 1,
@@ -51,10 +53,9 @@ const MainList = () => {
       {datas.map((data) => (
         <MainListCard key={data.articlesId} data={data} />
       ))}
-      <StAddList>
-        <div />
-        <div />
-      </StAddList>
+      <StIcon>
+      <IconPlus/>  
+      </StIcon>
     </StMainContainer>
   );
 };
@@ -64,28 +65,14 @@ const StMainContainer = styled.div`
   
 `;
 
-const StAddList = styled.div`
+const StIcon = styled.div`
   position: sticky;
   bottom:4%; 
   left:80%;
-  background-color: #9083f7;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 100px;
   width: 50px;
   height: 50px;
-  div {
-    background-color: #ffffff;
-    width: 2rem;
-    height: 0.25rem;
-    position: absolute;
-    top: 50%;
-    left: 50%; 
-    margin-left: -1rem;; /* width의 50% */
-    margin-top: -0.125rem;
-    &:nth-child(1) {
-      transform: rotate(90deg);
-    }
-  }
 `;
 
 export default MainList;

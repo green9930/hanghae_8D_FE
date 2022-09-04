@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "styles/theme";
 
 const MainCarouselCard = ({ data }) => {
   const { articlesId, title, price, image } = data;
@@ -6,17 +7,36 @@ const MainCarouselCard = ({ data }) => {
   return (
     <StImgBox>
       <StImg src={image} alt="이미지" />
-      <div>{title.length < 7 ? title : title.slice(0, 7) + "..."}</div>
-      <p>{price}원</p>
+      <StTitle>{title.length < 6 ? title : title.slice(0, 6) + "..."}</StTitle>
+      <StPrice>
+        {price}
+        <span>원</span>
+      </StPrice>
     </StImgBox>
   );
 };
 const StImgBox = styled.div`
-  width: 120px; 
+  width: 120px;
   height: 160px;
   border-radius: 10px;
-  background-color: white;
+  background-color: ${colors.white};;
   padding: 10px;
+`;
+const StTitle = styled.div`
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+`;
+const StPrice = styled.p`
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  span {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    margin-left: 2px;
+  }
 `;
 
 const StImg = styled.img`

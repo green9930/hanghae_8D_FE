@@ -5,8 +5,10 @@ import test02 from "assets/test02.jpg";
 import test03 from "assets/test03.jpg";
 import test04 from "assets/test04.jpg";
 import icons from "assets";
+import { colors } from "styles/theme";
 
 const MainCarousel = () => {
+  
   const datas = [
     {
       articlesId: 1,
@@ -36,10 +38,11 @@ const MainCarousel = () => {
 
   const { IconArrow } = icons;
 
+ 
   return (
     <StMainRandomContainer>
       <StMainRandomTitle>
-        <IconArrow />
+        <IconArrow fill={colors.mainO}/>
         <StMainTitleSpan>책첵</StMainTitleSpan> 진행 중 체크
       </StMainRandomTitle>
       <StMainRandomImg>
@@ -51,7 +54,7 @@ const MainCarousel = () => {
   );
 };
 const StMainRandomContainer = styled.div`
-  background-color: #9083f7;
+  background-color: ${colors.mainP};
   width: 100%;
   padding-bottom: 30px;
   height: 240px;
@@ -62,14 +65,17 @@ const StMainRandomTitle = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
-  color: white;
+  color: ${colors.white};
+  font-family: 'twayfly', 'Noto Sans KR', sans-serif;
+ 
 `;
 const StMainTitleSpan = styled.span`
   font-style: normal;
+  font-family: 'twayfly', 'Noto Sans KR', sans-serif;
   font-weight: 400;
   font-size: 20px;
   margin-left: 10px;
-  color: #f9d9c2;
+  color:${colors.mainO}
 `;
 const StMainRandomImg = styled.div`
   display: flex;

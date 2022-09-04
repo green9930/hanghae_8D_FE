@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import icons from "assets";
+import { colors} from "styles/theme";
 
 const SelectBox = ({ data, size }) => {
   const [showOptions, setShowOptions] = useState(false);
@@ -43,7 +44,7 @@ const SelectBox = ({ data, size }) => {
         />
       </StArrow>
       <StLabel size={size} currentValue={currentValue}>
-        {currentValue}
+        <span>{currentValue}</span>
       </StLabel>
       <StSelectOptions size={size} show={showOptions}>
         {data.map((d) => (
@@ -64,66 +65,69 @@ const SelectBox = ({ data, size }) => {
 const StSelectBox = styled.div`
   position: relative;
   width: 100%;
-  padding: 12px 35px;
+  padding: 12px 35px 12px 15px;
   text-align: center;
-  background-color: #ffffff;
-  align-self: center;
-  border: 0.5px solid #999999;
+  background-color: ${colors.white};
+  border: 0.5px solid ${colors.grey3};
   border-radius: 5px;
   height: 40px;
   cursor: pointer;
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: center;
-
-  ${(props) => {
+  justify-content: flex-start;
+  ${({size}) => {
     return (
-      props.size === "small" &&
+      size === "small" &&
       css`
         height: 24px;
         border-radius: 30px;
-        width: 115px;
-        border: 1px solid #9083f7;
+        width: 130px;
+        border: 1px solid ${colors.mainP};
         padding: 3px 5px;
+    
       `
     );
   }}
 `;
 const StArrow = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 5%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  ${(props) => {
+  padding-left: 10px;
+  ${({size}) => {
     return (
-      props.size === "small" &&
+      size === "small" &&
       css`
-        left: 10%;
-        top: 50%;
+        padding-left: 0;
       `
     );
   }}
 `;
+
 const StLabel = styled.label`
-  font-size: 16px;
-  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  color: ${(props) =>
-    props.currentValue === "카테고리를 선택해 주세요." ? "gray" : "black"};
-  ${(props) => {
-    return (
-      props.size === "small" &&
-      css`
-        color: ${(props) =>
-          props.currentValue === "카테고리 전체" ? "gray" : "black"};
-        font-size: 12px;
-        padding-left: 11px;
-      `
-    );
-  }};
+  width: 100%;
+  padding-right: 10px;
+  span {
+    font-size: 16px;
+    letter-spacing: -0.5px;
+    text-align: center;
+    color: ${({currentValue}) =>
+      currentValue === "카테고리를 선택해 주세요." ? `${colors.grey3}`: `${colors.black}`};
+    ${({size}) => {
+      return (
+        size === "small" &&
+        css`
+          color: ${({currentValue}) =>
+            currentValue === "카테고리 전체" ? `${colors.grey3}`: `${colors.black}`};
+          font-size: 12px;
+          padding-right: 5px;
+          font-family: 'twayfly', 'Noto Sans KR', sans-serif
+        `
+      );
+    }};
+  }
 `;
 
 const StSelectOptions = styled.ul`
@@ -135,20 +139,20 @@ const StSelectOptions = styled.ul`
   width: 100%;
   overflow: scroll;
   height: 190px;
-  max-height: ${(props) => (props.show ? "none" : "0")};
+  max-height: ${({show}) => (show ? "none" : "0")};
   padding: 0;
   border-radius: 8px;
-  background-color: #ffffff;
-  color: #333333;
-  border: ${(props) => (props.show ? "0.5px solid #999999" : 0)};
-  ${(props) => {
+  background-color:  ${colors.white};
+  color: ${colors.grey1};
+  border: ${({show}) => (show ? `0.5px solid ${colors.grey3}` : 0)};
+  ${({size}) => {
     return (
-      props.size === "small" &&
+      size === "small" &&
       css`
         top: 23px;
         height: 100px;
-        width: 115px;
-        border: ${(props) => (props.show ? " 1px solid #9083f7" : 0)};
+        width: 130px;
+        border: ${({show}) => (show ? " 1px solid #9083f7" : 0)};
       `
     );
   }};
@@ -162,12 +166,13 @@ const StOption = styled.li`
   &:hover {
     font-weight: 600;
   }
-  ${(props) => {
+  ${({size}) => {
     return (
-      props.size === "small" &&
+      size === "small" &&
       css`
         padding: 6px 10px;
         font-size: 12px;
+        font-family: 'twayfly', 'Noto Sans KR', sans-serif;
       `
     );
   }}

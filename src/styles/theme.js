@@ -1,7 +1,7 @@
 export const colors = {
   mainP: "#9083F7",
   subP: "#E3DFFF",
-  mainO: "##F9D9C2",
+  mainO: "#F9D9C2",
   subO: "#FCEFDF",
   grey1: "#333333",
   grey2: "#666666",
