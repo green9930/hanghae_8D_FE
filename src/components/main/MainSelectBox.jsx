@@ -35,11 +35,15 @@ const StSelectList = styled.div`
   gap: 13px;
   justify-content: center;
   align-items: center;
+  
 `;
 
 const StMainBtns = styled.div`
   display: flex;
   gap: 4px;
+  button{
+    font-family: 'twayfly', 'Noto Sans KR', sans-serif
+  }
 `;
 
 export default MainSelectBox;
