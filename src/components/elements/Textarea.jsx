@@ -21,7 +21,7 @@ Textarea.defaultProps = {
   Label: "",
   isHide: false,
   changeHandler: null,
-  placeholder: "품목에 대한 설명을 작성해 주세요",
+  placeholder: "품목에 대한 설명을 작성해 주세요.",
 };
 
 const StTextareaContainer = styled.div`
