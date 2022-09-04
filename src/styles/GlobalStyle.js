@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'twayfly';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twayfly.woff') format('woff');
-    font-weight: normal;
+    font-weight: 400;
     font-style: normal;
   }
 
@@ -66,6 +66,7 @@ const GlobalStyle = createGlobalStyle`
     ::placeholder,
     ::-webkit-input-placeholder {
       font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 400;
       font-size: ${fontSize.regular16};
     }
   }
