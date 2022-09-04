@@ -78,11 +78,13 @@ const Detail = () => {
       />
       <StCommment>
         <StCommentList>
-          <DetailCommentList />
+          <DetailCommentList process={process} />
         </StCommentList>
-        <StCommentForm>
-          <DetailCommentForm />
-        </StCommentForm>
+        {process === "process" ? (
+          <StCommentForm>
+            <DetailCommentForm />
+          </StCommentForm>
+        ) : null}
       </StCommment>
     </StDetail>
   );

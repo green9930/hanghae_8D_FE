@@ -47,8 +47,9 @@ const DetailDesc = ({
 };
 
 const StDetailDesc = styled.div`
-  padding: 10px 35px;
+  background: ${colors.grey7};
   width: 100%;
+  padding: 10px 35px;
   overflow: visible;
   h2 {
     font-size: 18px;
