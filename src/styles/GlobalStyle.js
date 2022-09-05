@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     font-size: ${fontSize.regular14};
     font-family: 'Noto Sans KR', sans-serif;
+    letter-spacing: -0.5px;
   }
   
   body {
