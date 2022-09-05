@@ -1,5 +1,6 @@
 import icons from "assets";
 import styled from "styled-components";
+import { fontSize } from "styles/theme";
 
 const Header = ({ title }) => {
   const { HeaderLogo, MyPageLogo } = icons;
@@ -24,6 +25,7 @@ const StHeader = styled.div`
 
 const StHeaderTitle = styled.div`
   color: white;
+  font-size: ${fontSize.large20};
 `;
 
 export default Header;
