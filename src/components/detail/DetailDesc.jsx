@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
+
 const DetailDesc = ({
   nickName,
   articlesId,
@@ -15,6 +16,7 @@ const DetailDesc = ({
   createdAt,
 }) => {
   const [isShow, setIsShow] = useState(false);
+
   const MAX_LENGTH = 44;
   const styledPrice = content.substr(0, MAX_LENGTH);
 
@@ -51,9 +53,10 @@ const StDetailDesc = styled.div`
   width: 100%;
   padding: 10px 35px;
   overflow: visible;
+
   h2 {
-    font-size: 18px;
     margin: 2px 0;
+    font-size: 18px;
   }
 `;
 
@@ -95,8 +98,8 @@ const StSelectedMessage = styled.span`
 `;
 
 const StDesc = styled.p`
-  margin-top: 14px;
   height: ${({ isShow }) => (isShow ? "100%" : "40px")};
+  margin-top: 14px;
   position: relative;
   color: ${colors.grey1};
 
@@ -113,6 +116,7 @@ const StDesc = styled.p`
     justify-content: center;
 
     span {
+      color: ${colors.grey1};
       font-size: 14px;
       font-weight: 500;
       text-decoration: underline;
