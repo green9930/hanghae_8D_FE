@@ -1,12 +1,17 @@
+import { useState } from "react";
 import styled from "styled-components";
+import Button from "components/elements/Button";
+import Modal from "components/layout/Modal";
+import DeleteAlert from "components/detail/DeleteAlert";
+import SelectAlert from "components/detail/SelectAlert";
 import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
 import icons from "assets/index";
-import Button from "components/elements/Button";
-import { useState } from "react";
 
 const DetailComment = ({ commentVal, isMyArticles }) => {
   const [selected, setSelected] = useState(false);
+  const [openSelectAlert, setOpenSelectAlert] = useState(false);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
 
   const {
     commentsId,
@@ -21,14 +26,12 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
 
   const { BSalectPurple, BSalectWhite, IconTrash } = icons;
 
-  const handleSelect = () => {
+  const handleSelectComment = () => {
     console.log("SELECT COMMENT");
-    setSelected(!selected);
+    setOpenSelectAlert(true);
   };
 
-  const handleDeleteComment = () => {
-    console.log("DELETE COMMENT");
-  };
+  const handleDeleteComment = () => setOpenDeleteAlert(true);
 
   return (
     <>
@@ -68,7 +71,7 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
             <StBtnContainer>
               {isMyArticles && !isSelected ? (
                 isMyComment ? null : (
-                  <Button variant="image" onClickHandler={handleSelect}>
+                  <Button variant="image" onClickHandler={handleSelectComment}>
                     <BSalectWhite />
                   </Button>
                 )
@@ -82,6 +85,19 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
             </StBtnContainer>
           </StPriceContainer>
         </StPriceComment>
+      )}
+      {openSelectAlert && (
+        <Modal handleOpenModal={() => setOpenSelectAlert(false)}>
+          <SelectAlert
+            nickName={nickName}
+            handleOpenModal={() => setOpenSelectAlert(false)}
+          />
+        </Modal>
+      )}
+      {openDeleteAlert && (
+        <Modal handleOpenModal={() => setOpenDeleteAlert(false)}>
+          <DeleteAlert handleOpenModal={() => setOpenDeleteAlert(false)} />
+        </Modal>
       )}
     </>
   );
@@ -132,9 +148,9 @@ const StTime = styled.span`
 `;
 
 const StText = styled.p`
+  margin-right: 4px;
   font-size: 12px;
   line-height: 19px;
-  margin-right: 4px;
 `;
 
 const StTextBtnContainer = styled.div`
