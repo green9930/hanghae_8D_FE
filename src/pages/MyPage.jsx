@@ -1,11 +1,11 @@
 import MobileLayout from "components/layout/MobileLayout";
-import User from "components/mypage/User";
+import UserInfo from "components/mypage/UserInfo";
 import styled from "styled-components";
 
 const MyPage = () => {
   return (
     <MobileLayout title="MY">
-      <User />
+      <UserInfo />
     </MobileLayout>
   );
 };

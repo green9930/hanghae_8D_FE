@@ -1,12 +1,12 @@
-import icons from "assets";
-import Button from "components/elements/Button";
 import { useState } from "react";
 import styled from "styled-components";
-import { colors, fontSize } from "styles/theme";
-import handleRankColor from "utils/handleRankColor";
+import Button from "components/elements/Button";
 import MyPageFooter from "components/mypage/MyPageFooter";
-import MyList from "./MyList";
-import AlarmList from "./AlarmList";
+import MyList from "components/mypage/MyList";
+import AlarmList from "components/mypage/AlarmList";
+import handleRankColor from "utils/handleRankColor";
+import { colors, fontSize } from "styles/theme";
+import icons from "assets";
 
 const UserInfo = () => {
   const [isOpenMyList, setIsOpenMyList] = useState(false);
@@ -17,9 +17,9 @@ const UserInfo = () => {
     userEmail: "test@gmail.com",
     userRank: "S",
     userPoint: "500",
+    articleCount: "4",
   };
   const { nickName, userEmail, userRank, userPoint } = profile;
-
   const { List, Alarm, RankList } = icons;
 
   const fullUserRank = (rank) => {
@@ -106,11 +106,11 @@ const UserInfoContainer = styled.div`
 `;
 
 const StUserInfo = styled.div`
-  background: ${colors.mainP};
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  background: ${colors.mainP};
   padding: ${({ isOpenMyList, isOpenAlarmList }) =>
     isOpenMyList || isOpenAlarmList ? "20px 0" : "60px 0 50px 0"};
   transition: padding 0.8s;
@@ -134,20 +134,20 @@ const StUserRankContainer = styled.div`
 `;
 
 const StUserRank = styled.div`
-  padding: 6px 28px;
   background: ${({ rankcolor }) => rankcolor};
-  color: ${colors.white};
+  padding: 6px 28px;
   border-radius: 30px 0 0 30px;
+  color: ${colors.white};
   font-family: "Roboto", "Noto Sans KR", sans-serif;
   font-size: ${fontSize.regular18};
   font-weight: 700;
 `;
 
 const StUserPoint = styled.div`
-  padding: 6px 20px;
-  color: ${colors.mainP};
   background: ${colors.subO};
+  padding: 6px 20px;
   border-radius: 0 30px 30px 0;
+  color: ${colors.mainP};
   font-family: "Roboto", "Noto Sans KR", sans-serif;
   font-size: ${fontSize.regular18};
   font-weight: 700;
@@ -165,8 +165,8 @@ const StBtn = styled.div`
   height: 100px;
 
   button {
-    font-weight: 700;
     position: relative;
+    font-weight: 700;
   }
 `;
 
