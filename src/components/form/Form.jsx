@@ -6,34 +6,79 @@ import Button from "components/elements/Button";
 import { useState } from "react";
 import icons from "assets";
 import { colors } from "styles/theme";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
-  const { IconPlus } = icons;
+  const navigate = useNavigate();
+  const { IconPlus, IconArrow } = icons;
   const [showImages, setShowImages] = useState([]);
   const [title, setTitle] = useState("");
+  const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
   const [price, setPrice] = useState("");
+  const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
 
-  const onChangeTitle = (e) => {
-    setTitle(e.target.value);
-  };
-  console.log(title);
-  const onChangePrice = (e) => {
-    setPrice(e.target.value);
-  };
-  const onChangeDesc = (e) => {
-    setDesc(e.target.value);
+  const [validTitle, setValidTitle] = useState(true);
+  const [validImage, setValidImage] = useState(true);
+  const [validCategory, setValidCategory] = useState(true);
+  const [validPrice, setValidPrice] = useState(true);
+  const [validLengthDesc, setValidLengthDesc] = useState(true);
+  const [validDesc, setValidDesc] = useState(true);
+
+  const checkVali =
+    title.trim().length > 0 &&
+    desc.trim().length >= 15 &&
+    currentValue !== "카테고리를 선택해 주세요." &&
+    price.trim().length > 0 &&
+    showImages.length > 0;
+
+  const priceVali = (text) => {
+    const regExp = /^[0-9\s+]*$/g;
+    return regExp.test(text);
   };
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
+  const handleOnChangeSelectValue = (e) => {
+    setCurrentValue(e.target.getAttribute("value"));
+    currentValue ? setValidCategory(true) : setValidCategory(false);
   };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    let target = "";
+    if (name === "title") {
+      target = value.substr(0, 30);
+      console.log("타이틀!!!!", target.trim().length);
+      setTitle(target);
+      target.length > 0 ? setValidTitle(true) : setValidTitle(false);
+    }
+
+    if (name === "price") {
+      target = value.replaceAll(",", "").substr(0, 8);
+      if (priceVali(target)) {
+        setRealPrice(target);
+        priceVali(target) &&
+          setPrice(target.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        console.log("Price", price.trim().length);
+        target.length > 0 ? setValidPrice(true) : setValidPrice(false);
+      }
+    }
+    if (name === "desc") {
+      target = value.substr(0, 400);
+      setDesc(target);
+      console.log("desc", desc.trim().length);
+      target.length > 0 ? setValidDesc(true) : setValidDesc(false);
+      target.length > 15 ? setValidLengthDesc(true) : setValidLengthDesc(false);
+    }
+  };
+
+  /* ---------------------------------- 사진 미리보기 ------------------------------- */
 
   // 이미지 상대경로 저장
-  const handleAddImages = (e) => {
-    const imageLists = e.target.files;
-    let imageUrlLists = [...showImages];
+  let imageLists = {};
 
+  const handleAddImages = (e) => {
+    let imageUrlLists = [...showImages];
+    imageLists = e.target.files;
     for (let i = 0; i < imageLists.length; i++) {
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
@@ -44,12 +89,13 @@ const Form = () => {
     }
 
     setShowImages(imageUrlLists);
+    showImages.length > 0 ? setValidImage(true) : setValidImage(false);
   };
-
   // X버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
   };
+  console.log(showImages);
 
   /* ----------------------------- 카테고리 select-box ---------------------------- */
 
@@ -63,20 +109,46 @@ const Form = () => {
     { key: 7, value: "식품", category: "food" },
     { key: 8, value: "기타", category: "etc" },
   ];
-  /* ---------------------------------- 사진 미리보기 ------------------------------- */
 
+  const onSubmitHandler = () => {
+    console.log("올려!!");
+  };
+  const clickCheckHandler = () => {
+    title.trim().length === 0 ? setValidTitle(false) : setValidTitle(true);
+    desc.trim().length > 14
+      ? setValidLengthDesc(true)
+      : setValidLengthDesc(false);
+    desc.trim().length === 0 ? setValidDesc(false) : setValidDesc(true);
+    price.trim().length === 0 ? setValidPrice(false) : setValidPrice(true);
+    showImages.length === 0 ? setValidImage(false) : setValidImage(true);
+    currentValue === "카테고리를 선택해 주세요."
+      ? setValidCategory(false)
+      : setValidCategory(true);
+  };
+
+  console.log(
+    validImage,
+    validTitle,
+    validCategory,
+    validPrice,
+    validLengthDesc
+  );
+  console.log(validLengthDesc);
   return (
     <StFormContainer>
-      <form onSubmit={onSubmitHandler}>
+      <div>
         <StFirstWrap>
+          <StIconArrow>
+            <IconArrow /> 뒤로
+          </StIconArrow>
           <StPreview>
             <label htmlFor="input-file" onChange={handleAddImages}>
               <IconPlus />
               <input type="file" id="input-file" multiple />
             </label>
-            <StImageList>
+            <StImageList validImage={validImage}>
               {showImages.length === 0 ? (
-                <div>사진을 등록해 주세요.</div>
+                <p>사진을 등록해 주세요 (최대 5장).</p>
               ) : (
                 <div>
                   {showImages.map((image, id) => (
@@ -90,27 +162,55 @@ const Form = () => {
             </StImageList>
           </StPreview>
           <StSecondWrap>
-            <Input
-              theme="grey"
-              placeholder={"제목을 입력해 주세요."}
-              onChangeHandler={onChangeTitle}
-              value={title}
-            />
-            <SelectBox data={data} />
-            <Input
-              theme="grey"
-              placeholder={"가격을 입력해 주세요."}
-              onChangeHandler={onChangePrice}
-              value={price}
-            />
+            {console.log(validLengthDesc)}
+            <StTitleInput validTitle={validTitle}>
+              <Input
+                theme="grey"
+                placeholder={"제목을 입력해 주세요."}
+                onChangeHandler={handleChange}
+                name="title"
+                value={title}
+              />
+            </StTitleInput>
+            <StSelectBox validCategory={validCategory}>
+              <SelectBox
+                data={data}
+                currentValue={currentValue}
+                handleOnChangeSelectValue={handleOnChangeSelectValue}
+              />
+            </StSelectBox>
+            <StPriceInput validPrice={validPrice}>
+              <Input
+                theme="grey"
+                placeholder={"가격을 입력해 주세요."}
+                onChangeHandler={handleChange}
+                value={price}
+                name="price"
+                // type="number"
+              />
+            </StPriceInput>
           </StSecondWrap>
         </StFirstWrap>
-        <StThirdWrap>
-          <Textarea onChangeHandler={onChangeDesc} value={desc} />
+        <StThirdWrap validLengthDesc={validLengthDesc} validDesc={validDesc}>
+          <Textarea onChangeHandler={handleChange} value={desc} name="desc" />
           <p>*15글자 이상 입력해 주세요.</p>
-          <Button children={"등록하기"} />
+          {console.log(validLengthDesc)}
+
+          {checkVali ? (
+            <Button
+              children={"등록하기"}
+              theme={checkVali ? "purple" : "disabled"}
+              onClickHandler={onSubmitHandler}
+            />
+          ) : (
+            <Button
+              children={"등록하기"}
+              theme={"disabled"}
+              onClickHandler={clickCheckHandler}
+            />
+          )}
         </StThirdWrap>
-      </form>
+      </div>
     </StFormContainer>
   );
 };
@@ -121,14 +221,64 @@ const StFirstWrap = styled.div`
   height: 279px;
   background-color: ${colors.grey7};
 `;
+const StIconArrow = styled.div`
+  position: relative;
+  padding: 10px 0px 35px 20px;
+  svg {
+    position: relative;
+    top: 4px;
+    left: 1;
+    transform: rotate(90deg);
+  }
+`;
 const StSecondWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
   padding: 0 35px;
 `;
+
+const StTitleInput = styled.div`
+  input {
+    ::placeholder {
+      color: ${({ validTitle }) => {
+        console.log("####", validTitle);
+        return validTitle ? `${colors.grey3}` : `${colors.red}`;
+      }};
+    }
+    border-color: ${({ validTitle }) =>
+      validTitle ? `${colors.grey3}` : `${colors.red}`};
+  }
+`;
+
+const StSelectBox = styled.div`
+  span {
+    color: ${({ validCategory }) => (validCategory ? null : `${colors.red}`)};
+  }
+
+  div {
+    border-color: ${({ validCategory }) =>
+      validCategory ? `${colors.grey3}` : `${colors.red}`};
+  }
+  svg {
+    fill: ${({ validCategory }) =>
+      validCategory ? `${colors.grey3}` : `${colors.red}`};
+  }
+`;
+
+const StPriceInput = styled.div`
+  input {
+    ::placeholder {
+      color: ${({ validPrice }) =>
+        validPrice ? `${colors.grey3}` : `${colors.red}`};
+    }
+    border-color: ${({ validPrice }) =>
+      validPrice ? `${colors.grey3}` : `${colors.red}`};
+  }
+`;
+
 const StPreview = styled.div`
-  padding: 0 35px;
+  padding: 0 35px 20px;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -138,13 +288,16 @@ const StPreview = styled.div`
 `;
 const StImageList = styled.div`
   padding-left: 10px;
+  overflow: scroll;
   div {
     display: flex;
     gap: 4px;
-    overflow: scroll;
+  }
+  p {
     font-size: 16px;
     letter-spacing: -0.5px;
-    color: ${colors.grey3};
+    color: ${({ validImage }) =>
+      validImage ? `${colors.grey3}` : `${colors.red}`};
   }
 `;
 const StImage = styled.div`
@@ -161,13 +314,26 @@ const StBtn = styled.button`
 `;
 const StThirdWrap = styled.div`
   padding: 20px 35px 0 35px;
+  textarea {
+    ::placeholder {
+      color: ${({ validDesc }) =>
+        validDesc ? `${colors.grey3}` : `${colors.red}`};
+    }
+    border: 0.5px solid
+      ${({ validLengthDesc }) =>
+        validLengthDesc ? `${colors.grey3}` : `${colors.red}`};
+  }
   button {
     border-radius: 50px;
+    position: fixed;
+    bottom: 50px;
+    left: 0px;
   }
   p {
     font-size: 12px;
     letter-spacing: -3%;
-    color: ${colors.grey3};
+    color: ${({ validLengthDesc }) =>
+      validLengthDesc ? `${colors.grey3}` : `${colors.red}`};
     padding-top: 4px;
     text-align: right;
   }
