@@ -7,10 +7,15 @@ import { useState } from "react";
 import icons from "assets";
 import { colors } from "styles/theme";
 import { useNavigate } from "react-router-dom";
+import Modal from "components/layout/Modal";
+import ImageAlert from "./ImageAlert";
 
 const Form = () => {
   const navigate = useNavigate();
-  const { IconPlus, IconArrow } = icons;
+
+  const [openImageAlert, setOpenImageAlert] = useState(false);
+
+  const { IconPlus, IconArrow, IconX } = icons;
   const [showImages, setShowImages] = useState([]);
   const [title, setTitle] = useState("");
   const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
@@ -79,7 +84,16 @@ const Form = () => {
   const handleAddImages = (e) => {
     let imageUrlLists = [...showImages];
     imageLists = e.target.files;
+
     for (let i = 0; i < imageLists.length; i++) {
+      console.log(imageLists[i].size);
+      //20메가제한
+      if (imageLists[i].size > 20000000) {
+        setOpenImageAlert(true);
+        console.log("알러트!!!", openImageAlert);
+        return;
+      }
+
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
     }
@@ -90,12 +104,14 @@ const Form = () => {
 
     setShowImages(imageUrlLists);
     showImages.length > 0 ? setValidImage(true) : setValidImage(false);
+    console.log("이미지!", imageLists);
   };
+
   // X버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((_, index) => index !== id));
   };
-  console.log(showImages);
+  // console.log(showImages);
 
   /* ----------------------------- 카테고리 select-box ---------------------------- */
 
@@ -113,6 +129,7 @@ const Form = () => {
   const onSubmitHandler = () => {
     console.log("올려!!");
   };
+
   const clickCheckHandler = () => {
     title.trim().length === 0 ? setValidTitle(false) : setValidTitle(true);
     desc.trim().length > 14
@@ -126,76 +143,74 @@ const Form = () => {
       : setValidCategory(true);
   };
 
-  console.log(
-    validImage,
-    validTitle,
-    validCategory,
-    validPrice,
-    validLengthDesc
-  );
-  console.log(validLengthDesc);
   return (
     <StFormContainer>
-      <div>
-        <StFirstWrap>
-          <StIconArrow>
-            <IconArrow /> 뒤로
-          </StIconArrow>
-          <StPreview>
-            <label htmlFor="input-file" onChange={handleAddImages}>
-              <IconPlus />
-              <input type="file" id="input-file" multiple />
-            </label>
-            <StImageList validImage={validImage}>
-              {showImages.length === 0 ? (
-                <p>사진을 등록해 주세요 (최대 5장).</p>
-              ) : (
-                <div>
-                  {showImages.map((image, id) => (
-                    <StImage key={id}>
-                      <StImg src={image} alt={`${image}-${id}`} />
-                      <StBtn onClick={() => handleDeleteImage(id)}>X</StBtn>
-                    </StImage>
-                  ))}
-                </div>
-              )}
-            </StImageList>
-          </StPreview>
-          <StSecondWrap>
-            {console.log(validLengthDesc)}
-            <StTitleInput validTitle={validTitle}>
-              <Input
-                theme="grey"
-                placeholder={"제목을 입력해 주세요."}
-                onChangeHandler={handleChange}
-                name="title"
-                value={title}
-              />
-            </StTitleInput>
-            <StSelectBox validCategory={validCategory}>
-              <SelectBox
-                data={data}
-                currentValue={currentValue}
-                handleOnChangeSelectValue={handleOnChangeSelectValue}
-              />
-            </StSelectBox>
-            <StPriceInput validPrice={validPrice}>
-              <Input
-                theme="grey"
-                placeholder={"가격을 입력해 주세요."}
-                onChangeHandler={handleChange}
-                value={price}
-                name="price"
-                // type="number"
-              />
-            </StPriceInput>
-          </StSecondWrap>
-        </StFirstWrap>
-        <StThirdWrap validLengthDesc={validLengthDesc} validDesc={validDesc}>
-          <Textarea onChangeHandler={handleChange} value={desc} name="desc" />
-          <p>*15글자 이상 입력해 주세요.</p>
-          {console.log(validLengthDesc)}
-
+      <StFirstWrap>
+        <StIconArrow>
+          <IconArrow /> 뒤로
+        </StIconArrow>
+        <StPreview>
+          <label htmlFor="input-file" onChange={handleAddImages}>
+            <IconPlus />
+            <input type="file" id="input-file" multiple />
+          </label>
+          <StImageList validImage={validImage}>
+            {showImages.length === 0 ? (
+              <p>사진을 등록해 주세요 (최대 5장).</p>
+            ) : (
+              <div>
+                {showImages.map((image, id) => (
+                  <StImage key={id}>
+                    <StImg src={image} alt={`${image}-${id}`} />
+                    <StBtn onClick={() => handleDeleteImage(id)}>
+                      <IconX stroke={colors.white} />
+                    </StBtn>
+                  </StImage>
+                ))}
+              </div>
+            )}
+          </StImageList>
+          {openImageAlert && (
+            <Modal handleOpenModal={() => setOpenImageAlert(false)}>
+              <ImageAlert handleOpenModal={() => setOpenImageAlert(false)} />
+            </Modal>
+          )}
+        </StPreview>
+        <StSecondWrap>
+          {/* {console.log(validLengthDesc)} */}
+          <StTitleInput validTitle={validTitle}>
+            <Input
+              theme="grey"
+              placeholder={"제목을 입력해 주세요."}
+              onChangeHandler={handleChange}
+              name="title"
+              value={title}
+            />
+          </StTitleInput>
+          <StSelectBox validCategory={validCategory}>
+            <SelectBox
+              data={data}
+              currentValue={currentValue}
+              handleOnChangeSelectValue={handleOnChangeSelectValue}
+            />
+          </StSelectBox>
+          <StPriceInput validPrice={validPrice}>
+            <Input
+              theme="grey"
+              placeholder={"가격을 입력해 주세요."}
+              onChangeHandler={handleChange}
+              value={price}
+              name="price"
+              // type="number"
+            />
+          </StPriceInput>
+        </StSecondWrap>
+      </StFirstWrap>
+      <StThirdWrap validLengthDesc={validLengthDesc} validDesc={validDesc}>
+        <Textarea onChangeHandler={handleChange} value={desc} name="desc" />
+        <p>*15글자 이상 입력해 주세요.</p>
+        {/* {console.log(validLengthDesc)} */}
+        <StButton>
           {checkVali ? (
             <Button
               children={"등록하기"}
@@ -209,8 +224,8 @@ const Form = () => {
               onClickHandler={clickCheckHandler}
             />
           )}
-        </StThirdWrap>
-      </div>
+        </StButton>
+      </StThirdWrap>
     </StFormContainer>
   );
 };
@@ -242,7 +257,7 @@ const StTitleInput = styled.div`
   input {
     ::placeholder {
       color: ${({ validTitle }) => {
-        console.log("####", validTitle);
+        // console.log("####", validTitle);
         return validTitle ? `${colors.grey3}` : `${colors.red}`;
       }};
     }
@@ -281,6 +296,7 @@ const StPreview = styled.div`
   padding: 0 35px 20px;
   display: flex;
   justify-content: left;
+  height: 70px;
   align-items: center;
   input {
     display: none;
@@ -306,14 +322,22 @@ const StImage = styled.div`
 const StImg = styled.img`
   width: 70px;
   height: 70px;
-  object-fit: contain;
+  object-fit: cover;
 `;
 const StBtn = styled.button`
   position: absolute;
   right: 0;
+  border: none;
+  padding: 0;
+  padding-bottom: 0;
+  width: 20px;
+  height: 20px;
+  background-color: ${colors.black};
+  opacity: 0.3;
 `;
 const StThirdWrap = styled.div`
   padding: 20px 35px 0 35px;
+
   textarea {
     ::placeholder {
       color: ${({ validDesc }) =>
@@ -323,12 +347,6 @@ const StThirdWrap = styled.div`
       ${({ validLengthDesc }) =>
         validLengthDesc ? `${colors.grey3}` : `${colors.red}`};
   }
-  button {
-    border-radius: 50px;
-    position: fixed;
-    bottom: 50px;
-    left: 0px;
-  }
   p {
     font-size: 12px;
     letter-spacing: -3%;
@@ -336,6 +354,17 @@ const StThirdWrap = styled.div`
       validLengthDesc ? `${colors.grey3}` : `${colors.red}`};
     padding-top: 4px;
     text-align: right;
+  }
+`;
+const StButton = styled.div`
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  padding: 0 30px;
+  width: 100%;
+
+  button {
+    border-radius: 50px;
   }
 `;
 
