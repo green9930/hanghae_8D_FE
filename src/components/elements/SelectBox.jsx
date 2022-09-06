@@ -3,17 +3,9 @@ import styled, { css } from "styled-components";
 import icons from "assets";
 import { colors} from "styles/theme";
 
-const SelectBox = ({ data, size }) => {
-  const [showOptions, setShowOptions] = useState(false);
-  const [currentValue, setCurrentValue] = useState(
-    size === "small" ? "카테고리 전체" : "카테고리를 선택해 주세요."
-  );
-
+const SelectBox = ({ data, size,currentValue,handleOnChangeSelectValue }) => {
   const { IconArrow } = icons;
-
-  const handleOnChangeSelectValue = (e) => {
-    setCurrentValue(e.target.getAttribute("value"));
-  };
+  const [showOptions, setShowOptions] = useState(false);
 
   const modalRef = useRef();
 
@@ -82,7 +74,7 @@ const StSelectBox = styled.div`
       css`
         height: 24px;
         border-radius: 30px;
-        width: 130px;
+        width: 120px;
         border: 1px solid ${colors.mainP};
         padding: 3px 5px;
     
@@ -122,7 +114,7 @@ const StLabel = styled.label`
           color: ${({currentValue}) =>
             currentValue === "카테고리 전체" ? `${colors.grey3}`: `${colors.black}`};
           font-size: 12px;
-          padding-right: 5px;
+          padding-right: 4px;
           font-family: 'twayfly', 'Noto Sans KR', sans-serif
         `
       );
@@ -151,7 +143,7 @@ const StSelectOptions = styled.ul`
       css`
         top: 23px;
         height: 100px;
-        width: 130px;
+        width: 120px;
         border: ${({show}) => (show ? " 1px solid #9083f7" : 0)};
       `
     );

@@ -1,7 +1,22 @@
 import SelectBox from "components/elements/SelectBox";
 import styled from "styled-components";
 import Button from "components/elements/Button";
+import { useState } from "react";
+import { colors } from "styles/theme";
 const MainSelectBox = () => {
+  const [currentValue, setCurrentValue] = useState("카테고리 전체");
+  const handleOnChangeSelectValue = (e) => {
+    setCurrentValue(e.target.getAttribute("value"));
+  };
+
+  const onClickProgress=()=>{
+
+  }
+  const onClickDone=()=>{
+
+  }
+  console.log(currentValue)
+  
   /* ----------------------------- 카테고리 select-box ---------------------------- */
 
   const data = [
@@ -16,15 +31,20 @@ const MainSelectBox = () => {
   ];
   return (
     <StSelectList>
-      <SelectBox size={"small"} data={data} />
+      <SelectBox 
+      size={"small"} 
+      data={data} 
+      currentValue={currentValue} 
+      handleOnChangeSelectValue ={handleOnChangeSelectValue}
+      />
       <StMainBtns>
         <Button
           children={"전체 보기"}
           size={"small_round"}
           theme={"p_outline"}
         />
-        <Button children={"진행중"} size={"small_round"} theme={"p_outline"} />
-        <Button children={"완료"} size={"small_round"} theme={"p_outline"} />
+        <Button children={"진행중"} size={"small_round"} theme={"p_outline"} onClickHandler={onClickProgress}/>
+        <Button children={"완료"} size={"small_round"} theme={"p_outline"} onClickHandler={onClickDone}/>
       </StMainBtns>
     </StSelectList>
   );
@@ -35,7 +55,7 @@ const StSelectList = styled.div`
   gap: 13px;
   justify-content: center;
   align-items: center;
-  
+  background-color:${colors.grey7};
 `;
 
 const StMainBtns = styled.div`

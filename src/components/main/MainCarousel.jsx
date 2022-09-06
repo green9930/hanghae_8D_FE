@@ -75,7 +75,7 @@ const StMainTitleSpan = styled.span`
   font-weight: 400;
   font-size: 20px;
   margin-left: 10px;
-  color:${colors.mainO}
+  color:${colors.mainO};
 `;
 const StMainRandomImg = styled.div`
   display: flex;
