@@ -7,14 +7,18 @@ const Header = ({ title }) => {
   const { HeaderLogo, MyPageLogo } = icons;
   const navigate= useNavigate()
 
-  const onClickHandler=()=>{
+  const onClickMain=()=>{
     navigate("/")
   }
+  const onClickMypage=()=>{
+    navigate("/mypage")
+  }
+
   return (
-    <StHeader onClick={onClickHandler}>
-      <HeaderLogo />
+    <StHeader >
+      <HeaderLogo onClick={onClickMain} />
       <StHeaderTitle>{title}</StHeaderTitle>
-      <MyPageLogo />
+      <MyPageLogo onClick={onClickMypage}/>
     </StHeader>
   );
 };

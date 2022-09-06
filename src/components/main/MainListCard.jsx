@@ -1,8 +1,13 @@
 import styled from "styled-components";
 import handleRankColor from "utils/handleRankColor";
 import { colors } from "styles/theme";
+import { useNavigate } from "react-router-dom";
 
 const MainListCard = ({ data }) => {
+  const navigate=useNavigate();
+  const onClickDetail=()=>{
+    navigate(`/detail/${articlesId}`)
+  }
   const {
     articlesId,
     nickName,
@@ -15,7 +20,7 @@ const MainListCard = ({ data }) => {
   } = data;
   return (
     <>
-      <StMainContainer selectedPrice={selectedPrice}>
+      <StMainContainer selectedPrice={selectedPrice} onClick={onClickDetail}>
         <StMainListImg src={image} alt="이미지" />
         <StMainDesc>
           <StFirstLine>

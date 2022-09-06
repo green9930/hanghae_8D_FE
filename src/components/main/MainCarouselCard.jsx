@@ -1,11 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "styles/theme";
 
 const MainCarouselCard = ({ data }) => {
   const { articlesId, title, price, image } = data;
+const navigate=useNavigate();
 
+  const onClickDetail=()=>{
+    navigate(`/detail/${articlesId}`)
+  }
   return (
-    <StImgBox>
+    <StImgBox onClick={onClickDetail}>
       <StImg src={image} alt="이미지" />
       <StTitle>{title.length < 6 ? title : title.slice(0, 6) + "..."}</StTitle>
       <StPrice>

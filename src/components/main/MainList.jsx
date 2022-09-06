@@ -5,9 +5,15 @@ import test03 from "assets/test03.jpg";
 import test04 from "assets/test04.jpg";
 import MainListCard from "./MainListCard";
 import icons from "assets"
+import { useNavigate } from "react-router-dom";
+
 
 const MainList = () => {
   const {IconPlus}=icons;
+  const navigate=useNavigate()
+  const onClickHandler=()=>{
+navigate("/form")
+  }
   const datas = [
     {
       articlesId: 1,
@@ -53,7 +59,7 @@ const MainList = () => {
       {datas.map((data) => (
         <MainListCard key={data.articlesId} data={data} />
       ))}
-      <StIcon>
+      <StIcon onClick={onClickHandler}>
       <IconPlus/>  
       </StIcon>
     </StMainContainer>
