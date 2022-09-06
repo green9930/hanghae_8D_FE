@@ -18,9 +18,12 @@ const MainListCard = ({ data }) => {
       <StMainContainer selectedPrice={selectedPrice}>
         <StMainListImg src={image} alt="이미지" />
         <StMainDesc>
+          <StFirstLine>
           <StTitle selectedPrice={selectedPrice}>
-            {title.length < 12 ? title : title.slice(0, 12) + "..."}
+            {title.length < 9 ? title : title.slice(0, 9) + "..."}
           </StTitle>
+          <StMainProcess process={process}>{process}</StMainProcess>
+          </StFirstLine>
           <StSeller
             selectedPrice={selectedPrice}
             rankColor={handleRankColor(userRank)}
@@ -41,17 +44,22 @@ const MainListCard = ({ data }) => {
             )}
           </StPrice>
         </StMainDesc>
-        <StMainProcess process={process}>{process}</StMainProcess>
+    
       </StMainContainer>
     </>
   );
 };
 const StMainContainer = styled.div`
   display: flex;
-  padding: 15px 35px;
+  padding: 15px ;
   gap: 10px;
   color: ${({ selectedPrice }) =>
     selectedPrice ? `${colors.grey3}` : `${colors.black}`};
+  width:335px;
+  height:100px;
+  box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin:10px auto;
 `;
 
 const StMainListImg = styled.img`
@@ -64,6 +72,11 @@ const StMainDesc = styled.div`
   width: 80%;
   justify-content: center;
 `;
+const StFirstLine=styled.div`
+display:flex;
+justify-content:space-between
+
+`
 const StTitle = styled.p`
   font-size: 14px;
   font-weight: 700;
@@ -73,12 +86,13 @@ const StSeller = styled.div`
   font-size: 12px;
   letter-spacing: -3%;
   span {
-    color: ${({ selectedPrice, rankColor }) =>
-      selectedPrice ? `${colors.grey3}` : rankColor};
+    color: ${({ rankColor }) =>
+       rankColor};
     padding-right: 4px;
   }
 `;
 const StPrice = styled.div`
+text-align:right;
   div {
     font-size: 10px;
     letter-spacing: -0.5px;
@@ -88,6 +102,7 @@ const StPrice = styled.div`
     font-weight: 700;
     line-height: 18px;
     padding-right: 2px;
+    align-items:right;
   }
 `;
 
@@ -99,15 +114,16 @@ const StSelectedPrice = styled.p`
 `;
 
 const StMainProcess = styled.div`
-  width: 55px;
+  width: 50px;
   height: 20px;
   font-size: 10px;
   text-align: center;
   line-height: 20px;
   border-radius: 30px;
   background-color: ${({ process }) =>
-    process === "진행중" ? "#FF4040" : "#E3DFFF"};
-  color: ${({ process }) => (process === "진행중" ? "#FFFFFF" : "#9083F7")};
+    process === "진행중" ? `${colors.red}` :`${colors.subP}` };
+  color: ${({ process }) => (process === "진행중" ? `${colors.white}`  : `${colors.mainP}` )};
+  font-family: 'twayfly', 'Noto Sans KR', sans-serif
 `;
 
 export default MainListCard;
