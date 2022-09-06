@@ -77,7 +77,7 @@ const StButton = styled.button`
     if (variant === "text") {
       if (size === "small_round") {
         return css`
-          width: 75px;
+          width: 72px;
           height: 24px;
           border-radius: 30px;
           text-align: center;
