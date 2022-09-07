@@ -1,34 +1,32 @@
-import icons from "assets";
-import styled from "styled-components";
-import { fontSize } from "styles/theme";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import Button from "components/elements/Button";
+import { fontSize } from "styles/theme";
+import icons from "assets";
 
 const Header = ({ title }) => {
+  const navigate = useNavigate();
   const { HeaderLogo, MyPageLogo } = icons;
-  const navigate= useNavigate()
-
-  const onClickMain=()=>{
-    navigate("/")
-  }
-  const onClickMypage=()=>{
-    navigate("/mypage")
-  }
 
   return (
-    <StHeader >
-      <HeaderLogo onClick={onClickMain} />
+    <StHeader>
+      <Button variant="image" onClickHandler={() => navigate("/")}>
+        <HeaderLogo />
+      </Button>
       <StHeaderTitle>{title}</StHeaderTitle>
-      <MyPageLogo onClick={onClickMypage}/>
+      <Button variant="image" onClickHandler={() => navigate("/mypage")}>
+        <MyPageLogo />
+      </Button>
     </StHeader>
   );
 };
 
 const StHeader = styled.div`
-  background-color: #9083f7;
-  height: 64px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  background-color: #9083f7;
   padding: 0 20px;
 `;
 

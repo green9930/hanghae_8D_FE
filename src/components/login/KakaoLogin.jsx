@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { setCookie } from "api/cookies";
+import { instance } from "api/axios";
 
 const KakaoLogin = () => {
   const navigate = useNavigate();
@@ -12,12 +12,12 @@ const KakaoLogin = () => {
     if (code) {
       const kakao = async () => {
         try {
-          const res = await axios.get(
-            `http://3.39.233.75/user/signin/kakao?code=${code}`
-          );
+          const res = await instance.get(`/user/signin/kakao?code=${code}`);
           console.log(res);
-          (await res.headers.authorization) &&
-            setCookie("kakaoCookie", res.headers.authorization);
+          if (await res.headers.authorization) {
+            setCookie("accessToken", res.headers.authorization);
+            setCookie("refreshToken", res.headers.refreshtoken);
+          }
           window.alert("LOGIN SUCCESS!");
           navigate("/");
         } catch (err) {
