@@ -25,8 +25,12 @@ const Form = () => {
   const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
 
+
   const [files, setFiles] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
+
+
+/* ---------------------------------- 유효성검사 --------------------------------- */
 
   const [validTitle, setValidTitle] = useState(true);
   const [validImage, setValidImage] = useState(true);
@@ -47,10 +51,6 @@ const Form = () => {
     return regExp.test(text);
   };
 
-  const handleOnChangeSelectValue = (e) => {
-    setCurrentValue(e.target.getAttribute("value"));
-    currentValue ? setValidCategory(true) : setValidCategory(false);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -130,6 +130,7 @@ const Form = () => {
     { key: 8, value: "기타", category: "etc" },
   ];
 
+
   const onSubmitHandler = async () => {
     console.log("올려!!");
     // let formData = new FormData();
@@ -152,7 +153,12 @@ const Form = () => {
     // } catch (error) {
     //   return;
     // }
+
+  const handleOnChangeSelectValue = (e) => {
+    setCurrentValue(e.target.getAttribute("value"));
+    currentValue ? setValidCategory(true) : setValidCategory(false);
   };
+
 
   const clickCheckHandler = () => {
     title.trim().length === 0 ? setValidTitle(false) : setValidTitle(true);
@@ -372,7 +378,7 @@ const StThirdWrap = styled.div`
   }
 `;
 const StButton = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 30px;
   left: 0;
   padding: 0 30px;
