@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getCookie, removeCookie } from "api/cookies";
+import { getCookie, removeCookie, setCookie } from "api/cookies";
 
 /* INSTANCE WITHOUT TOKEN --------------------------------------------------- */
 export const instance = axios.create({
@@ -69,13 +69,15 @@ tokenInstance.interceptors.response.use(
           response.headers.authorization
         );
         originalRequest.headers.Authorization = response.headers.authorization;
+        removeCookie("accessToken");
+        setCookie("accessToken", response.headers.authorization);
         return axios(originalRequest);
       }
     } catch (error) {
       console.log("GET NEW ACCESSTOKEN : FAIL", error);
-      removeCookie("accessToken");
-      removeCookie("refreshToken");
-      window.location.href = "/";
+      // removeCookie("accessToken");
+      // removeCookie("refreshToken");
+      // window.location.href = "/";
       return false;
     }
     return Promise.reject(error);
