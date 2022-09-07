@@ -75,7 +75,7 @@ const StSelectBox = styled.div`
         height: 24px;
         border-radius: 30px;
         width: 120px;
-        border: 1px solid ${colors.mainP};
+        border: 1px solid ${colors.grey3};
         padding: 3px 5px;
     
       `
@@ -144,7 +144,7 @@ const StSelectOptions = styled.ul`
         top: 23px;
         height: 100px;
         width: 120px;
-        border: ${({show}) => (show ? " 1px solid #9083f7" : 0)};
+        border: ${({show}) => (show ? ` 1px solid ${colors.grey3}` : 0)};
       `
     );
   }};

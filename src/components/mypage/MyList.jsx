@@ -163,7 +163,6 @@ const StMainBtns = styled.div`
 const StAllBtn = styled.div`
   button {
     background: ${({ active, name }) => {
-      console.log(active, name);
       return active === name ? `${colors.mainP}` : `${colors.white}`;
     }};
     color: ${({ active, name }) => {
@@ -176,11 +175,9 @@ const StAllBtn = styled.div`
 const StProcessBtn = styled.div`
   button {
     background: ${({ active, name }) => {
-      console.log(active, name);
       return active === name ? `${colors.mainP}` : `${colors.white}`;
     }};
     color: ${({ active, name }) => {
-      console.log(active, name);
       return active === name ? `${colors.white}` : `${colors.mainP}`;
     }};
   }

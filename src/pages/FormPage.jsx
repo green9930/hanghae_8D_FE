@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const FormPage = () => {
   return (
-    <MobileLayout>
+    <MobileLayout title="체크 등록하기">
       <Form />
     </MobileLayout>
   );

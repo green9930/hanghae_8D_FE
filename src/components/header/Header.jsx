@@ -33,6 +33,7 @@ const StHeader = styled.div`
 const StHeaderTitle = styled.div`
   color: white;
   font-size: ${fontSize.large20};
+  font-family: 'twayfly', 'Noto Sans KR', sans-serif;
 `;
 
 export default Header;

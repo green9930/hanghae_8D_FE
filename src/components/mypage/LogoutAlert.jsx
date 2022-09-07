@@ -2,9 +2,21 @@ import styled from "styled-components";
 import Button from "components/elements/Button";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
+import { useEffect } from "react";
+import { removeCookie } from "api/cookies";
 
 const LogoutAlert = ({ handleOpenModal }) => {
   const { MainArrow } = icons;
+
+  useEffect(() => {
+    const removeUser = async () => {
+      await removeCookie("accessToken");
+      await removeCookie("refreshToken");
+      console.log("LOGOUT");
+    };
+
+    removeUser();
+  }, []);
 
   return (
     <StLogoutAlert>
