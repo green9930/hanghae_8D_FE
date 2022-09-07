@@ -151,9 +151,6 @@ const Form = () => {
   return (
     <StFormContainer>
       <StFirstWrap>
-        <StIconArrow>
-          <IconArrow /> 뒤로
-        </StIconArrow>
         <StPreview>
           <label htmlFor="input-file" onChange={handleAddImages}>
             <IconPlus />
@@ -238,18 +235,9 @@ const StFormContainer = styled.div`
   /* padding: 0 35px; */
 `;
 const StFirstWrap = styled.div`
-  height: 279px;
+  height: 241px;
+  padding-top:28px;
   background-color: ${colors.grey7};
-`;
-const StIconArrow = styled.div`
-  position: relative;
-  padding: 10px 0px 35px 20px;
-  svg {
-    position: relative;
-    top: 4px;
-    left: 1;
-    transform: rotate(90deg);
-  }
 `;
 const StSecondWrap = styled.div`
   display: flex;

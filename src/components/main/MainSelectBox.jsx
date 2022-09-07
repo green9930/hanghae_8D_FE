@@ -56,6 +56,7 @@ const StSelectList = styled.div`
   justify-content: center;
   align-items: center;
   background-color:${colors.grey7};
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 `;
 
 const StMainBtns = styled.div`
