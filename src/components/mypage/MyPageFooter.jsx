@@ -6,16 +6,22 @@ import LogoutAlert from "components/mypage/LogoutAlert";
 import UnregisterAlert from "components/mypage/UnregisterAlert";
 import icons from "assets";
 import { colors } from "styles/theme";
+import { useNavigate } from "react-router-dom";
 
 const MyPageFooter = () => {
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
   const [openUnregisterAlert, setOpenUnregisterAlert] = useState(false);
 
+  const navigate = useNavigate();
   const { SendMessage, Logout, Unregister } = icons;
 
   const handleLogout = () => {
-    console.log("LOGOUT");
     setOpenLogoutAlert(true);
+  };
+
+  const handleLogoutAlert = async () => {
+    await setOpenLogoutAlert(false);
+    await navigate("/");
   };
 
   return (
@@ -42,8 +48,8 @@ const MyPageFooter = () => {
         </Button>
       </StFooterBtn>
       {openLogoutAlert && (
-        <Modal handleOpenModal={() => setOpenLogoutAlert(false)}>
-          <LogoutAlert handleOpenModal={() => setOpenLogoutAlert(false)} />
+        <Modal handleOpenModal={handleLogoutAlert}>
+          <LogoutAlert handleOpenModal={handleLogoutAlert} />
         </Modal>
       )}
       {openUnregisterAlert && (
