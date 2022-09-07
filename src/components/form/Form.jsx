@@ -9,19 +9,24 @@ import { colors } from "styles/theme";
 import { useNavigate } from "react-router-dom";
 import Modal from "components/layout/Modal";
 import ImageAlert from "./ImageAlert";
+import ImageNumAlert from "./ImageNumAlert";
+import axios from "axios";
 
 const Form = () => {
   const navigate = useNavigate();
 
   const [openImageAlert, setOpenImageAlert] = useState(false);
+  const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
 
   const { IconPlus, IconArrow, IconX } = icons;
-  const [showImages, setShowImages] = useState([]);
   const [title, setTitle] = useState("");
   const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
   const [price, setPrice] = useState("");
   const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
+
+  const [files, setFiles] = useState([]);
+  const [previewImg, setPreviewImg] = useState([]);
 
   const [validTitle, setValidTitle] = useState(true);
   const [validImage, setValidImage] = useState(true);
@@ -35,7 +40,7 @@ const Form = () => {
     desc.trim().length >= 15 &&
     currentValue !== "카테고리를 선택해 주세요." &&
     price.trim().length > 0 &&
-    showImages.length > 0;
+    files.length > 0;
 
   const priceVali = (text) => {
     const regExp = /^[0-9\s+]*$/g;
@@ -77,41 +82,40 @@ const Form = () => {
   };
 
   /* ---------------------------------- 사진 미리보기 ------------------------------- */
-
-  // 이미지 상대경로 저장
-  let imageLists = {};
-
   const handleAddImages = (e) => {
-    let imageUrlLists = [...showImages];
-    imageLists = e.target.files;
+    setFiles([...files, ...e.target.files]);
 
-    for (let i = 0; i < imageLists.length; i++) {
-      console.log(imageLists[i].size);
-      //20메가제한
-      if (imageLists[i].size > 20000000) {
-        setOpenImageAlert(true);
-        console.log("알러트!!!", openImageAlert);
-        return;
+    console.log("file", files.length);
+    console.log("New file", e.target.files.length);
+
+    if (files.length + e.target.files.length > 5) {
+      setFiles(files.slice(0, 5));
+    }
+    console.log(files.length);
+    if (files.length + e.target.files.length <= 5) {
+      for (let i = 0; i < e.target.files.length; i++) {
+        if (e.target.files[i].size < 20000000) {
+          const reader = new FileReader();
+          reader.readAsDataURL(e.target.files[i]);
+          reader.onload = () => {
+            const previewImgUrl = reader.result;
+            setPreviewImg((previewImg) => [...previewImg, previewImgUrl]);
+          };
+        } else {
+          setOpenImageAlert(true);
+        }
       }
-
-      const currentImageUrl = URL.createObjectURL(imageLists[i]);
-      imageUrlLists.push(currentImageUrl);
+    } else {
+      setOpenImageNumberAlert(true);
     }
 
-    if (imageUrlLists.length > 5) {
-      imageUrlLists = imageUrlLists.slice(0, 5);
-    }
-
-    setShowImages(imageUrlLists);
-    showImages.length > 0 ? setValidImage(true) : setValidImage(false);
-    console.log("이미지!", imageLists);
+    files.length > 0 ? setValidImage(true) : setValidImage(false);
   };
 
-  // X버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (id) => {
-    setShowImages(showImages.filter((_, index) => index !== id));
+    setPreviewImg(previewImg.filter((_, index) => index !== id));
+    setFiles(files.filter((_, index) => index !== id));
   };
-  // console.log(showImages);
 
   /* ----------------------------- 카테고리 select-box ---------------------------- */
 
@@ -126,8 +130,28 @@ const Form = () => {
     { key: 8, value: "기타", category: "etc" },
   ];
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = async () => {
     console.log("올려!!");
+    // let formData = new FormData();
+    // const dataSet={}
+    // files.map((file) => formData.append("multipartFile", file))
+    // formData.append("dto", new Blob([JSON.stringify(dataSet)], { type: "application/json" }));
+    // try {
+    //   const token = localStorage.getItem("token");
+    //   const data = await axios({
+    //     method: "post",
+    //     url: "",
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //       responseType: "blob",
+    //       Authorization: token,
+    //     },
+    //     data: formData,
+    //   });
+    //   navigate();
+    // } catch (error) {
+    //   return;
+    // }
   };
 
   const clickCheckHandler = () => {
@@ -137,7 +161,7 @@ const Form = () => {
       : setValidLengthDesc(false);
     desc.trim().length === 0 ? setValidDesc(false) : setValidDesc(true);
     price.trim().length === 0 ? setValidPrice(false) : setValidPrice(true);
-    showImages.length === 0 ? setValidImage(false) : setValidImage(true);
+    files.length === 0 ? setValidImage(false) : setValidImage(true);
     currentValue === "카테고리를 선택해 주세요."
       ? setValidCategory(false)
       : setValidCategory(true);
@@ -152,11 +176,11 @@ const Form = () => {
             <input type="file" id="input-file" multiple />
           </label>
           <StImageList validImage={validImage}>
-            {showImages.length === 0 ? (
-              <p>사진을 등록해 주세요 (최대 5장).</p>
+            {files.length === 0 ? (
+              <p>사진을 등록해 주세요.</p>
             ) : (
               <div>
-                {showImages.map((image, id) => (
+                {previewImg.map((image, id) => (
                   <StImage key={id}>
                     <StImg src={image} alt={`${image}-${id}`} />
                     <StBtn onClick={() => handleDeleteImage(id)}>
@@ -172,9 +196,15 @@ const Form = () => {
               <ImageAlert handleOpenModal={() => setOpenImageAlert(false)} />
             </Modal>
           )}
+          {openImageNumberAlert && (
+            <Modal handleOpenModal={() => setOpenImageNumberAlert(false)}>
+              <ImageNumAlert
+                handleOpenModal={() => setOpenImageNumberAlert(false)}
+              />
+            </Modal>
+          )}
         </StPreview>
         <StSecondWrap>
-          {/* {console.log(validLengthDesc)} */}
           <StTitleInput validTitle={validTitle}>
             <Input
               theme="grey"
@@ -198,7 +228,6 @@ const Form = () => {
               onChangeHandler={handleChange}
               value={price}
               name="price"
-              // type="number"
             />
           </StPriceInput>
         </StSecondWrap>
@@ -206,7 +235,6 @@ const Form = () => {
       <StThirdWrap validLengthDesc={validLengthDesc} validDesc={validDesc}>
         <Textarea onChangeHandler={handleChange} value={desc} name="desc" />
         <p>*15글자 이상 입력해 주세요.</p>
-        {/* {console.log(validLengthDesc)} */}
         <StButton>
           {checkVali ? (
             <Button
@@ -231,7 +259,7 @@ const StFormContainer = styled.div`
 `;
 const StFirstWrap = styled.div`
   height: 241px;
-  padding-top:28px;
+  padding-top: 28px;
   background-color: ${colors.grey7};
 `;
 const StSecondWrap = styled.div`
@@ -245,7 +273,6 @@ const StTitleInput = styled.div`
   input {
     ::placeholder {
       color: ${({ validTitle }) => {
-        // console.log("####", validTitle);
         return validTitle ? `${colors.grey3}` : `${colors.red}`;
       }};
     }
