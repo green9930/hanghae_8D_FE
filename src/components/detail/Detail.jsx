@@ -82,7 +82,7 @@ const Detail = () => {
         </StCommentList>
         {process === "process" ? (
           <StCommentForm>
-            <DetailCommentForm />
+            <DetailCommentForm articlesId={articlesId} />
           </StCommentForm>
         ) : null}
       </StCommment>

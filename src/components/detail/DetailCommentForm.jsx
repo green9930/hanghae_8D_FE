@@ -1,18 +1,24 @@
+import { useState } from "react";
+import { tokenInstance } from "api/axios";
 import Button from "components/elements/Button";
 import Input from "components/elements/Input";
-import { useState } from "react";
 import styled from "styled-components";
 import { colors, fontSize } from "styles/theme";
 
-const DetailCommentForm = () => {
+const DetailCommentForm = ({ articlesId }) => {
   const [commentPrice, setCommentPrice] = useState("");
-  const [realCommentPrice, setRealCommentPrice] = useState("");
-  const [commentText, setCommentText] = useState("");
+  const [realCommentPrice, setRealCommentPrice] = useState({
+    type: "PRICE",
+    comment: "",
+  });
+  const [commentText, setCommentText] = useState({ type: "TEXT", comment: "" });
   const [isPriceActive, setIsPriceActive] = useState(false);
   const [isTextActive, setIsTextActive] = useState(false);
 
   const MAX_LENGTH_NUM = 8;
   const MAX_LENGTH_TEXT = 80;
+
+  console.log(articlesId);
 
   const priceVali = (text) => {
     const regExp = /^[0-9\s+]*$/g;
@@ -25,7 +31,7 @@ const DetailCommentForm = () => {
       target = e.target.value.replaceAll(",", "").substr(0, MAX_LENGTH_NUM);
       if (priceVali(target)) {
         target.length ? setIsPriceActive(true) : setIsPriceActive(false);
-        setRealCommentPrice(target);
+        setRealCommentPrice({ ...realCommentPrice, comment: target });
         priceVali(target) &&
           setCommentPrice(target.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
       }
@@ -33,21 +39,30 @@ const DetailCommentForm = () => {
     if (e.target.name === "text") {
       target = e.target.value.substr(0, MAX_LENGTH_TEXT);
       target.length ? setIsTextActive(true) : setIsTextActive(false);
-      setCommentText(target);
+      setCommentText({ ...commentText, comment: target });
     }
   };
 
   const handleSubmitPrice = (e) => {
     e.preventDefault();
     console.log("REALCOMMENTPRICE", realCommentPrice);
-    setCommentPrice("");
+    setCommentPrice();
     setIsPriceActive(false);
   };
 
-  const handleSubmitText = (e) => {
+  const handleSubmitText = async (e) => {
     e.preventDefault();
     console.log("REALCOMMENTTEXT", commentText);
-    setCommentText("");
+
+    /* POST TEST ---------------------------------------------------------------- */
+    const res = await tokenInstance.post(
+      `/api/auth/detail/comments/46`,
+      commentText
+    );
+
+    console.log("COMMENT RESPONSE", res);
+
+    setCommentText({ ...commentText, comment: "" });
     setIsTextActive(false);
   };
 
@@ -75,7 +90,7 @@ const DetailCommentForm = () => {
       <StCommentForm onSubmit={handleSubmitText}>
         <StTextInput>
           <Input
-            value={commentText}
+            value={commentText.comment}
             name="text"
             onChangeHandler={handleChange}
             theme="comment"
