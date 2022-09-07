@@ -1,15 +1,24 @@
 import icons from "assets";
 import styled from "styled-components";
 import { fontSize } from "styles/theme";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ title }) => {
   const { HeaderLogo, MyPageLogo } = icons;
+  const navigate= useNavigate()
+
+  const onClickMain=()=>{
+    navigate("/")
+  }
+  const onClickMypage=()=>{
+    navigate("/mypage")
+  }
 
   return (
-    <StHeader>
-      <HeaderLogo />
+    <StHeader >
+      <HeaderLogo onClick={onClickMain} />
       <StHeaderTitle>{title}</StHeaderTitle>
-      <MyPageLogo />
+      <MyPageLogo onClick={onClickMypage}/>
     </StHeader>
   );
 };

@@ -30,7 +30,7 @@ const Modal = ({ handleOpenModal, children }) => {
             theme="transparent"
             onClickHandler={handleOpenModal}
           >
-            <IconX />
+            <IconX stroke={colors.grey2}/>
           </Button>
         </StXBtn>
         {children}
@@ -68,4 +68,5 @@ const StXBtn = styled.div`
   position: absolute;
   top: 20px;
   right: 20px;
+ 
 `;
