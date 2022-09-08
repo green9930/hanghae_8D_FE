@@ -44,6 +44,7 @@ const SelectBox = ({ data, size,currentValue,handleOnChangeSelectValue }) => {
             size={size}
             key={d.key}
             value={d.value}
+            className={d.category}
             onClick={handleOnChangeSelectValue}
           >
             {d.value}
