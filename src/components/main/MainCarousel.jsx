@@ -6,39 +6,51 @@ import test03 from "assets/test03.jpg";
 import test04 from "assets/test04.jpg";
 import icons from "assets";
 import { colors } from "styles/theme";
+import { getRandomCards } from "api/mainApi";
+import { useQuery } from "react-query";
 
 const MainCarousel = () => {
   
-  const datas = [
-    {
-      articlesId: 1,
-      title: "에어팟 중고",
-      price: "79,000",
-      image: test01,
-    },
-    {
-      articlesId: 2,
-      title: "맥북",
-      price: "10,000,000",
-      image: test02,
-    },
-    {
-      articlesId: 3,
-      title: "아이폰",
-      price: "300,000",
-      image: test03,
-    },
-    {
-      articlesId: 4,
-      title: "중고물품사세요플리즈",
-      price: "3,300,000",
-      image: test04,
-    },
-  ];
+  // const datas = [
+  //   {
+  //     articlesId: 1,
+  //     title: "에어팟 중고",
+  //     price: "79,000",
+  //     image: test01,
+  //   },
+  //   {
+  //     articlesId: 2,
+  //     title: "맥북",
+  //     price: "10,000,000",
+  //     image: test02,
+  //   },
+  //   {
+  //     articlesId: 3,
+  //     title: "아이폰",
+  //     price: "300,000",
+  //     image: test03,
+  //   },
+  //   {
+  //     articlesId: 4,
+  //     title: "중고물품사세요플리즈",
+  //     price: "3,300,000",
+  //     image: test04,
+  //   },
+  // ];
 
   const { IconArrow } = icons;
+  
+ //데이터 Read
+ const checkRandomLists= useQuery("randomList",getRandomCards,{
+  onSuccess:(data)=>{
+    console.log(data.data.data)
+  }
+ })
 
- 
+
+ if (checkRandomLists.isLoading) {
+  return null;
+}
   return (
     <StMainRandomContainer>
       <StMainRandomTitle>
@@ -46,7 +58,7 @@ const MainCarousel = () => {
         <StMainTitleSpan>책첵</StMainTitleSpan> 진행 중 체크
       </StMainRandomTitle>
       <StMainRandomImg>
-        {datas.map((data) => (
+        {checkRandomLists.data.data.data?.map((data) => (
           <MainCarouselCard key={data.articlesId} data={data} />
         ))}
       </StMainRandomImg>

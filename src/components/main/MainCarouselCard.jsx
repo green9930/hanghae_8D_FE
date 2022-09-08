@@ -21,8 +21,8 @@ const navigate=useNavigate();
   );
 };
 const StImgBox = styled.div`
-  width: 120px;
-  height: 160px;
+  min-width: 120px;
+  min-height: 160px;
   border-radius: 10px;
   background-color: ${colors.white};;
   padding: 10px;
@@ -36,6 +36,7 @@ const StPrice = styled.p`
   font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.5px;
+  text-align:right;
   span {
     font-size: 10px;
     font-weight: 400;
