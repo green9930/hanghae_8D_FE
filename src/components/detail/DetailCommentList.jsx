@@ -71,7 +71,7 @@ const DetailCommentList = ({ process }) => {
 const StCommentList = styled.ul`
   height: 100%;
   padding: ${({ process }) =>
-    process === "process" ? `0 35px 120px 35px` : `0 35px 26px 35px`}
+    process === "process" ? `0 35px 110px 35px` : `0 35px 26px 35px`}
   };
 `;
 
