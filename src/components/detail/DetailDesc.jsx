@@ -38,12 +38,16 @@ const DetailDesc = ({
           책정가 <span>{price}</span> 원
         </StPriceText>
       </StPrice>
-      <StDesc isShow={isShow}>
-        {isShow ? `${content}` : `${styledPrice}⋯`}
-        <button onClick={() => setIsShow(true)}>
-          <span>더 보기</span>
-        </button>
-      </StDesc>
+      {content.length < MAX_LENGTH ? (
+        <StDesc isShow={false}>{content}</StDesc>
+      ) : (
+        <StDesc isShow={isShow}>
+          {isShow ? `${content}` : `${styledPrice}⋯`}
+          <button onClick={() => setIsShow(true)}>
+            <span>더 보기</span>
+          </button>
+        </StDesc>
+      )}
     </StDetailDesc>
   );
 };
