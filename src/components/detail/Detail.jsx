@@ -8,6 +8,8 @@ import test05 from "assets/test05.jpg";
 import DetailDesc from "components/detail/DetailDesc";
 import DetailCommentList from "components/detail/DetailCommentList";
 import DetailCommentForm from "components/detail/DetailCommentForm";
+import { useEffect } from "react";
+import { tokenInstance } from "api/axios";
 
 const Detail = () => {
   const data1 = {
@@ -53,6 +55,18 @@ const Detail = () => {
     createdAt,
     images,
   } = data2;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await tokenInstance.get(`/api/auth/detail/46`);
+        console.log("GET DETAIL : SUCCESS", res);
+      } catch (error) {
+        console.log("GET DETAIL : FAILED", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <StDetail>

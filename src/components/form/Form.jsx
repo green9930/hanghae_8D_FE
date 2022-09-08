@@ -25,12 +25,10 @@ const Form = () => {
   const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
 
-
   const [files, setFiles] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
 
-
-/* ---------------------------------- 유효성검사 --------------------------------- */
+  /* ---------------------------------- 유효성검사 --------------------------------- */
 
   const [validTitle, setValidTitle] = useState(true);
   const [validImage, setValidImage] = useState(true);
@@ -50,7 +48,6 @@ const Form = () => {
     const regExp = /^[0-9\s+]*$/g;
     return regExp.test(text);
   };
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -130,7 +127,6 @@ const Form = () => {
     { key: 8, value: "기타", category: "etc" },
   ];
 
-
   const onSubmitHandler = async () => {
     console.log("올려!!");
     // let formData = new FormData();
@@ -153,12 +149,11 @@ const Form = () => {
     // } catch (error) {
     //   return;
     // }
-
+  };
   const handleOnChangeSelectValue = (e) => {
     setCurrentValue(e.target.getAttribute("value"));
     currentValue ? setValidCategory(true) : setValidCategory(false);
   };
-
 
   const clickCheckHandler = () => {
     title.trim().length === 0 ? setValidTitle(false) : setValidTitle(true);
@@ -260,14 +255,17 @@ const Form = () => {
     </StFormContainer>
   );
 };
+
 const StFormContainer = styled.div`
   /* padding: 0 35px; */
 `;
+
 const StFirstWrap = styled.div`
   height: 241px;
   padding-top: 28px;
   background-color: ${colors.grey7};
 `;
+
 const StSecondWrap = styled.div`
   display: flex;
   flex-direction: column;
