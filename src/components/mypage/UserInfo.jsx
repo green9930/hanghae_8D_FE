@@ -7,10 +7,30 @@ import AlarmList from "components/mypage/AlarmList";
 import handleRankColor from "utils/handleRankColor";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
+import Modal from "components/layout/Modal";
+import RankModal from "components/mypage/RankModal";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const UserInfo = () => {
   const [isOpenMyList, setIsOpenMyList] = useState(false);
   const [isOpenAlarmList, setIsOpenAlarmList] = useState(false);
+  const [isOpenRankModal, setIsOpenRankModal] = useState(false);
+
+  // const location = useLocation();
+  // const goToMyPage = location.state.goToMyPage;
+  // console.log(goToMyPage);
+
+  // useEffect(() => {
+  //   const initialize = () => {
+  //     if (!goToMyPage) {
+  //       setIsOpenMyList(false);
+  //       setIsOpenAlarmList(false);
+  //       setIsOpenRankModal(false);
+  //     }
+  //   };
+  //   initialize();
+  // }, [goToMyPage]);
 
   const profile = {
     nickName: "테스트아이디",
@@ -42,11 +62,19 @@ const UserInfo = () => {
   const handleShowMyList = () => {
     setIsOpenMyList(true);
     setIsOpenAlarmList(false);
+    setIsOpenRankModal(false);
   };
 
   const handleShowAlarmList = () => {
     setIsOpenAlarmList(true);
     setIsOpenMyList(false);
+    setIsOpenRankModal(false);
+  };
+
+  const handleShowRankModal = () => {
+    setIsOpenRankModal(true);
+    setIsOpenMyList(false);
+    setIsOpenAlarmList(false);
   };
 
   return (
@@ -85,7 +113,7 @@ const UserInfo = () => {
               </Button>
             </StBtn>
             <StBtn>
-              <Button variant="image">
+              <Button variant="image" onClickHandler={handleShowRankModal}>
                 <RankList />
                 <StText>
                   <span>등급표</span>
@@ -93,6 +121,14 @@ const UserInfo = () => {
               </Button>
             </StBtn>
           </StActivities>
+          {isOpenRankModal && (
+            <Modal
+              height="354px"
+              handleOpenModal={() => setIsOpenRankModal(false)}
+            >
+              <RankModal handleOpenModal={() => setIsOpenRankModal(false)} />
+            </Modal>
+          )}
           <MyPageFooter />
         </>
       )}
@@ -112,7 +148,7 @@ const StUserInfo = styled.div`
   gap: 10px;
   background: ${colors.mainP};
   padding: ${({ isOpenMyList, isOpenAlarmList }) =>
-    isOpenMyList || isOpenAlarmList ? "20px 0" : "60px 0 50px 0"};
+    isOpenMyList || isOpenAlarmList ? "20px 0" : "50px 0"};
   transition: padding 0.8s;
   -webkit-transition: padding 0.8s;
 `;
@@ -158,7 +194,7 @@ const StActivities = styled.div`
   align-items: center;
   justify-content: center;
   gap: 50px;
-  padding: 60px 0;
+  padding: 60px 0 70px 0;
 `;
 
 const StBtn = styled.div`
