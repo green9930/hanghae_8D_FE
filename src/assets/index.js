@@ -14,6 +14,7 @@ import { ReactComponent as Logout } from "assets/svg/logout.svg";
 import { ReactComponent as MainArrow } from "assets/svg/mainArrow.svg";
 import { ReactComponent as MyPageLogo } from "assets/svg/myPageLogo.svg";
 import { ReactComponent as RankList } from "assets/svg/ranklist.svg";
+import { ReactComponent as RankListWhite } from "assets/svg/ranklist_white.svg";
 import { ReactComponent as SendMessage } from "assets/svg/send_message.svg";
 import { ReactComponent as Unregister } from "assets/svg/unregister.svg";
 
@@ -34,6 +35,7 @@ const icons = {
   MainArrow: MainArrow,
   MyPageLogo: MyPageLogo,
   RankList: RankList,
+  RankListWhite: RankListWhite,
   SendMessage: SendMessage,
   Unregister: Unregister,
 };

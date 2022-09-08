@@ -4,7 +4,7 @@ import Button from "components/elements/Button";
 import { colors } from "styles/theme";
 import icons from "assets";
 
-const Modal = ({ handleOpenModal, children }) => {
+const Modal = ({ handleOpenModal, height = "194px", children }) => {
   const { IconX } = icons;
 
   useEffect(() => {
@@ -23,14 +23,14 @@ const Modal = ({ handleOpenModal, children }) => {
 
   return (
     <StModal onClick={handleOpenModal}>
-      <StModalBody onClick={(e) => e.stopPropagation()}>
+      <StModalBody height={height} onClick={(e) => e.stopPropagation()}>
         <StXBtn>
           <Button
             variant="image"
             theme="transparent"
             onClickHandler={handleOpenModal}
           >
-            <IconX stroke={colors.grey2}/>
+            <IconX stroke={colors.grey2} />
           </Button>
         </StXBtn>
         {children}
@@ -57,7 +57,8 @@ const StModal = styled.div`
 const StModalBody = styled.div`
   position: absolute;
   width: 305px;
-  height: 194px;
+  height: ${({ height }) => height};
+  /* height: 194px; */
   background-color: ${colors.white};
   border-radius: 5px;
   overflow: hidden;
@@ -68,5 +69,4 @@ const StXBtn = styled.div`
   position: absolute;
   top: 20px;
   right: 20px;
- 
 `;

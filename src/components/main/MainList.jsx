@@ -6,13 +6,14 @@ import test04 from "assets/test04.jpg";
 import MainListCard from "./MainListCard";
 import icons from "assets"
 import { useNavigate } from "react-router-dom";
+import { getCookie } from "api/cookies";
 
 
 const MainList = () => {
   const {IconPlus}=icons;
   const navigate=useNavigate()
   const onClickHandler=()=>{
-navigate("/form")
+    getCookie("accessToken") ? navigate("/form") : navigate("/login")
   }
   const datas = [
     {

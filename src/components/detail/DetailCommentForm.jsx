@@ -11,7 +11,11 @@ const DetailCommentForm = ({ articlesId }) => {
     type: "PRICE",
     comment: "",
   });
-  const [commentText, setCommentText] = useState({ type: "TEXT", comment: "" });
+  const [commentText, setCommentText] = useState({
+    articlesId: 46,
+    type: "text",
+    comment: "",
+  });
   const [isPriceActive, setIsPriceActive] = useState(false);
   const [isTextActive, setIsTextActive] = useState(false);
 
@@ -56,7 +60,7 @@ const DetailCommentForm = ({ articlesId }) => {
 
     /* POST TEST ---------------------------------------------------------------- */
     const res = await tokenInstance.post(
-      `/api/auth/detail/comments/46`,
+      `/api/auth/detail/comments`,
       commentText
     );
 
@@ -121,7 +125,7 @@ const StCommentForm = styled.form``;
 
 const StPriceInput = styled.div`
   position: absolute;
-  top: -75px;
+  top: -65px;
   left: 0;
   padding: 5px 20px;
   width: 100%;

@@ -9,13 +9,7 @@ const MainSelectBox = () => {
     setCurrentValue(e.target.getAttribute("value"));
   };
 
-  const onClickProgress=()=>{
-
-  }
-  const onClickDone=()=>{
-
-  }
-  console.log(currentValue)
+  const [active, setActive] = useState("all");
   
   /* ----------------------------- 카테고리 select-box ---------------------------- */
 
@@ -38,13 +32,32 @@ const MainSelectBox = () => {
       handleOnChangeSelectValue ={handleOnChangeSelectValue}
       />
       <StMainBtns>
+      <StAllBtn active={active} name="all">
         <Button
           children={"전체 보기"}
           size={"small_round"}
           theme={"p_outline"}
+          name="all"
+          onClickHandler={()=>setActive("all")}
         />
-        <Button children={"진행중"} size={"small_round"} theme={"p_outline"} onClickHandler={onClickProgress}/>
-        <Button children={"완료"} size={"small_round"} theme={"p_outline"} onClickHandler={onClickDone}/>
+       </StAllBtn>
+       <StProcessBtn active={active} name="process">
+        <Button
+        children={"진행중"} 
+        size={"small_round"} 
+        theme={"p_outline"} 
+        name="process"
+        onClickHandler={()=>setActive("process")}/>
+        </StProcessBtn>
+        <StDoneBtn active={active} name="done">
+
+        <Button 
+        children={"완료"} 
+        size={"small_round"} 
+        theme={"p_outline"} 
+        name="done"
+        onClickHandler={()=>setActive("done")}/>
+        </StDoneBtn>
       </StMainBtns>
     </StSelectList>
   );
@@ -64,6 +77,38 @@ const StMainBtns = styled.div`
   gap: 4px;
   button{
     font-family: 'twayfly', 'Noto Sans KR', sans-serif
+  }
+`;
+const StAllBtn = styled.div`
+  button {
+    background: ${({ active, name }) => {
+      return active === name ? `${colors.mainP}` : `${colors.white}`;
+    }};
+    color: ${({ active, name }) => {
+      return active === name ? `${colors.white}` : `${colors.mainP}`;
+    }};
+  }
+`;
+
+const StProcessBtn = styled.div`
+  button {
+    background: ${({ active, name }) => {
+      return active === name ? `${colors.mainP}` : `${colors.white}`;
+    }};
+    color: ${({ active, name }) => {
+      return active === name ? `${colors.white}` : `${colors.mainP}`;
+    }};
+  }
+`;
+
+const StDoneBtn = styled.div`
+  button {
+    background: ${({ active, name }) => {
+      return active === name ? `${colors.mainP}` : `${colors.white}`;
+    }};
+    color: ${({ active, name }) => {
+      return active === name ? `${colors.white}` : `${colors.mainP}`;
+    }};
   }
 `;
 
