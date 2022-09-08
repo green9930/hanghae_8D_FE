@@ -10,7 +10,8 @@ import { useNavigate } from "react-router-dom";
 import Modal from "components/layout/Modal";
 import ImageAlert from "./ImageAlert";
 import ImageNumAlert from "./ImageNumAlert";
-import axios from "axios";
+import { useMutation } from "react-query";
+import { postCheck } from "api/formApi";
 
 const Form = () => {
   const navigate = useNavigate();
@@ -18,9 +19,10 @@ const Form = () => {
   const [openImageAlert, setOpenImageAlert] = useState(false);
   const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
 
-  const { IconPlus, IconArrow, IconX } = icons;
+  const { IconPlus,IconX } = icons;
   const [title, setTitle] = useState("");
   const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
+  const [currentCategory,setCurrentCategory]=useState("");
   const [price, setPrice] = useState("");
   const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
@@ -122,38 +124,47 @@ const Form = () => {
     { key: 3, value: "스포츠/레저", category: "sports" },
     { key: 4, value: "가구/인테리어", category: "interior" },
     { key: 5, value: "도서/여행/취미", category: "hobby" },
-    { key: 6, value: "반려동물,반려식물", category: "pet" },
+    { key: 6, value: "반려동물/식물", category: "pet" },
     { key: 7, value: "식품", category: "food" },
     { key: 8, value: "기타", category: "etc" },
   ];
 
-  const onSubmitHandler = async () => {
-    console.log("올려!!");
-    // let formData = new FormData();
-    // const dataSet={}
-    // files.map((file) => formData.append("multipartFile", file))
-    // formData.append("dto", new Blob([JSON.stringify(dataSet)], { type: "application/json" }));
-    // try {
-    //   const token = localStorage.getItem("token");
-    //   const data = await axios({
-    //     method: "post",
-    //     url: "",
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //       responseType: "blob",
-    //       Authorization: token,
-    //     },
-    //     data: formData,
-    //   });
-    //   navigate();
-    // } catch (error) {
-    //   return;
-    // }
-  };
   const handleOnChangeSelectValue = (e) => {
     setCurrentValue(e.target.getAttribute("value"));
+    setCurrentCategory(e.target.classList[2]);
+    
     currentValue ? setValidCategory(true) : setValidCategory(false);
   };
+  
+
+   //데이터 Post
+   const { mutate: addCheck } = useMutation(postCheck, {
+    onSuccess: () => {
+      console.log("성공!")
+      navigate("/")
+    },
+    onError:(err)=>{
+      console.log(err)
+    }
+  });
+  
+
+
+  const onSubmitHandler = async () => {
+    console.log("올려!!");
+    let formData = new FormData();
+    const dataSet={
+      title:title,
+      category:currentCategory,
+      price:realPrice,
+      content:desc
+    }
+    files.map((file) => formData.append("multipartFile", file))
+    formData.append("articlesDto", new Blob([JSON.stringify(dataSet)], { type: "application/json" }));
+    addCheck(formData)
+    
+  };
+
 
   const clickCheckHandler = () => {
     title.trim().length === 0 ? setValidTitle(false) : setValidTitle(true);
