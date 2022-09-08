@@ -10,8 +10,10 @@ import DetailCommentList from "components/detail/DetailCommentList";
 import DetailCommentForm from "components/detail/DetailCommentForm";
 import { useEffect } from "react";
 import { tokenInstance } from "api/axios";
+import { useQuery, useQueryClient } from "react-query";
+import { getDetailCheck } from "api/detailApi";
 
-const Detail = () => {
+const Detail = ({ page }) => {
   const data1 = {
     nickName: "김단비",
     articlesId: 2,
@@ -42,6 +44,21 @@ const Detail = () => {
     images: [test01, test02, test03, test04, test05],
   };
 
+  const queryClient = useQueryClient();
+
+  const { isLoading, data } = useQuery(
+    "detailCheck",
+    () => getDetailCheck(page),
+    {
+      onSuccess: (data) => {
+        console.log("GET DETAIL CHECK", data);
+      },
+      staleTime: 0,
+    }
+  );
+
+  if (isLoading) return null;
+
   const {
     nickName,
     articlesId,
@@ -54,19 +71,9 @@ const Detail = () => {
     process,
     createdAt,
     images,
-  } = data2;
+  } = data.data.data;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await tokenInstance.get(`/api/auth/detail/46`);
-        console.log("GET DETAIL : SUCCESS", res);
-      } catch (error) {
-        console.log("GET DETAIL : FAILED", error);
-      }
-    };
-    fetchData();
-  }, []);
+  console.log(data.data.data);
 
   return (
     <StDetail>
@@ -92,7 +99,7 @@ const Detail = () => {
       />
       <StCommment>
         <StCommentList>
-          <DetailCommentList process={process} />
+          <DetailCommentList process={process} articlesId={articlesId} />
         </StCommentList>
         {process === "process" ? (
           <StCommentForm>

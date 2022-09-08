@@ -7,6 +7,8 @@ import SelectAlert from "components/detail/SelectAlert";
 import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
 import icons from "assets/index";
+import { useMutation, useQueryClient } from "react-query";
+import { deleteComment } from "api/detailApi";
 
 const DetailComment = ({ commentVal, isMyArticles }) => {
   const [selected, setSelected] = useState(false);
@@ -96,7 +98,10 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
       )}
       {openDeleteAlert && (
         <Modal handleOpenModal={() => setOpenDeleteAlert(false)}>
-          <DeleteAlert handleOpenModal={() => setOpenDeleteAlert(false)} />
+          <DeleteAlert
+            commentsId={commentsId}
+            handleOpenModal={() => setOpenDeleteAlert(false)}
+          />
         </Modal>
       )}
     </>

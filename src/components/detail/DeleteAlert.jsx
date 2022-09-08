@@ -2,12 +2,25 @@ import styled from "styled-components";
 import Button from "components/elements/Button";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
+import { useMutation, useQueryClient } from "react-query";
+import { deleteComment } from "api/detailApi";
 
-const DeleteAlert = ({ handleOpenModal }) => {
+const DeleteAlert = ({ commentsId, handleOpenModal }) => {
   const { IconTrash } = icons;
+
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteMutate } = useMutation(deleteComment, {
+    onSuccess: (data) => {
+      console.log("DELETE COMMENTS", data);
+      queryClient.invalidateQueries("checkComments");
+      handleOpenModal();
+    },
+  });
 
   const handleDelete = () => {
     console.log("DELETE COMMENT");
+    deleteMutate(commentsId);
     handleOpenModal();
   };
 

@@ -4,15 +4,17 @@ import Button from "components/elements/Button";
 import Input from "components/elements/Input";
 import styled from "styled-components";
 import { colors, fontSize } from "styles/theme";
+import { useMutation, useQueryClient } from "react-query";
+import { postComment } from "api/detailApi";
 
 const DetailCommentForm = ({ articlesId }) => {
   const [commentPrice, setCommentPrice] = useState("");
   const [realCommentPrice, setRealCommentPrice] = useState({
-    type: "PRICE",
+    type: "price",
     comment: "",
   });
   const [commentText, setCommentText] = useState({
-    articlesId: 46,
+    articlesId: articlesId,
     type: "text",
     comment: "",
   });
@@ -22,7 +24,17 @@ const DetailCommentForm = ({ articlesId }) => {
   const MAX_LENGTH_NUM = 8;
   const MAX_LENGTH_TEXT = 80;
 
-  console.log(articlesId);
+  // console.log(articlesId);
+
+  const queryClient = useQueryClient();
+  const { mutate: postMutate } = useMutation(postComment, {
+    onSuccess: (data) => {
+      console.log("POST COMMENTS", data);
+      queryClient.invalidateQueries("checkComments");
+      setCommentText({ ...commentText, comment: "" });
+      setIsTextActive(false);
+    },
+  });
 
   const priceVali = (text) => {
     const regExp = /^[0-9\s+]*$/g;
@@ -54,20 +66,10 @@ const DetailCommentForm = ({ articlesId }) => {
     setIsPriceActive(false);
   };
 
-  const handleSubmitText = async (e) => {
+  const handleSubmitText = (e) => {
     e.preventDefault();
     console.log("REALCOMMENTTEXT", commentText);
-
-    /* POST TEST ---------------------------------------------------------------- */
-    const res = await tokenInstance.post(
-      `/api/auth/detail/comments`,
-      commentText
-    );
-
-    console.log("COMMENT RESPONSE", res);
-
-    setCommentText({ ...commentText, comment: "" });
-    setIsTextActive(false);
+    postMutate(commentText);
   };
 
   return (
