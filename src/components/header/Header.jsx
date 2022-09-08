@@ -3,10 +3,14 @@ import styled from "styled-components";
 import Button from "components/elements/Button";
 import { fontSize } from "styles/theme";
 import icons from "assets";
+import { getCookie } from "api/cookies";
 
 const Header = ({ title }) => {
   const navigate = useNavigate();
   const { HeaderLogo, MyPageLogo } = icons;
+  console.log(getCookie("value"));
+  const clickNavigator = () =>
+    getCookie("accessToken") ? navigate("/mypage") : navigate("/login");
 
   return (
     <StHeader>
@@ -14,7 +18,7 @@ const Header = ({ title }) => {
         <HeaderLogo />
       </Button>
       <StHeaderTitle>{title}</StHeaderTitle>
-      <Button variant="image" onClickHandler={() => navigate("/mypage")}>
+      <Button variant="image" onClickHandler={clickNavigator}>
         <MyPageLogo />
       </Button>
     </StHeader>
@@ -33,7 +37,7 @@ const StHeader = styled.div`
 const StHeaderTitle = styled.div`
   color: white;
   font-size: ${fontSize.large20};
-  font-family: 'twayfly', 'Noto Sans KR', sans-serif;
+  font-family: "twayfly", "Noto Sans KR", sans-serif;
 `;
 
 export default Header;
