@@ -7,7 +7,10 @@ import MainListCard from "./MainListCard";
 import icons from "assets"
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "api/cookies";
-
+import { useQuery } from "react-query";
+import { getMainCheck } from "api/mainApi";
+import { useRecoilState } from "recoil";
+import { selectionState } from "state/selectorAtom";
 
 const MainList = () => {
   const {IconPlus}=icons;
@@ -15,6 +18,9 @@ const MainList = () => {
   const onClickHandler=()=>{
     getCookie("accessToken") ? navigate("/form") : navigate("/login")
   }
+
+  const [selection,setSelection]=useRecoilState(selectionState);
+
   const datas = [
     {
       articlesId: 1,
@@ -55,9 +61,25 @@ const MainList = () => {
       userRank: "D",
     },
   ];
+  const payload={category:selection.category, process:selection.process, page:1,size:10}
+console.log(payload)
+    //데이터 Read
+    const mainChecks = useQuery("mainCheckList",
+    ()=> getMainCheck(payload),
+     {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    });
+ 
+
+    if (mainChecks.isLoading) {
+        return null;
+      }
+
   return (
     <StMainContainer>
-      {datas.map((data) => (
+      {mainChecks.data.data.content.map((data) => (
         <MainListCard key={data.articlesId} data={data} />
       ))}
       <StIcon onClick={onClickHandler}>
