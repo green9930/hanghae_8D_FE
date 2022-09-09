@@ -25,7 +25,7 @@ const MainListCard = ({ data }) => {
         <StMainDesc>
           <StFirstLine>
           <StTitle selectedPrice={selectedPrice}>
-            {title.length < 9 ? title : title.slice(0, 9) + "..."}
+            {title.length < 9 ? title : title.slice(0, 9) + "⋯"}
           </StTitle>
           <StMainProcess process={process}>{process}</StMainProcess>
           </StFirstLine>

@@ -12,7 +12,7 @@ const navigate=useNavigate();
   return (
     <StImgBox onClick={onClickDetail}>
       <StImg src={image} alt="이미지" />
-      <StTitle>{title.length < 6 ? title : title.slice(0, 6) + "..."}</StTitle>
+      <StTitle>{title.length < 6 ? title : title.slice(0, 6) + "⋯"}</StTitle>
       <StPrice>
         {price}
         <span>원</span>
