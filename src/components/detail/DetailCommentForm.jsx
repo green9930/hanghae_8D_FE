@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { tokenInstance } from "api/axios";
 import Button from "components/elements/Button";
 import Input from "components/elements/Input";
@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { postComment } from "api/detailApi";
 
 const DetailCommentForm = ({ articlesId }) => {
+  // const commentRef = useRef();
   const [commentPrice, setCommentPrice] = useState("");
   const [realCommentPrice, setRealCommentPrice] = useState({
     type: "price",
@@ -30,6 +31,8 @@ const DetailCommentForm = ({ articlesId }) => {
   const { mutate: postMutate } = useMutation(postComment, {
     onSuccess: (data) => {
       console.log("POST COMMENTS", data);
+      // console.log("commentRef.current", commentRef.current);
+      // commentRef.current.focus();
       queryClient.invalidateQueries("checkComments");
       setCommentText({ ...commentText, comment: "" });
       setIsTextActive(false);

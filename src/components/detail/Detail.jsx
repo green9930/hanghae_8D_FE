@@ -71,9 +71,9 @@ const Detail = ({ page }) => {
     process,
     createdAt,
     images,
-  } = data.data.data;
+  } = data.data;
 
-  console.log(data.data.data);
+  console.log(data.data);
 
   return (
     <StDetail>
@@ -82,6 +82,7 @@ const Detail = ({ page }) => {
         height="230px"
         createdAt={createdAt}
         isMyArticles={isMyArticles}
+        articlesId={articlesId}
       >
         {images}
       </DetailCarousel>
