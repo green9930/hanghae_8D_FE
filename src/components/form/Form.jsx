@@ -248,19 +248,11 @@ const Form = () => {
         <Textarea onChangeHandler={handleChange} value={desc} name="desc" />
         <p>*15글자 이상 입력해 주세요.</p>
         <StButton>
-          {checkVali ? (
-            <Button
+          <Button
               children={"등록하기"}
               theme={checkVali ? "purple" : "disabled"}
-              onClickHandler={onSubmitHandler}
+              onClickHandler={checkVali ?onSubmitHandler:clickCheckHandler}
             />
-          ) : (
-            <Button
-              children={"등록하기"}
-              theme={"disabled"}
-              onClickHandler={clickCheckHandler}
-            />
-          )}
         </StButton>
       </StThirdWrap>
     </StFormContainer>
