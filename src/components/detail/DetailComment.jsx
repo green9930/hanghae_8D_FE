@@ -99,6 +99,7 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
       {openDeleteAlert && (
         <Modal handleOpenModal={() => setOpenDeleteAlert(false)}>
           <DeleteAlert
+            isArticle={false}
             commentsId={commentsId}
             handleOpenModal={() => setOpenDeleteAlert(false)}
           />

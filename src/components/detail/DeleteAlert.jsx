@@ -3,14 +3,31 @@ import Button from "components/elements/Button";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 import { useMutation, useQueryClient } from "react-query";
-import { deleteComment } from "api/detailApi";
+import { deleteComment, deleteDetailCheck } from "api/detailApi";
+import { useNavigate } from "react-router-dom";
 
-const DeleteAlert = ({ commentsId, handleOpenModal }) => {
+const DeleteAlert = ({
+  isArticle,
+  commentsId,
+  articlesId,
+  handleOpenModal,
+}) => {
+  const navigate = useNavigate();
+
   const { IconTrash } = icons;
 
   const queryClient = useQueryClient();
 
-  const { mutate: deleteMutate } = useMutation(deleteComment, {
+  const { mutate: detailDeleteMutate } = useMutation(deleteDetailCheck, {
+    onSuccess: (data) => {
+      console.log("DELETE DETAIL", data);
+      queryClient.invalidateQueries("detailCheck");
+      handleOpenModal();
+      navigate("/");
+    },
+  });
+
+  const { mutate: commentDeleteMutate } = useMutation(deleteComment, {
     onSuccess: (data) => {
       console.log("DELETE COMMENTS", data);
       queryClient.invalidateQueries("checkComments");
@@ -19,8 +36,9 @@ const DeleteAlert = ({ commentsId, handleOpenModal }) => {
   });
 
   const handleDelete = () => {
-    console.log("DELETE COMMENT");
-    deleteMutate(commentsId);
+    isArticle
+      ? detailDeleteMutate(articlesId)
+      : commentDeleteMutate(commentsId);
     handleOpenModal();
   };
 
