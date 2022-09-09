@@ -1,99 +1,28 @@
-import styled from "styled-components";
-import test01 from "assets/test01.jpg";
-import test02 from "assets/test02.jpg";
-import test03 from "assets/test03.jpg";
-import test04 from "assets/test04.jpg";
-import test05 from "assets/test05.jpg";
-import MyListCard from "./MyListCard";
-import Button from "components/elements/Button";
 import { useState } from "react";
+import styled from "styled-components";
+import MyListCard from "components/mypage/MyListCard";
+import Button from "components/elements/Button";
 import { colors } from "styles/theme";
+import { useQuery } from "react-query";
+import { getMyChecks } from "api/mypageApi";
 
 const MyList = () => {
   const [active, setActive] = useState("all");
 
-  const list = [
+  const { isLoading, data, refetch } = useQuery(
+    "mylist",
+    () => getMyChecks(active),
     {
-      articlesId: 1,
-      title: "에어팟 중고",
-      price: "79,000",
-      image: test05,
-      process: "done",
-      point: "12",
-    },
-    {
-      articlesId: 2,
-      title: "소니 블루투스 스피커 길이제한 확인해볼까",
-      price: "105,000",
-      image: test01,
-      process: "process",
-      point: "2",
-    },
-    {
-      articlesId: 3,
-      title: "모두의 네트워크",
-      price: "5,000",
-      image: test04,
-      process: "done",
-      point: "12",
-    },
-    {
-      articlesId: 4,
-      title: "디퓨저",
-      price: "3,000",
-      image: test02,
-      process: "process",
-      point: "2",
-    },
-    {
-      articlesId: 5,
-      title: "노트북 가방",
-      price: "12,000",
-      image: test03,
-      process: "process",
-      point: "2",
-    },
-    {
-      articlesId: 6,
-      title: "2번 신은 닥터마틴 부츠",
-      price: "51,000",
-      image: test04,
-      process: "done",
-      point: "12",
-    },
-    {
-      articlesId: 7,
-      title: "페레로 로쉐",
-      price: "1,000",
-      image: test03,
-      process: "process",
-      point: "2",
-    },
-    {
-      articlesId: 8,
-      title: "삼성 냉장고 (2022년 신형)",
-      price: "7,900,000",
-      image: test01,
-      process: "done",
-      point: "12",
-    },
-    {
-      articlesId: 9,
-      title: "미니 선풍기",
-      price: "8,500",
-      image: test02,
-      process: "process",
-      point: "2",
-    },
-    {
-      articlesId: 10,
-      title: "노트북 거치대",
-      price: "79,000",
-      image: test05,
-      process: "process",
-      point: "2",
-    },
-  ];
+      onSuccess: (data) => {
+        console.log("GET MY LIST", data);
+        console.log(active);
+      },
+    }
+  );
+
+  if (isLoading) return null;
+
+  console.log(data.data);
 
   return (
     <StMyList>
@@ -130,7 +59,7 @@ const MyList = () => {
         </StDoneBtn>
       </StMainBtns>
       <ul>
-        {list.map((item) => (
+        {data?.data.map((item) => (
           <li key={item.articlesId}>
             <MyListCard item={item} />
           </li>

@@ -11,6 +11,8 @@ import Modal from "components/layout/Modal";
 import RankModal from "components/mypage/RankModal";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useQuery } from "react-query";
+import { getMyProfile } from "api/mypageApi";
 
 const UserInfo = () => {
   const [isOpenMyList, setIsOpenMyList] = useState(false);
@@ -31,17 +33,7 @@ const UserInfo = () => {
   //   };
   //   initialize();
   // }, [goToMyPage]);
-
-  const profile = {
-    nickName: "테스트아이디",
-    userEmail: "test@gmail.com",
-    userRank: "S",
-    userPoint: "500",
-    articleCount: "4",
-  };
-  const { nickName, userEmail, userRank, userPoint } = profile;
   const { List, Alarm, RankList } = icons;
-
   const fullUserRank = (rank) => {
     switch (rank) {
       case "B":
@@ -58,6 +50,17 @@ const UserInfo = () => {
         return "";
     }
   };
+
+  const { isLoading, data } = useQuery("myprofile", getMyProfile, {
+    onSuccess: (data) => {
+      console.log("GET MYPROFILE", data);
+    },
+  });
+
+  if (isLoading) return null;
+
+  const { articleCount, nickName, userEmail, userRank, userPoint } =
+    data.data.data;
 
   const handleShowMyList = () => {
     setIsOpenMyList(true);
@@ -99,7 +102,7 @@ const UserInfo = () => {
                 <List />
                 <StText>
                   <span>내가 쓴 게시글</span>
-                  <span>00개</span>
+                  <span>{articleCount}개</span>
                 </StText>
               </Button>
             </StBtn>
