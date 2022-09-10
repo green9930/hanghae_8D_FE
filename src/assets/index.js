@@ -17,6 +17,8 @@ import { ReactComponent as RankList } from "assets/svg/ranklist.svg";
 import { ReactComponent as RankListWhite } from "assets/svg/ranklist_white.svg";
 import { ReactComponent as SendMessage } from "assets/svg/send_message.svg";
 import { ReactComponent as Unregister } from "assets/svg/unregister.svg";
+import { ReactComponent as Error } from "assets/svg/error.svg";
+import { ReactComponent as ErrorHome } from "assets/svg/errorHome.svg";
 
 const icons = {
   Alarm: Alarm,
@@ -38,6 +40,8 @@ const icons = {
   RankListWhite: RankListWhite,
   SendMessage: SendMessage,
   Unregister: Unregister,
+  Error: Error,
+  ErrorHome: ErrorHome,
 };
 
 export default icons;
