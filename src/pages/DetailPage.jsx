@@ -7,7 +7,7 @@ const DetailPage = () => {
   const { id } = useParams();
 
   return (
-    <MobileLayout>
+    <MobileLayout title="체크">
       <Detail page={id} />
     </MobileLayout>
   );

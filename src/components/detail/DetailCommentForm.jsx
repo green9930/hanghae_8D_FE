@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { tokenInstance } from "api/axios";
 import Button from "components/elements/Button";
 import Input from "components/elements/Input";
 import styled from "styled-components";
@@ -7,10 +6,11 @@ import { colors, fontSize } from "styles/theme";
 import { useMutation, useQueryClient } from "react-query";
 import { postComment } from "api/detailApi";
 
-const DetailCommentForm = ({ articlesId }) => {
+const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   // const commentRef = useRef();
   const [commentPrice, setCommentPrice] = useState("");
   const [realCommentPrice, setRealCommentPrice] = useState({
+    articlesId: articlesId,
     type: "price",
     comment: "",
   });
@@ -25,8 +25,6 @@ const DetailCommentForm = ({ articlesId }) => {
   const MAX_LENGTH_NUM = 8;
   const MAX_LENGTH_TEXT = 80;
 
-  // console.log(articlesId);
-
   const queryClient = useQueryClient();
   const { mutate: postMutate } = useMutation(postComment, {
     onSuccess: (data) => {
@@ -35,7 +33,10 @@ const DetailCommentForm = ({ articlesId }) => {
       // commentRef.current.focus();
       queryClient.invalidateQueries("checkComments");
       setCommentText({ ...commentText, comment: "" });
+      setRealCommentPrice({ ...realCommentPrice, comment: "" });
+      setCommentPrice("");
       setIsTextActive(false);
+      setIsPriceActive(false);
     },
   });
 
@@ -65,8 +66,7 @@ const DetailCommentForm = ({ articlesId }) => {
   const handleSubmitPrice = (e) => {
     e.preventDefault();
     console.log("REALCOMMENTPRICE", realCommentPrice);
-    setCommentPrice();
-    setIsPriceActive(false);
+    postMutate(realCommentPrice);
   };
 
   const handleSubmitText = (e) => {
@@ -77,26 +77,28 @@ const DetailCommentForm = ({ articlesId }) => {
 
   return (
     <StCommentFormContainer>
-      <StCommentForm onSubmit={handleSubmitPrice}>
-        <StPriceInput isPriceActive={isPriceActive}>
-          <Input
-            value={commentPrice}
-            name="price"
-            onChangeHandler={handleChange}
-            theme="price"
-            placeholder="가격을 입력해 주세요."
-          />
-          <Button
-            type="submit"
-            variant="text"
-            theme="transparent"
-            isDisabled={!isPriceActive}
-          >
-            <span>가격 전송</span>
-          </Button>
-        </StPriceInput>
-      </StCommentForm>
-      <StCommentForm onSubmit={handleSubmitText}>
+      {!isMyArticles && (
+        <form onSubmit={handleSubmitPrice}>
+          <StPriceInput isPriceActive={isPriceActive}>
+            <Input
+              value={commentPrice}
+              name="price"
+              onChangeHandler={handleChange}
+              theme="price"
+              placeholder="가격을 입력해 주세요."
+            />
+            <Button
+              type="submit"
+              variant="text"
+              theme="transparent"
+              isDisabled={!isPriceActive}
+            >
+              <span>가격 전송</span>
+            </Button>
+          </StPriceInput>
+        </form>
+      )}
+      <form onSubmit={handleSubmitText}>
         <StTextInput>
           <Input
             value={commentText.comment}
@@ -113,7 +115,7 @@ const DetailCommentForm = ({ articlesId }) => {
             <span>전송</span>
           </Button>
         </StTextInput>
-      </StCommentForm>
+      </form>
     </StCommentFormContainer>
   );
 };
@@ -125,8 +127,6 @@ const StCommentFormContainer = styled.div`
   bottom: 0;
   padding: 5px 20px;
 `;
-
-const StCommentForm = styled.form``;
 
 const StPriceInput = styled.div`
   position: absolute;

@@ -8,13 +8,9 @@ import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
 import icons from "assets/index";
 import { useMutation, useQueryClient } from "react-query";
-import { deleteComment } from "api/detailApi";
+import { selectComment } from "api/detailApi";
 
-const DetailComment = ({ commentVal, isMyArticles }) => {
-  const [selected, setSelected] = useState(false);
-  const [openSelectAlert, setOpenSelectAlert] = useState(false);
-  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-
+const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
   const {
     commentsId,
     type,
@@ -26,10 +22,22 @@ const DetailComment = ({ commentVal, isMyArticles }) => {
     isMyComment,
   } = commentVal;
 
+  const [openSelectAlert, setOpenSelectAlert] = useState(false);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+
   const { BSalectPurple, BSalectWhite, IconTrash } = icons;
 
+  const queryClient = useQueryClient();
+  const { mutate: selectMutate } = useMutation(selectComment, {
+    onSuccess: (data) => {
+      console.log("SELECT COMMENT", data);
+      queryClient.invalidateQueries("detailCheck");
+      queryClient.invalidateQueries("checkComments");
+    },
+  });
+
   const handleSelectComment = () => {
-    console.log("SELECT COMMENT");
+    selectMutate({ articlesId: articlesId, commentsId: commentsId });
     setOpenSelectAlert(true);
   };
 
