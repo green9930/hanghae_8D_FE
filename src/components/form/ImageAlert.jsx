@@ -32,17 +32,20 @@ const StMessage = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 22px;
+  gap: 10px;
   padding-top: 10px;
 
   p {
     text-align: center;
-    font-size: ${fontSize.large24};
-    line-height: 27px;
+    font-size: ${fontSize.large22};
+    line-height: 30px;
+    letter-spacing:-5%;
   }
   span {
     font-weight: 700;
-    font-size: ${fontSize.large24};
+    font-size: ${fontSize.large22};
+    line-height: 30px;
+    letter-spacing:-5%;
   }
 `;
 
