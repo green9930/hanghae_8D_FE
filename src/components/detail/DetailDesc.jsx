@@ -33,9 +33,9 @@ const DetailDesc = ({
       </StSubInfo>
       <h2>{title}</h2>
       <StPrice process={process}>
-        {process === "done" && <StSelectedMessage>채택 완료</StSelectedMessage>}
+        {process === "완료" && <StSelectedMessage>채택 완료</StSelectedMessage>}
         <StPriceText>
-          책정가 <span>{price}</span> 원
+          채택가 <span>{price}</span> 원
         </StPriceText>
       </StPrice>
       {content.length < MAX_LENGTH ? (
@@ -80,10 +80,10 @@ const StPrice = styled.div`
   display: flex;
   align-items: center;
   justify-content: ${({ process }) => {
-    if (process === "process") return "flex-end";
-    if (process === "done") return "space-between";
+    if (process === "진행중") return "flex-end";
+    if (process === "완료") return "space-between";
   }};
-  color: ${({ process }) => process === "done" && `${colors.mainP}`};
+  color: ${({ process }) => process === "완료" && `${colors.mainP}`};
   text-align: right;
 `;
 

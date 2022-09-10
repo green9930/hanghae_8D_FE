@@ -12,8 +12,10 @@ export const postComment = (payload) =>
 export const getComments = (payload) =>
   tokenInstance.get(`/api/auth/detail/comments/${payload}`);
 
-export const patchComment = (payload) =>
-  tokenInstance.patch(`/api/auth/detail/${payload.articlesId}`, payload.data);
+export const selectComment = ({ articlesId, commentsId }) =>
+  tokenInstance.patch(`/api/auth/detail/comments/${articlesId}`, {
+    commentsId: commentsId,
+  });
 
 export const deleteComment = (payload) =>
   tokenInstance.delete(`/api/auth/detail/comments/${payload}`);
