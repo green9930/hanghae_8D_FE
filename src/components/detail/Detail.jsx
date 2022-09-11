@@ -5,6 +5,7 @@ import DetailCommentList from "components/detail/DetailCommentList";
 import DetailCommentForm from "components/detail/DetailCommentForm";
 import { useQuery } from "react-query";
 import { getDetailCheck } from "api/detailApi";
+import LoadingMessage from "components/etc/LoadingMessage";
 
 const Detail = ({ page }) => {
   const { isLoading, data } = useQuery(
@@ -18,7 +19,7 @@ const Detail = ({ page }) => {
     }
   );
 
-  if (isLoading) return null;
+  if (isLoading) return <LoadingMessage />;
 
   const {
     nickName,
@@ -59,7 +60,7 @@ const Detail = ({ page }) => {
       />
       <StCommment>
         <StCommentList>
-          <DetailCommentList process={process} articlesId={articlesId} />
+          <DetailCommentList process={process} articlesId={page} />
         </StCommentList>
         {process === "진행중" ? (
           <StCommentForm>

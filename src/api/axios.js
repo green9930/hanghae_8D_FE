@@ -23,7 +23,7 @@ export const tokenInstance = axios.create({
 tokenInstance.interceptors.request.use(
   (config) => {
     // 요청이 전달되기 전에 작업 수행
-    console.log("REQUEST INTERCEPTORS : SUCCESS");
+    // console.log("REQUEST INTERCEPTORS : SUCCESS");
     const accessToken = getCookie("accessToken");
     config.headers.Authorization = `${accessToken}`;
     return config;
@@ -39,7 +39,7 @@ tokenInstance.interceptors.request.use(
 tokenInstance.interceptors.response.use(
   (response) => {
     // 응답 데이터가 있는 작업 수행 : STATUS CODE 2XX
-    console.log("RESPONSE INTERCEPTORS : SUCCESS");
+    // console.log("RESPONSE INTERCEPTORS : SUCCESS");
     return response;
   },
   async (error) => {

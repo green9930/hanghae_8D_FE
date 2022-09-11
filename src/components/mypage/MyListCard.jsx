@@ -10,19 +10,18 @@ const MyListCard = ({ item }) => {
   const handleGoToDetail = () => navigate(`/detail/${articlesId}`);
 
   return (
-    <StMyListCard onClick={process === "process" ? handleGoToDetail : null}>
+    <StMyListCard onClick={process === "진행중" ? handleGoToDetail : null}>
       <img alt="thumbnail" src={image} />
       <StMainInfo process={process}>
         <h2>{title}</h2>
         <StPrice>
+          <span>{process === "진행중" ? "" : "채택가 "}</span>
           {price}
           <span>원</span>
         </StPrice>
       </StMainInfo>
       <StSubInfo>
-        <StProcess process={process}>
-          {process === "process" ? "진행중" : "채택 성공"}
-        </StProcess>
+        <StProcess process={process}>{process}</StProcess>
         <StPoint>+ {point}P</StPoint>
       </StSubInfo>
     </StMyListCard>
@@ -49,7 +48,7 @@ const StMainInfo = styled.div`
   display: flex;
   flex-direction: column;
   color: ${({ process }) =>
-    process === "process" ? `${colors.black}` : `${colors.grey2}`};
+    process === "진행중" ? `${colors.black}` : `${colors.grey2}`};
 
   h2 {
     display: -webkit-box;
@@ -92,9 +91,9 @@ const StProcess = styled.div`
   height: 20px;
   border-radius: 30px;
   background: ${({ process }) =>
-    process === "process" ? `${colors.red}` : `${colors.subP}`};
+    process === "진행중" ? `${colors.red}` : `${colors.subP}`};
   color: ${({ process }) =>
-    process === "process" ? `${colors.white}` : `${colors.mainP}`};
+    process === "진행중" ? `${colors.white}` : `${colors.mainP}`};
   font-family: "twayfly", "Noto Sans KR", sans-serif;
   font-size: ${fontSize.small10};
   font-weight: 400;

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import MyListCard from "components/mypage/MyListCard";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
-import { useQuery } from "react-query";
 import { getMyChecks } from "api/mypageApi";
 
 const MyList = () => {
@@ -15,14 +15,16 @@ const MyList = () => {
     {
       onSuccess: (data) => {
         console.log("GET MY LIST", data);
-        console.log(active);
       },
+      enabled: false,
     }
   );
 
-  if (isLoading) return null;
+  useEffect(() => {
+    refetch();
+  }, [active]);
 
-  console.log(data.data);
+  if (isLoading) return null;
 
   return (
     <StMyList>
@@ -91,34 +93,28 @@ const StMainBtns = styled.div`
 
 const StAllBtn = styled.div`
   button {
-    background: ${({ active, name }) => {
-      return active === name ? `${colors.mainP}` : `${colors.white}`;
-    }};
-    color: ${({ active, name }) => {
-      return active === name ? `${colors.white}` : `${colors.mainP}`;
-    }};
+    background: ${({ active, name }) =>
+      active === name ? `${colors.mainP}` : `${colors.white}`};
+    color: ${({ active, name }) =>
+      active === name ? `${colors.white}` : `${colors.mainP}`};
   }
 `;
 
 const StProcessBtn = styled.div`
   button {
-    background: ${({ active, name }) => {
-      return active === name ? `${colors.mainP}` : `${colors.white}`;
-    }};
-    color: ${({ active, name }) => {
-      return active === name ? `${colors.white}` : `${colors.mainP}`;
-    }};
+    background: ${({ active, name }) =>
+      active === name ? `${colors.mainP}` : `${colors.white}`};
+    color: ${({ active, name }) =>
+      active === name ? `${colors.white}` : `${colors.mainP}`};
   }
 `;
 
 const StDoneBtn = styled.div`
   button {
-    background: ${({ active, name }) => {
-      return active === name ? `${colors.mainP}` : `${colors.white}`;
-    }};
-    color: ${({ active, name }) => {
-      return active === name ? `${colors.white}` : `${colors.mainP}`;
-    }};
+    background: ${({ active, name }) =>
+      active === name ? `${colors.mainP}` : `${colors.white}`};
+    color: ${({ active, name }) =>
+      active === name ? `${colors.white}` : `${colors.mainP}`};
   }
 `;
 
