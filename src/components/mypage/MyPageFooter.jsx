@@ -7,10 +7,14 @@ import UnregisterAlert from "components/mypage/UnregisterAlert";
 import icons from "assets";
 import { colors } from "styles/theme";
 import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { loginState } from "state/atom";
 
 const MyPageFooter = () => {
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
   const [openUnregisterAlert, setOpenUnregisterAlert] = useState(false);
+
+  const setIsLogin = useSetRecoilState(loginState);
 
   const navigate = useNavigate();
   const { SendMessage, Logout, Unregister } = icons;
@@ -19,15 +23,16 @@ const MyPageFooter = () => {
     setOpenLogoutAlert(true);
   };
 
-  const handleLogoutAlert = async () => {
-    await setOpenLogoutAlert(false);
-    // await navigate("/");
-    await window.location.reload();
+  const handleLogoutAlert = () => {
+    setOpenLogoutAlert(false);
+    setIsLogin(false);
+    navigate("/");
   };
 
-  const handleUnregisterAlert = async () => {
-    await setOpenUnregisterAlert(false);
-    await navigate("/");
+  const handleUnregisterAlert = () => {
+    setOpenUnregisterAlert(false);
+    setIsLogin(false);
+    navigate("/");
   };
 
   return (
