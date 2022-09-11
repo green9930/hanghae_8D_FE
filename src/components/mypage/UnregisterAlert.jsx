@@ -1,6 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Button from "components/elements/Button";
+import { deleteMyProfile } from "api/mypageApi";
+import { removeCookie } from "api/cookies";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 
@@ -9,9 +11,12 @@ const UnregisterAlert = ({ handleOpenModal }) => {
 
   const { MainArrow } = icons;
 
-  const handleUnregister = () => {
-    console.log("UNREGISTER");
-    setIsUnregister(true);
+  const handleUnregister = async () => {
+    await deleteMyProfile();
+    await removeCookie("accessToken");
+    await removeCookie("refreshToken");
+    await setIsUnregister(true);
+    window.location.reload("/");
   };
 
   return (

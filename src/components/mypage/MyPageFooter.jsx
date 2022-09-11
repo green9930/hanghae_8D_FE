@@ -21,6 +21,12 @@ const MyPageFooter = () => {
 
   const handleLogoutAlert = async () => {
     await setOpenLogoutAlert(false);
+    // await navigate("/");
+    await window.location.reload();
+  };
+
+  const handleUnregisterAlert = async () => {
+    await setOpenUnregisterAlert(false);
     await navigate("/");
   };
 
@@ -53,10 +59,8 @@ const MyPageFooter = () => {
         </Modal>
       )}
       {openUnregisterAlert && (
-        <Modal handleOpenModal={() => setOpenUnregisterAlert(false)}>
-          <UnregisterAlert
-            handleOpenModal={() => setOpenUnregisterAlert(false)}
-          />
+        <Modal handleOpenModal={handleUnregisterAlert}>
+          <UnregisterAlert handleOpenModal={handleUnregisterAlert} />
         </Modal>
       )}
     </UserInfoFooter>
