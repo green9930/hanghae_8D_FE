@@ -8,7 +8,7 @@ import { getCookie } from "api/cookies";
 const Header = ({ title }) => {
   const navigate = useNavigate();
   const { HeaderLogo, MyPageLogo } = icons;
-  console.log(getCookie("value"));
+
   const clickNavigator = () =>
     getCookie("accessToken") ? navigate("/mypage") : navigate("/login");
 

@@ -9,22 +9,17 @@ import LoginPage from "pages/LoginPage";
 import KakaoLogin from "components/login/KakaoLogin";
 import NaverLogin from "components/login/NaverLogin";
 import GoogleLogin from "components/login/GoogleLogin";
+import { useRecoilState } from "recoil";
+import { loginState } from "state/atom";
+import { useEffect } from "react";
 import { getCookie } from "api/cookies";
-import { useQuery } from "react-query";
 
 const Router = () => {
-  const { isLoading, data: isLogin } = useQuery(
-    "loginState",
-    () => (getCookie("accessToken") ? true : false),
-    {
-      onSuccess: (data) => {
-        // console.log(data);
-      },
-    }
-  );
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
 
-  if (isLoading) return null;
-  // console.log("ISLOGIN", isLogin);
+  useEffect(() => {
+    getCookie("accessToken") ? setIsLogin(true) : setIsLogin(false);
+  }, []);
 
   return (
     <Routes>
@@ -44,7 +39,10 @@ const Router = () => {
         path="/detail/:id"
         element={isLogin ? <DetailPage /> : <Navigate to="/login" />}
       />
-      <Route path="/edit/:id" element={<EditPage />} />
+      <Route
+        path="/edit/:id"
+        element={isLogin ? <EditPage /> : <Navigate to="/" />}
+      />
       <Route
         path="/mypage"
         element={isLogin ? <MyPage /> : <Navigate to="/" />}

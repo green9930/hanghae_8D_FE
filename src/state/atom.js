@@ -7,3 +7,8 @@ export const selectionState = atom({
     process: "all",
   },
 });
+
+export const loginState = atom({
+  key: "loginState",
+  default: true,
+});
