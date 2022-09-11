@@ -23,7 +23,7 @@ const DeleteAlert = ({
       console.log("DELETE DETAIL", data);
       queryClient.invalidateQueries("detailCheck");
       handleOpenModal();
-      navigate("/");
+      navigate(-1);
     },
   });
 
