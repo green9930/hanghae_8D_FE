@@ -90,10 +90,10 @@ const Form = () => {
     if (files.length + e.target.files.length > 5) {
       setFiles(files.slice(0, 5));
     }
-    console.log(files.length);
-    if (files.length + e.target.files.length <= 5) {
+    console.log(files);
+    if (files.length + e.target.files.length <= 5 ) {
       for (let i = 0; i < e.target.files.length; i++) {
-        if (e.target.files[i].size < 20000000) {
+        if (e.target.files[i].size < 20000000  ) {
           const reader = new FileReader();
           reader.readAsDataURL(e.target.files[i]);
           reader.onload = () => {
@@ -185,7 +185,7 @@ const Form = () => {
         <StPreview>
           <label htmlFor="input-file" onChange={handleAddImages}>
             <IconPlus />
-            <input type="file" id="input-file" multiple />
+            <input type="file" id="input-file" multiple accept=".jpg,.jpeg,.png"/>
           </label>
           <StImageList validImage={validImage}>
             {files.length === 0 ? (
