@@ -3,11 +3,12 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import icons from "assets";
-import { colors } from "styles/theme";
+import { colors, fontSize } from "styles/theme";
 import Button from "components/elements/Button";
 import { useState } from "react";
 import DeleteAlert from "./DeleteAlert";
 import Modal from "components/layout/Modal";
+import { useNavigate } from "react-router-dom";
 
 const DetailCarousel = ({
   children,
@@ -16,8 +17,12 @@ const DetailCarousel = ({
   createdAt,
   isMyArticles,
   articlesId,
+  process,
 }) => {
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const navigate = useNavigate();
 
   const settings = {
     dots: true,
@@ -29,17 +34,15 @@ const DetailCarousel = ({
     initialSlide: 0,
   };
 
-  const { IconTrash } = icons;
-
-  const handleDeleteDetail = () => setOpenDeleteAlert(true);
+  const { IconDots, IconX } = icons;
 
   return (
     <StCarousel>
       <StTime>
         <span>{createdAt}</span>
-        {isMyArticles && (
-          <Button variant="image" onClickHandler={handleDeleteDetail}>
-            <IconTrash width="20px" height="20px" fill={`${colors.grey3}`} />
+        {isMyArticles && process === "진행중" && (
+          <Button variant="image" onClickHandler={() => setOpenMenu(true)}>
+            <IconDots width="20px" height="20px" fill={`${colors.grey4}`} />
           </Button>
         )}
       </StTime>
@@ -52,6 +55,27 @@ const DetailCarousel = ({
           );
         })}
       </Slider>
+      {openMenu && (
+        <StMenu>
+          <StButton>
+            <Button variant="image" onClickHandler={() => setOpenMenu(false)}>
+              <IconX width="20px" height="20px" stroke={colors.grey4} />
+            </Button>
+          </StButton>
+          <Button
+            theme="transparent"
+            onClickHandler={() => navigate(`/edit/${articlesId}`)}
+          >
+            수정
+          </Button>
+          <Button
+            theme="transparent"
+            onClickHandler={() => setOpenDeleteAlert(true)}
+          >
+            삭제
+          </Button>
+        </StMenu>
+      )}
       {openDeleteAlert && (
         <Modal handleOpenModal={() => setOpenDeleteAlert(false)}>
           <DeleteAlert
@@ -106,6 +130,35 @@ const StImg = styled.div`
     width: ${({ width }) => `${width}`};
     height: ${({ height }) => `${height}`};
     object-fit: cover;
+  }
+`;
+
+const StMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 90px;
+  height: 90px;
+  padding-top: 20px;
+  background: ${colors.white};
+  position: absolute;
+  top: 8px;
+  right: 18px;
+  z-index: 11;
+
+  button {
+    height: 30px;
+    color: ${colors.grey2};
+    font-size: ${fontSize.regular14};
+  }
+`;
+
+const StButton = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  button {
+    height: 100%;
   }
 `;
 

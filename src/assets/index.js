@@ -3,6 +3,7 @@ import { ReactComponent as BSalectPurple } from "assets/svg/B_salect_purple.svg"
 import { ReactComponent as BSalectWhite } from "assets/svg/B_salect_white.svg";
 import { ReactComponent as HeaderLogo } from "assets/svg/headerLogo.svg";
 import { ReactComponent as IconArrow } from "assets/svg/icon_arrow.svg";
+import { ReactComponent as IconDots } from "assets/svg/icon_dots.svg";
 import { ReactComponent as IconPlus } from "assets/svg/icon_plus.svg";
 import { ReactComponent as IconTrash } from "assets/svg/icon_trash.svg";
 import { ReactComponent as IconX } from "assets/svg/icon_x.svg";
@@ -26,6 +27,7 @@ const icons = {
   BSalectWhite: BSalectWhite,
   HeaderLogo: HeaderLogo,
   IconArrow: IconArrow,
+  IconDots: IconDots,
   IconPlus: IconPlus,
   IconTrash: IconTrash,
   IconX: IconX,
