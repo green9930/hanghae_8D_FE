@@ -12,3 +12,8 @@ export const loginState = atom({
   key: "loginState",
   default: true,
 });
+
+export const detailCheckState = atom({
+  key: "detailCheckState",
+  default: {},
+});

@@ -6,14 +6,19 @@ import DetailCommentForm from "components/detail/DetailCommentForm";
 import { useQuery } from "react-query";
 import { getDetailCheck } from "api/detailApi";
 import LoadingMessage from "components/etc/LoadingMessage";
+import { useSetRecoilState } from "recoil";
+import { detailCheckState } from "state/atom";
+// import { Suspense } from "react";
 
 const Detail = ({ page }) => {
+  const setDetailCheckState = useSetRecoilState(detailCheckState);
   const { isLoading, data } = useQuery(
     "detailCheck",
     () => getDetailCheck(page),
     {
       onSuccess: (data) => {
-        console.log("GET DETAIL CHECK", data);
+        console.log("GET DETAIL CHECK", data.data);
+        setDetailCheckState(data.data);
       },
       staleTime: 0,
     }
@@ -42,13 +47,14 @@ const Detail = ({ page }) => {
         height="230px"
         createdAt={createdAt}
         isMyArticles={isMyArticles}
-        articlesId={articlesId}
+        articlesId={page}
+        process={process}
       >
         {images}
       </DetailCarousel>
       <DetailDesc
         nickName={nickName}
-        articlesId={articlesId}
+        articlesId={page}
         title={title}
         content={content}
         category={category}
@@ -64,10 +70,7 @@ const Detail = ({ page }) => {
         </StCommentList>
         {process === "진행중" ? (
           <StCommentForm>
-            <DetailCommentForm
-              isMyArticles={isMyArticles}
-              articlesId={articlesId}
-            />
+            <DetailCommentForm isMyArticles={isMyArticles} articlesId={page} />
           </StCommentForm>
         ) : null}
       </StCommment>
