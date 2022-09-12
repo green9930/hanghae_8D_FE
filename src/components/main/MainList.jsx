@@ -1,89 +1,61 @@
 import styled from "styled-components";
-import test01 from "assets/test01.jpg";
-import test02 from "assets/test02.jpg";
-import test03 from "assets/test03.jpg";
-import test04 from "assets/test04.jpg";
+import { useEffect, useState } from "react";
 import MainListCard from "./MainListCard";
-import icons from "assets"
+import icons from "assets";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "api/cookies";
-import { useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 import { getMainCheck } from "api/mainApi";
 import { useRecoilState } from "recoil";
 import { selectionState } from "state/selectorAtom";
+import { useInView } from "react-intersection-observer";
 
 const MainList = () => {
-  const {IconPlus}=icons;
-  const navigate=useNavigate()
-  const onClickHandler=()=>{
-    getCookie("accessToken") ? navigate("/form") : navigate("/login")
-  }
+  const { IconPlus } = icons;
 
-  const [selection,setSelection]=useRecoilState(selectionState);
+  const { ref, inView, entry } = useInView({});
 
-  const datas = [
-    {
-      articlesId: 1,
-      title: "에어팟 중고",
-      price: "79,000",
-      image: test01,
-      nickName: "배근아",
-      process: "진행중",
-      userRank: "G",
-    },
-    {
-      articlesId: 2,
-      title: "맥북",
-      price: "10,000,000",
-      image: test02,
-      nickName: "김단비",
-      process: "채택 성공",
-      selectedPrice: "100,000",
-      userRank: "B",
-    },
-    {
-      articlesId: 3,
-      title: "아이폰",
-      price: "300,000",
-      image: test03,
-      nickName: "김원호",
-      process: "진행중",
-      userRank: "S",
-    },
-    {
-      articlesId: 4,
-      title: "중고물품사세요플리즈",
-      price: "3,300,000",
-      image: test04,
-      nickName: "배지영",
-      process: "채택 성공",
-      selectedPrice: "100,000",
-      userRank: "D",
-    },
-  ];
-  const payload={category:selection.category, process:selection.process, page:1,size:10}
-console.log(payload)
-    //데이터 Read
-    const mainChecks = useQuery("mainCheckList",
-    ()=> getMainCheck(payload),
-     {
-      onSuccess: (data) => {
-        console.log(data);
-      },
-    });
- 
+  const [selection, setSelection] = useRecoilState(selectionState);
 
-    if (mainChecks.isLoading) {
-        return null;
-      }
+  const navigate = useNavigate();
+  const onClickHandler = () => {
+    getCookie("accessToken") ? navigate("/form") : navigate("/login");
+  };
 
+  const payload = { category: selection.category, process: selection.process };
+
+  /* -------------------------------- 데이터 read -------------------------------- */
+  const {
+    data,
+    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    error,
+    status,
+  } = useInfiniteQuery("mainCheckList", () => getMainCheck(payload), {
+    refetchOnWindowFocus: false,
+    enabled: inView,
+    getNextPagePageParam: (lastPage, allPages) => {
+      return lastPage.nextPage;
+    },
+  });
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView]);
+
+  if (status === "loading") return <div>is Loading.....!</div>;
+  console.log(data);
   return (
     <StMainContainer>
-      {mainChecks.data.data.content.map((data) => (
-        <MainListCard key={data.articlesId} data={data} />
-      ))}
+      {data?.data.content.map((d) => {
+        return <MainListCard key={d.articlesId} data={d} />;
+      })}
+      ;<div ref={ref}>{isFetchingNextPage && <div>로딩중</div>}</div>
       <StIcon onClick={onClickHandler}>
-      <IconPlus/>  
+        <IconPlus />
       </StIcon>
     </StMainContainer>
   );
@@ -91,13 +63,12 @@ console.log(payload)
 
 const StMainContainer = styled.div`
   position: relative;
-  
 `;
 
 const StIcon = styled.div`
   position: sticky;
-  bottom:4%; 
-  left:80%;
+  bottom: 4%;
+  left: 80%;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 100px;
   width: 50px;

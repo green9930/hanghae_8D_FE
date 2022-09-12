@@ -4,10 +4,10 @@ import { colors } from "styles/theme";
 import { useNavigate } from "react-router-dom";
 
 const MainListCard = ({ data }) => {
-  const navigate=useNavigate();
-  const onClickDetail=()=>{
-    navigate(`/detail/${articlesId}`)
-  }
+  const navigate = useNavigate();
+  const onClickDetail = () => {
+    navigate(`/detail/${articlesId}`);
+  };
   const {
     articlesId,
     nickName,
@@ -24,10 +24,10 @@ const MainListCard = ({ data }) => {
         <StMainListImg src={image} alt="이미지" />
         <StMainDesc>
           <StFirstLine>
-          <StTitle selectedPrice={selectedPrice}>
-            {title.length < 9 ? title : title.slice(0, 9) + "⋯"}
-          </StTitle>
-          <StMainProcess process={process}>{process}</StMainProcess>
+            <StTitle selectedPrice={selectedPrice}>
+              {title.length < 9 ? title : title.slice(0, 9) + "⋯"}
+            </StTitle>
+            <StMainProcess process={process}>{process}</StMainProcess>
           </StFirstLine>
           <StSeller
             selectedPrice={selectedPrice}
@@ -49,22 +49,21 @@ const MainListCard = ({ data }) => {
             )}
           </StPrice>
         </StMainDesc>
-    
       </StMainContainer>
     </>
   );
 };
 const StMainContainer = styled.div`
   display: flex;
-  padding: 15px ;
+  padding: 15px;
   gap: 10px;
   color: ${({ selectedPrice }) =>
     selectedPrice ? `${colors.grey3}` : `${colors.black}`};
-  width:335px;
-  height:100px;
+  width: 335px;
+  height: 100px;
   box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  margin:10px auto;
+  margin: 10px auto;
 `;
 
 const StMainListImg = styled.img`
@@ -77,11 +76,10 @@ const StMainDesc = styled.div`
   width: 80%;
   justify-content: center;
 `;
-const StFirstLine=styled.div`
-display:flex;
-justify-content:space-between
-
-`
+const StFirstLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 const StTitle = styled.p`
   font-size: 14px;
   font-weight: 700;
@@ -91,13 +89,12 @@ const StSeller = styled.div`
   font-size: 12px;
   letter-spacing: -3%;
   span {
-    color: ${({ rankColor }) =>
-       rankColor};
+    color: ${({ rankColor }) => rankColor};
     padding-right: 4px;
   }
 `;
 const StPrice = styled.div`
-text-align:right;
+  text-align: right;
   div {
     font-size: 10px;
     letter-spacing: -0.5px;
@@ -107,7 +104,7 @@ text-align:right;
     font-weight: 700;
     line-height: 18px;
     padding-right: 2px;
-    align-items:right;
+    align-items: right;
   }
 `;
 
@@ -126,9 +123,10 @@ const StMainProcess = styled.div`
   line-height: 20px;
   border-radius: 30px;
   background-color: ${({ process }) =>
-    process === "진행중" ? `${colors.red}` :`${colors.subP}` };
-  color: ${({ process }) => (process === "진행중" ? `${colors.white}`  : `${colors.mainP}` )};
-  font-family: 'twayfly', 'Noto Sans KR', sans-serif
+    process === "진행중" ? `${colors.red}` : `${colors.subP}`};
+  color: ${({ process }) =>
+    process === "진행중" ? `${colors.white}` : `${colors.mainP}`};
+  font-family: "twayfly", "Noto Sans KR", sans-serif;
 `;
 
 export default MainListCard;

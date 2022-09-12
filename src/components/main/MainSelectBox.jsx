@@ -1,40 +1,54 @@
 import SelectBox from "components/elements/SelectBox";
 import styled from "styled-components";
 import Button from "components/elements/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { colors } from "styles/theme";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { selectionState } from "../../state/selectorAtom";
+import { useQuery } from "react-query";
+import { getMainCheck } from "api/mainApi";
 
 const MainSelectBox = () => {
-  const [selection,setSelection]=useRecoilState(selectionState)
-  console.log(selection)
-  
+  const [selection, setSelection] = useRecoilState(selectionState);
 
   const [active, setActive] = useState("all");
   const [currentValue, setCurrentValue] = useState("카테고리 전체");
 
 
+  const payload = { category: selection.category, process: selection.process };
+  const { refetch} = useQuery("mainCheckList", () =>
+    getMainCheck(payload),{
+      refetchOnWindowFocus: false,
+      enabled: false,
+    }
+  );  
+  const resetList = useResetRecoilState(selectionState);
+
   const handleOnChangeSelectValue = (e) => {
     setCurrentValue(e.target.getAttribute("value"));
-    setSelection({category:e.target.classList[2]})
+    setSelection({ ...selection, category: e.target.classList[2] });
   };
   const handleActiveStatus = (name) => {
     setActive(name);
-    setSelection({process:name});
+    setSelection({ ...selection, process: name });
   };
+  useEffect(() => {
+    refetch();
+    return resetList
+  }, [active, currentValue]);
 
   /* ----------------------------- 카테고리 select-box ---------------------------- */
 
   const data = [
-    { key: 1, value: "디지털/생활가전", category: "digital" },
-    { key: 2, value: "의류/잡화", category: "clothes" },
-    { key: 3, value: "스포츠/레저", category: "sports" },
-    { key: 4, value: "가구/인테리어", category: "interior" },
-    { key: 5, value: "도서/여행/취미", category: "hobby" },
-    { key: 6, value: "반려동물/식물", category: "pet" },
-    { key: 7, value: "식품", category: "food" },
-    { key: 8, value: "기타", category: "etc" },
+    { key: 1, value: "전체", category: "all" },
+    { key: 2, value: "디지털/생활가전", category: "digital" },
+    { key: 3, value: "의류/잡화", category: "clothes" },
+    { key: 4, value: "스포츠/레저", category: "sports" },
+    { key: 5, value: "가구/인테리어", category: "interior" },
+    { key: 6, value: "도서/여행/취미", category: "hobby" },
+    { key: 7, value: "반려동물/식물", category: "pet" },
+    { key: 8, value: "식품", category: "food" },
+    { key: 9, value: "기타", category: "etc" },
   ];
   return (
     <StSelectList>
@@ -83,7 +97,6 @@ const StSelectList = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${colors.grey7};
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 `;
 
 const StMainBtns = styled.div`
