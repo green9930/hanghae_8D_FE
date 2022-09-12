@@ -42,6 +42,7 @@ const MainCarousel = () => {
   
  //데이터 Read
  const checkRandomLists= useQuery("randomList",getRandomCards,{
+  refetchOnWindowFocus: false,
   onSuccess:(data)=>{
     console.log(data.data.data)
   }
