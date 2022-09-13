@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getDetailCheck } from "api/detailApi";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import LoadingMessage from "components/etc/LoadingMessage";
 import { colors } from "styles/theme";
 import SelectBox from "components/elements/SelectBox";
@@ -12,29 +12,31 @@ import Button from "components/elements/Button";
 import { useEffect } from "react";
 import icons from "assets";
 import { a11yHidden } from "styles/mixin";
-import { putDetailCheck } from "api/editApi";
+import { patchDetailCheck } from "api/editApi";
+import Modal from "components/layout/Modal";
+import ImageNumAlert from "components/form/ImageNumAlert";
+import ImageAlert from "components/form/ImageAlert";
+import handlePrice from "utils/handlePrice";
 
 const EditForm = () => {
-  // const formData = {
-  //   articlesDto: {
-  //     title: "",
-  //     content: "",
-  //     category: "",
-  //     price: "",
-  //   },
-  //   multipartFile: ["dfnsdf.png", "dfnsdf.png", "dfnsdf.png"],
-  // };
-
   const [editText, setEditText] = useState({
     category: "",
     title: "",
     price: "",
     content: "",
   });
+  const [previewCategory, setPreviewCategory] = useState("");
+  const [deletedFiles, setDeletedFiles] = useState([]);
   const [files, setFiles] = useState([]);
+  const [previewFiles, setPreviewFiles] = useState([]);
+  const [openImageAlert, setOpenImageAlert] = useState(false);
+  const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
 
+  const navigate = useNavigate();
   const { id } = useParams();
   const { IconPlus, IconX } = icons;
+
+  const queryClient = useQueryClient();
 
   const { isLoading, data, refetch, isSuccess } = useQuery(
     // const detailcheck = useQuery(
@@ -45,25 +47,29 @@ const EditForm = () => {
         // console.log("GET DETAIL CHECK EDIT", data.data);
         setEditText({
           ...editText,
-          category: `카테고리 > ${data.data.category}`,
+          category: data.data.category,
           title: data.data.title,
           price: data.data.price,
           content: data.data.content,
         });
-        setFiles([...data.data.images]);
+        setPreviewCategory(data.data.category);
+        setPreviewFiles([...data.data.images]);
       },
       staleTime: 5000,
       enabled: false,
     }
   );
 
+  const { mutate: patchMutate } = useMutation(patchDetailCheck, {
+    onSuccess: (data) => {
+      console.log("PATCH DETAILCHECK", data);
+      queryClient.invalidateQueries("detailCheck");
+    },
+  });
+
   useEffect(() => {
     refetch();
   }, []);
-
-  useEffect(() => {
-    // console.log(editText.category.includes("카테고리 >"));
-  }, [editText]);
 
   if (isLoading) return <LoadingMessage />;
 
@@ -93,43 +99,80 @@ const EditForm = () => {
       { key: 8, value: "기타", category: "etc" },
     ];
 
+    const MAX_IMG_SIZE = 20000000;
+
     const handleAddImages = (e) => {
+      if (previewFiles.length + [...e.target.files].length > 5)
+        return setOpenImageNumberAlert(true);
+
+      [...e.target.files].map((item) => {
+        if (item.size > MAX_IMG_SIZE) return setOpenImageAlert(true);
+        const reader = new FileReader();
+        reader.readAsDataURL(item);
+        reader.onload = () =>
+          setPreviewFiles((previewFiles) => [...previewFiles, reader.result]);
+      });
       setFiles([...files, ...e.target.files]);
-      console.log([...files, ...e.target.files]);
-      console.log(e.target.files);
-      console.log("FILE LENGTH", [...files, ...e.target.files].length);
     };
 
-    const handleDeleteImage = (id) => {
-      console.log(id);
-      setFiles(files.filter((file, index) => index !== id));
+    const handleDeleteImage = (image, id) => {
+      images.includes(image)
+        ? setDeletedFiles([...deletedFiles, image])
+        : setFiles(files.filter((file, index) => index !== id));
+      setPreviewFiles(previewFiles.filter((file, index) => index !== id));
     };
+
+    console.log("PREVIEWFILES", previewFiles);
+    console.log("FILES", files);
+    console.log("DELETEDFILES", deletedFiles);
 
     const handleChangeSelectbox = (e) => {
-      setEditText({ ...editText, category: e.target.innerText });
+      const { category } = selectboxData.find(
+        (val) => val.value === e.target.innerText
+      );
+      setPreviewCategory(e.target.innerText);
+      setEditText({ ...editText, category: category });
     };
 
     const handleChange = (e) => {
       const { name, value } = e.target;
-      if (editText.category.includes("카테고리 >"))
-        setEditText({
-          ...editText,
-          category: editText.category.replace("카테고리 > ", ""),
-        });
+      if (name === "price") {
+        const { isValid, realPrice, previewPrice } = handlePrice(value);
+        if (isValid) {
+          // setRealCommentPrice({ ...realCommentPrice, comment: realPrice });
+          // setCommentPrice(previewPrice);
+        }
+      }
       setEditText({ ...editText, [name]: value });
     };
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      console.log(editText.category.includes("카테고리 >"));
-      console.log("SUBMIT TEXT", editText);
-      console.log("SUBMIT FILES", files);
+      const textData = {
+        ...editText,
+        imageList: deletedFiles,
+        price: "20000",
+      };
+
+      let formData = new FormData();
+      files.map((file) => formData.append("multipartFile", file));
+      formData.append(
+        "articlesDto",
+        new Blob([JSON.stringify(textData)], { type: "application/json" })
+      );
+
+      console.log("TEXTDATA", textData);
+      console.log("IMGDATA", files);
       const payload = {
         articlesId: id,
-        data: { editText, files },
+        data: formData,
       };
-      putDetailCheck(payload);
+
+      patchMutate(payload);
+      navigate(`/detail/${id}`);
     };
+
+    // console.log("EDITTEXT", editText);
 
     return (
       <StEditForm onSubmit={handleSubmit}>
@@ -152,27 +195,49 @@ const EditForm = () => {
             </label>
             <StImages>
               <StImagesList>
-                {files.map((image, id) => {
-                  return (
-                    <StPreviewImage key={image}>
-                      <Button
-                        variant="image"
-                        onClickHandler={() => handleDeleteImage(id)}
-                      >
-                        <IconX stroke={colors.white} />
-                      </Button>
-                      <img alt="detailcheck preview" src={image} key={image} />
-                    </StPreviewImage>
-                  );
-                })}
+                {previewFiles.length === 0 ? (
+                  <p>사진을 등록해 주세요.</p>
+                ) : (
+                  <>
+                    {previewFiles.map((image, id) => {
+                      return (
+                        <StPreviewImage key={image}>
+                          <Button
+                            variant="image"
+                            onClickHandler={() => handleDeleteImage(image, id)}
+                          >
+                            <IconX stroke={colors.white} />
+                          </Button>
+                          <img
+                            alt="detailcheck preview"
+                            src={image}
+                            key={image}
+                          />
+                        </StPreviewImage>
+                      );
+                    })}
+                  </>
+                )}
               </StImagesList>
             </StImages>
+            {openImageAlert && (
+              <Modal handleOpenModal={() => setOpenImageAlert(false)}>
+                <ImageAlert handleOpenModal={() => setOpenImageAlert(false)} />
+              </Modal>
+            )}
+            {openImageNumberAlert && (
+              <Modal handleOpenModal={() => setOpenImageNumberAlert(false)}>
+                <ImageNumAlert
+                  handleOpenModal={() => setOpenImageNumberAlert(false)}
+                />
+              </Modal>
+            )}
           </StPreview>
         </StImageContainer>
         <StTextContainer>
           <SelectBox
             data={selectboxData}
-            currentValue={editText.category}
+            currentValue={previewCategory}
             handleOnChangeSelectValue={handleChangeSelectbox}
           />
           <Input
@@ -199,6 +264,15 @@ const EditForm = () => {
           </StTextArea>
         </StTextContainer>
         <StButton>
+          <StCancelBtn>
+            <Button
+              size="large_round"
+              theme="grey"
+              onClickHandler={() => navigate(`/detail/${id}`)}
+            >
+              취소
+            </Button>
+          </StCancelBtn>
           <Button size="large_round" type="submit">
             전송하기
           </Button>
@@ -272,7 +346,7 @@ const StPreviewImage = styled.div`
     position: absolute;
     top: 0;
     right: 0;
-    z-index: 111;
+    z-index: 11;
   }
 `;
 
@@ -292,10 +366,16 @@ const StTextArea = styled.div`
 `;
 
 const StButton = styled.div`
+  display: flex;
   position: fixed;
   bottom: 30px;
   padding: 0 35px;
   width: 100%;
+  gap: 10px;
+`;
+
+const StCancelBtn = styled.div`
+  min-width: 100px;
 `;
 
 export default EditForm;
