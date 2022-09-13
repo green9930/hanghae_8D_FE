@@ -70,11 +70,11 @@ const StMainRandomContainer = styled.div`
   background-color: ${colors.mainP};
   width: 100%;
   padding-bottom: 30px;
-  height: 240px;
+  height: 220px;
 `;
 const StMainRandomTitle = styled.div`
   text-align: center;
-  padding: 20px 0px 10px 0px;
+  padding: 10px 0px 10px 0px;
   font-style: normal;
   font-weight: 400;
   font-size: 20px;

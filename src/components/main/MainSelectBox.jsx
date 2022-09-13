@@ -4,8 +4,8 @@ import Button from "components/elements/Button";
 import { useEffect, useState } from "react";
 import { colors } from "styles/theme";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { selectionState } from "../../state/selectorAtom";
-import { useQuery } from "react-query";
+import { selectionState } from "state/atom";
+import { useInfiniteQuery, useQueryClient } from "react-query";
 import { getMainCheck } from "api/mainApi";
 
 const MainSelectBox = () => {
@@ -14,28 +14,37 @@ const MainSelectBox = () => {
   const [active, setActive] = useState("all");
   const [currentValue, setCurrentValue] = useState("카테고리 전체");
 
-
   const payload = { category: selection.category, process: selection.process };
-  const { refetch} = useQuery("mainCheckList", () =>
-    getMainCheck(payload),{
+
+  const { refetch } = useInfiniteQuery(
+    "[mainCheckList]",
+    ({ pageParam = 1 }) => getMainCheck(payload, pageParam),
+    {
       refetchOnWindowFocus: false,
-      enabled: false,
+
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.nextPage;
+      },
     }
-  );  
+  );
+
   const resetList = useResetRecoilState(selectionState);
 
   const handleOnChangeSelectValue = (e) => {
     setCurrentValue(e.target.getAttribute("value"));
-    setSelection({ ...selection, category: e.target.classList[2] });
+    setSelection({
+      process: selection.process,
+      category: e.target.classList[2],
+    });
   };
   const handleActiveStatus = (name) => {
     setActive(name);
-    setSelection({ ...selection, process: name });
+    setSelection({ category: selection.category, process: name });
   };
   useEffect(() => {
     refetch();
-    return resetList
-  }, [active, currentValue]);
+    // return resetList;
+  }, [refetch, resetList, active, currentValue]);
 
   /* ----------------------------- 카테고리 select-box ---------------------------- */
 
