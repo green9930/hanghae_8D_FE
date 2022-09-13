@@ -1,7 +1,4 @@
-import { tokenImageInstance } from "./axios";
+import { tokenImageInstance } from "api/axios";
 
-export const putDetailCheck = (payload) => console.log(payload);
-// tokenImageInstance.put(
-//   `/api/auth/detail/${payload.articlesId}`,
-//   payload.data
-// );
+export const patchDetailCheck = ({ articlesId, data }) =>
+  tokenImageInstance.patch(`/api/auth/detail/${articlesId}`, data);
