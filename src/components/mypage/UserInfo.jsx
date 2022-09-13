@@ -142,6 +142,8 @@ const UserInfo = () => {
 const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
+  top: 64px;
 `;
 
 const StUserInfo = styled.div`
