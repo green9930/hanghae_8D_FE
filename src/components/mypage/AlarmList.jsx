@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import AlarmCard from "components/mypage/AlarmCard";
+import { useEffect } from "react";
+import axios from "axios";
+import { getCookie } from "api/cookies";
 
 const AlarmList = () => {
   const alarmList = [
@@ -64,6 +67,27 @@ const AlarmList = () => {
       type: "content",
     },
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios({
+          method: "get",
+          url: `${process.env.REACT_APP_BASE_URL}/api/notifications`,
+          headers: {
+            Connection: "keep-alive",
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache",
+            Authorization: getCookie("accessToken"),
+          },
+        });
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <StAlarmList>

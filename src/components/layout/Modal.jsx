@@ -51,14 +51,13 @@ const StModal = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 11;
+  z-index: 101;
 `;
 
 const StModalBody = styled.div`
   position: absolute;
   width: 305px;
   height: ${({ height }) => height};
-  /* height: 194px; */
   background-color: ${colors.white};
   border-radius: 5px;
   overflow: hidden;
