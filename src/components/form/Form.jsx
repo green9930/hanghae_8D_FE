@@ -44,7 +44,7 @@ const Form = () => {
     desc.trim().length >= 15 &&
     currentValue !== "카테고리를 선택해 주세요." &&
     price.trim().length > 0 &&
-    files.length > 0;
+    files.length >= 0;
 
   const priceVali = (text) => {
     const regExp = /^[0-9\s+]*$/g;
@@ -58,7 +58,7 @@ const Form = () => {
       target = value.substr(0, 30);
       console.log("타이틀!!!!", target.trim().length);
       setTitle(target);
-      target.length > 0 ? setValidTitle(true) : setValidTitle(false);
+      target.length >= 0 ? setValidTitle(true) : setValidTitle(false);
     }
 
     if (name === "price") {
@@ -68,14 +68,14 @@ const Form = () => {
         priceVali(target) &&
           setPrice(target.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         console.log("Price", price.trim().length);
-        target.length > 0 ? setValidPrice(true) : setValidPrice(false);
+        target.length >=0 ? setValidPrice(true) : setValidPrice(false);
       }
     }
     if (name === "desc") {
       target = value.substr(0, 400);
       setDesc(target);
       console.log("desc", desc.trim().length);
-      target.length > 0 ? setValidDesc(true) : setValidDesc(false);
+      target.length >= 0? setValidDesc(true) : setValidDesc(false);
       target.length > 15 ? setValidLengthDesc(true) : setValidLengthDesc(false);
     }
   };
@@ -108,7 +108,7 @@ const Form = () => {
       setOpenImageNumberAlert(true);
     }
 
-    files.length > 0 ? setValidImage(true) : setValidImage(false);
+    files.length >=0 ? setValidImage(true) : setValidImage(false);
   };
 
   const handleDeleteImage = (id) => {
@@ -137,7 +137,7 @@ const Form = () => {
   };
   
 
-   //데이터 Post
+   /* -------------------------------- 데이터 Post -------------------------------- */
    const { mutate: addCheck } = useMutation(postCheck, {
     onSuccess: () => {
       console.log("성공!")
@@ -260,7 +260,8 @@ const Form = () => {
 };
 
 const StFormContainer = styled.div`
-  /* padding: 0 35px; */
+  position:relative;
+  top:64px;
 `;
 
 const StFirstWrap = styled.div`

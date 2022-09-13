@@ -29,6 +29,7 @@ const StHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position:relative;
   height: 64px;
   background-color: #9083f7;
   padding: 0 20px;
@@ -36,6 +37,10 @@ const StHeader = styled.div`
 
 const StHeaderTitle = styled.div`
   color: white;
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
   font-size: ${fontSize.large20};
   font-family: "twayfly", "Noto Sans KR", sans-serif;
 `;
