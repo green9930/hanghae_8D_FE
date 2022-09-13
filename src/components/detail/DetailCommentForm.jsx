@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { colors, fontSize } from "styles/theme";
 import { useMutation, useQueryClient } from "react-query";
 import { postComment } from "api/detailApi";
+import handlePrice from "utils/handlePrice";
 
 const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   // const commentRef = useRef();
@@ -22,7 +23,6 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   const [isPriceActive, setIsPriceActive] = useState(false);
   const [isTextActive, setIsTextActive] = useState(false);
 
-  const MAX_LENGTH_NUM = 8;
   const MAX_LENGTH_TEXT = 80;
 
   const queryClient = useQueryClient();
@@ -40,24 +40,19 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
     },
   });
 
-  const priceVali = (text) => {
-    const regExp = /^[0-9\s+]*$/g;
-    return regExp.test(text);
-  };
-
   const handleChange = (e) => {
+    const { name, value } = e.target;
     let target = "";
-    if (e.target.name === "price") {
-      target = e.target.value.replaceAll(",", "").substr(0, MAX_LENGTH_NUM);
-      if (priceVali(target)) {
-        target.length ? setIsPriceActive(true) : setIsPriceActive(false);
-        setRealCommentPrice({ ...realCommentPrice, comment: target });
-        priceVali(target) &&
-          setCommentPrice(target.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    if (name === "price") {
+      const { isValid, realPrice, previewPrice } = handlePrice(value);
+      if (isValid) {
+        setIsPriceActive(isValid);
+        setRealCommentPrice({ ...realCommentPrice, comment: realPrice });
+        setCommentPrice(previewPrice);
       }
     }
-    if (e.target.name === "text") {
-      target = e.target.value.substr(0, MAX_LENGTH_TEXT);
+    if (name === "text") {
+      target = value.substr(0, MAX_LENGTH_TEXT);
       target.length ? setIsTextActive(true) : setIsTextActive(false);
       setCommentText({ ...commentText, comment: target });
     }

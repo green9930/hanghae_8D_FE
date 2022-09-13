@@ -81,6 +81,8 @@ const Detail = ({ page }) => {
 const StDetail = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
+  top: 64px;
 `;
 
 const StCommment = styled.div`
