@@ -21,6 +21,7 @@ import { ReactComponent as SendMessage } from "assets/svg/send_message.svg";
 import { ReactComponent as Unregister } from "assets/svg/unregister.svg";
 import { ReactComponent as Error } from "assets/svg/error.svg";
 import { ReactComponent as ErrorHome } from "assets/svg/errorHome.svg";
+import { ReactComponent as GoBack } from "assets/svg/goBack.svg";
 
 const icons = {
   Alarm: Alarm,
@@ -46,6 +47,7 @@ const icons = {
   Unregister: Unregister,
   Error: Error,
   ErrorHome: ErrorHome,
+  GoBack: GoBack,
 };
 
 export default icons;
