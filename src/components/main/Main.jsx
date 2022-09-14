@@ -10,9 +10,8 @@ const Main = () => {
     <StMainWrap>
       <MainCarousel />
     <StMainContainer>
-      <MainSelectBox />
-    </StMainContainer>
       <MainList />
+    </StMainContainer>
     </StMainWrap>
   );
 };
