@@ -19,10 +19,10 @@ const Form = () => {
   const [openImageAlert, setOpenImageAlert] = useState(false);
   const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
 
-  const { IconPlus,IconX } = icons;
+  const { IconPlus, IconX } = icons;
   const [title, setTitle] = useState("");
   const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
-  const [currentCategory,setCurrentCategory]=useState("");
+  const [currentCategory, setCurrentCategory] = useState("");
   const [price, setPrice] = useState("");
   const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
@@ -68,14 +68,14 @@ const Form = () => {
         priceVali(target) &&
           setPrice(target.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         console.log("Price", price.trim().length);
-        target.length >=0 ? setValidPrice(true) : setValidPrice(false);
+        target.length >= 0 ? setValidPrice(true) : setValidPrice(false);
       }
     }
     if (name === "desc") {
       target = value.substr(0, 400);
       setDesc(target);
       console.log("desc", desc.trim().length);
-      target.length >= 0? setValidDesc(true) : setValidDesc(false);
+      target.length >= 0 ? setValidDesc(true) : setValidDesc(false);
       target.length > 15 ? setValidLengthDesc(true) : setValidLengthDesc(false);
     }
   };
@@ -91,9 +91,9 @@ const Form = () => {
       setFiles(files.slice(0, 5));
     }
     console.log(files);
-    if (files.length + e.target.files.length <= 5 ) {
+    if (files.length + e.target.files.length <= 5) {
       for (let i = 0; i < e.target.files.length; i++) {
-        if (e.target.files[i].size < 20000000  ) {
+        if (e.target.files[i].size < 20000000) {
           const reader = new FileReader();
           reader.readAsDataURL(e.target.files[i]);
           reader.onload = () => {
@@ -108,7 +108,7 @@ const Form = () => {
       setOpenImageNumberAlert(true);
     }
 
-    files.length >=0 ? setValidImage(true) : setValidImage(false);
+    files.length >= 0 ? setValidImage(true) : setValidImage(false);
   };
 
   const handleDeleteImage = (id) => {
@@ -132,39 +132,37 @@ const Form = () => {
   const handleOnChangeSelectValue = (e) => {
     setCurrentValue(e.target.getAttribute("value"));
     setCurrentCategory(e.target.classList[2]);
-    
+
     currentValue ? setValidCategory(true) : setValidCategory(false);
   };
-  
 
-   /* -------------------------------- 데이터 Post -------------------------------- */
-   const { mutate: addCheck } = useMutation(postCheck, {
+  /* -------------------------------- 데이터 Post -------------------------------- */
+  const { mutate: addCheck } = useMutation(postCheck, {
     onSuccess: () => {
-      console.log("성공!")
-      navigate("/")
+      console.log("성공!");
+      navigate("/");
     },
-    onError:(err)=>{
-      console.log(err)
-    }
+    onError: (err) => {
+      console.log(err);
+    },
   });
-  
-
 
   const onSubmitHandler = async () => {
     console.log("올려!!");
     let formData = new FormData();
-    const dataSet={
-      title:title,
-      category:currentCategory,
-      price:realPrice,
-      content:desc
-    }
-    files.map((file) => formData.append("multipartFile", file))
-    formData.append("articlesDto", new Blob([JSON.stringify(dataSet)], { type: "application/json" }));
-    addCheck(formData)
-    
+    const dataSet = {
+      title: title,
+      category: currentCategory,
+      price: realPrice,
+      content: desc,
+    };
+    files.map((file) => formData.append("multipartFile", file));
+    formData.append(
+      "articlesDto",
+      new Blob([JSON.stringify(dataSet)], { type: "application/json" })
+    );
+    addCheck(formData);
   };
-
 
   const clickCheckHandler = () => {
     title.trim().length === 0 ? setValidTitle(false) : setValidTitle(true);
@@ -185,7 +183,12 @@ const Form = () => {
         <StPreview>
           <label htmlFor="input-file" onChange={handleAddImages}>
             <IconPlus />
-            <input type="file" id="input-file" multiple accept=".jpg,.jpeg,.png"/>
+            <input
+              type="file"
+              id="input-file"
+              multiple
+              accept=".jpg,.jpeg,.png"
+            />
           </label>
           <StImageList validImage={validImage}>
             {files.length === 0 ? (
@@ -241,6 +244,7 @@ const Form = () => {
               value={price}
               name="price"
             />
+            {price.trim().length > 0 ? <span>원</span> : null}
           </StPriceInput>
         </StSecondWrap>
       </StFirstWrap>
@@ -249,10 +253,10 @@ const Form = () => {
         <p>*15글자 이상 입력해 주세요.</p>
         <StButton>
           <Button
-              children={"등록하기"}
-              theme={checkVali ? "purple" : "disabled"}
-              onClickHandler={checkVali ?onSubmitHandler:clickCheckHandler}
-            />
+            children={"등록하기"}
+            theme={checkVali ? "purple" : "disabled"}
+            onClickHandler={checkVali ? onSubmitHandler : clickCheckHandler}
+          />
         </StButton>
       </StThirdWrap>
     </StFormContainer>
@@ -260,8 +264,8 @@ const Form = () => {
 };
 
 const StFormContainer = styled.div`
-  position:relative;
-  top:64px;
+  position: relative;
+  top: 64px;
 `;
 
 const StFirstWrap = styled.div`
@@ -305,6 +309,7 @@ const StSelectBox = styled.div`
 `;
 
 const StPriceInput = styled.div`
+  position: relative;
   input {
     ::placeholder {
       color: ${({ validPrice }) =>
@@ -312,6 +317,13 @@ const StPriceInput = styled.div`
     }
     border-color: ${({ validPrice }) =>
       validPrice ? `${colors.grey3}` : `${colors.red}`};
+  }
+  span {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    color: ${colors.grey3};
   }
 `;
 
