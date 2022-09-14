@@ -1,18 +1,25 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Button from "components/elements/Button";
+import { alarmListState, myListState } from "state/atom";
 import { fontSize } from "styles/theme";
 import icons from "assets";
 import { getCookie } from "api/cookies";
-import { useLocation } from "react-router-dom";
 
 const Header = ({ title }) => {
+  const setMyListState = useSetRecoilState(myListState);
+  const setAlarmListState = useSetRecoilState(alarmListState);
+
   const navigate = useNavigate();
   const { HeaderLogo, MyPageLogo } = icons;
   const location = useLocation();
 
-  const clickNavigator = () =>
+  const clickNavigator = () => {
+    setMyListState(false);
+    setAlarmListState(false);
     getCookie("accessToken") ? navigate("/mypage") : navigate("/login");
+  };
 
   const clickLogo = () => {
     location.pathname === "/" ? window.location.reload() : navigate("/");

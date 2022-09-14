@@ -38,6 +38,13 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
       setIsTextActive(false);
       setIsPriceActive(false);
     },
+    onError: ({ response }) => {
+      console.log("POST COMMENT ERROR", response.data.errorMessage); // 댓글은 10개 이상 작성이 불가능합니다.
+      setCommentPrice("");
+      setCommentText({ ...commentText, comment: "" });
+      setIsTextActive(false);
+      setIsPriceActive(false);
+    },
   });
 
   const handleChange = (e) => {
@@ -45,11 +52,10 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
     let target = "";
     if (name === "price") {
       const { isValid, realPrice, previewPrice } = handlePrice(value);
-      if (isValid) {
-        setIsPriceActive(isValid);
-        setRealCommentPrice({ ...realCommentPrice, comment: realPrice });
-        setCommentPrice(previewPrice);
-      }
+      console.log(isValid, realPrice, previewPrice);
+      isValid ? setIsPriceActive(true) : setIsPriceActive(false);
+      setRealCommentPrice({ ...realCommentPrice, comment: realPrice });
+      setCommentPrice(previewPrice);
     }
     if (name === "text") {
       target = value.substr(0, MAX_LENGTH_TEXT);

@@ -9,14 +9,12 @@ const handlePrice = (val) => {
   let isValid;
   let realPrice;
   let previewPrice;
+
   if (priceVali(price)) {
     isValid = price.length ? true : false;
     realPrice = price;
     previewPrice = price.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  } else {
-    isValid = false;
   }
-
   return { isValid, realPrice, previewPrice };
 };
 

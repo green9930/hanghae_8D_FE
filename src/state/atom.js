@@ -17,3 +17,13 @@ export const detailCheckState = atom({
   key: "detailCheckState",
   default: {},
 });
+
+export const myListState = atom({
+  key: "myListState",
+  default: false,
+});
+
+export const alarmListState = atom({
+  key: "alarmListState",
+  default: false,
+});
