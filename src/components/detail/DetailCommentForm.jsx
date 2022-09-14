@@ -6,9 +6,14 @@ import { colors, fontSize } from "styles/theme";
 import { useMutation, useQueryClient } from "react-query";
 import { postComment } from "api/detailApi";
 import handlePrice from "utils/handlePrice";
+import Modal from "components/layout/Modal";
+import CommentNumAlert from "./CommentNumAlert";
+import { useSetRecoilState } from "recoil";
+import { commentScrollState } from "state/atom";
 
 const DetailCommentForm = ({ isMyArticles, articlesId }) => {
-  // const commentRef = useRef();
+  const setCommentScrollState = useSetRecoilState(commentScrollState);
+  const commentRef = useRef();
   const [commentPrice, setCommentPrice] = useState("");
   const [realCommentPrice, setRealCommentPrice] = useState({
     articlesId: articlesId,
@@ -22,6 +27,8 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   });
   const [isPriceActive, setIsPriceActive] = useState(false);
   const [isTextActive, setIsTextActive] = useState(false);
+  const [openCommentNumAlert, setOpenCommentNumAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const MAX_LENGTH_TEXT = 80;
 
@@ -37,9 +44,12 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
       setCommentPrice("");
       setIsTextActive(false);
       setIsPriceActive(false);
+      setCommentScrollState(true);
     },
     onError: ({ response }) => {
       console.log("POST COMMENT ERROR", response.data.errorMessage); // 댓글은 10개 이상 작성이 불가능합니다.
+      setErrorMessage(response.data.errorMessage);
+      setOpenCommentNumAlert(true);
       setCommentPrice("");
       setCommentText({ ...commentText, comment: "" });
       setIsTextActive(false);
@@ -99,7 +109,7 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
           </StPriceInput>
         </form>
       )}
-      <form onSubmit={handleSubmitText}>
+      <StTextForm onSubmit={handleSubmitText}>
         <StTextInput>
           <Input
             value={commentText.comment}
@@ -116,23 +126,25 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
             <span>전송</span>
           </Button>
         </StTextInput>
-      </form>
+      </StTextForm>
+      {openCommentNumAlert && (
+        <Modal handleOpenModal={() => setOpenCommentNumAlert(false)}>
+          <CommentNumAlert
+            message={errorMessage}
+            handleOpenModal={() => setOpenCommentNumAlert(false)}
+          />
+        </Modal>
+      )}
     </StCommentFormContainer>
   );
 };
 
 const StCommentFormContainer = styled.div`
-  background: ${colors.grey1};
   width: 100%;
-  position: absolute;
-  bottom: 0;
-  padding: 5px 20px;
 `;
 
 const StPriceInput = styled.div`
-  position: absolute;
-  top: -65px;
-  left: 0;
+  position: relative;
   padding: 5px 20px;
   width: 100%;
 
@@ -160,6 +172,12 @@ const StPriceInput = styled.div`
         isPriceActive ? `${colors.mainO}` : `${colors.subP}`};
     }
   }
+`;
+
+const StTextForm = styled.form`
+  background: ${colors.grey1};
+  width: 100%;
+  padding: 5px 20px;
 `;
 
 const StTextInput = styled.div`
