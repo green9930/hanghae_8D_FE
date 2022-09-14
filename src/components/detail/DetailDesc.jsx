@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
@@ -41,8 +41,18 @@ const DetailDesc = ({
         </StPriceText>
       </StPrice>
       {content.length < MAX_LENGTH ? (
-        <StDesc isShow={false}>{content}</StDesc>
+        <StDesc isShow={false}>
+          {content.split("\n").map((val, idx) => {
+            return (
+              <React.Fragment key={idx}>
+                {val}
+                <br />
+              </React.Fragment>
+            );
+          })}
+        </StDesc>
       ) : (
+        // <StDesc isShow={false}>{content}</StDesc>
         <StDesc isShow={isShow}>
           {isShow ? `${content}` : `${styledPrice}⋯`}
           <button onClick={() => setIsShow(true)}>

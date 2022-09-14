@@ -6,11 +6,16 @@ import DetailCommentForm from "components/detail/DetailCommentForm";
 import { useQuery } from "react-query";
 import { getDetailCheck } from "api/detailApi";
 import LoadingMessage from "components/etc/LoadingMessage";
-import { useSetRecoilState } from "recoil";
-import { detailCheckState } from "state/atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { commentScrollState, detailCheckState } from "state/atom";
+import { useRef } from "react";
+import { useEffect } from "react";
 // import { Suspense } from "react";
 
 const Detail = ({ page }) => {
+  const commentRef = useRef();
+  const [commentScroll, setCommentScroll] = useRecoilState(commentScrollState);
+
   const setDetailCheckState = useSetRecoilState(detailCheckState);
   const { isLoading, data } = useQuery(
     "detailCheck",
@@ -42,6 +47,7 @@ const Detail = ({ page }) => {
 
   return (
     <StDetail>
+      {/* // <StDetail ref={commentScroll ? commentRef : null}> */}
       <DetailCarousel
         width="100%"
         height="230px"
@@ -83,6 +89,7 @@ const StDetail = styled.div`
   flex-direction: column;
   position: relative;
   top: 64px;
+  margin-bottom: 174px;
 `;
 
 const StCommment = styled.div`
@@ -98,6 +105,7 @@ const StCommentForm = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
+  height: 110px;
 `;
 
 export default Detail;
