@@ -1,38 +1,24 @@
 import { useState } from "react";
+import { useQuery } from "react-query";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import Button from "components/elements/Button";
-import MyPageFooter from "components/mypage/MyPageFooter";
+import Modal from "components/layout/Modal";
 import MyList from "components/mypage/MyList";
 import AlarmList from "components/mypage/AlarmList";
+import RankModal from "components/mypage/RankModal";
+import MyPageFooter from "components/mypage/MyPageFooter";
+import Button from "components/elements/Button";
+import { getMyProfile } from "api/mypageApi";
+import { alarmListState, myListState } from "state/atom";
 import handleRankColor from "utils/handleRankColor";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
-import Modal from "components/layout/Modal";
-import RankModal from "components/mypage/RankModal";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import { useQuery } from "react-query";
-import { getMyProfile } from "api/mypageApi";
 
 const UserInfo = () => {
-  const [isOpenMyList, setIsOpenMyList] = useState(false);
-  const [isOpenAlarmList, setIsOpenAlarmList] = useState(false);
+  const [isOpenMyList, setIsOpenMyList] = useRecoilState(myListState);
+  const [isOpenAlarmList, setIsOpenAlarmList] = useRecoilState(alarmListState);
   const [isOpenRankModal, setIsOpenRankModal] = useState(false);
 
-  // const location = useLocation();
-  // const goToMyPage = location.state.goToMyPage;
-  // console.log(goToMyPage);
-
-  // useEffect(() => {
-  //   const initialize = () => {
-  //     if (!goToMyPage) {
-  //       setIsOpenMyList(false);
-  //       setIsOpenAlarmList(false);
-  //       setIsOpenRankModal(false);
-  //     }
-  //   };
-  //   initialize();
-  // }, [goToMyPage]);
   const { List, Alarm, RankList } = icons;
   const fullUserRank = (rank) => {
     switch (rank) {
