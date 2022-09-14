@@ -1,7 +1,9 @@
 import { instance } from "./axios";
 
+let count = 0;
+
 export const getMainCheck = async ({ category, process }, pageParam) => {
-  console.log(pageParam);
+  console.log("카운트", count);
   const data = await instance.get(
     `/api/main/list?category=${category}&process=${process}&page=${pageParam}&size=10`
   );

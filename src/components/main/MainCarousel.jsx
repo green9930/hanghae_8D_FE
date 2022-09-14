@@ -39,14 +39,16 @@ const StMainRandomContainer = styled.div`
   background-color: ${colors.mainP};
   width: 100%;
   padding-bottom: 20px;
-  height: 220px;
+  height: 240px;
+  box-sizing:border-box;
 `;
 const StMainRandomTitle = styled.div`
   text-align: center;
-  padding: 10px 0px 10px 0px;
+  padding-top: 10px;
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
+  padding-top:20px;
   color: ${colors.white};
   font-family: 'twayfly', 'Noto Sans KR', sans-serif;
  
@@ -63,10 +65,11 @@ const StMainRandomImg = styled.div`
   display: flex;
   gap: 10px;
   overflow: scroll;
-  padding: 0px 20px;
+  padding: 10px 10px 0px 10px ;
   ::-webkit-scrollbar {
     display: none;
   }
+  
 `;
 
 export default MainCarousel;
