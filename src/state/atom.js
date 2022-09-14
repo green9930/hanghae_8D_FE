@@ -19,3 +19,12 @@ export const alarmListState = atom({
   key: "alarmListState",
   default: false,
 });
+
+export const myPageTitleState = atom({
+  key: "myPageTitleState",
+  default: "MY",
+});
+export const commentScrollState = atom({
+  key: "commentScrollState",
+  default: false,
+});

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
 import MyList from "components/mypage/MyList";
@@ -9,12 +9,13 @@ import RankModal from "components/mypage/RankModal";
 import MyPageFooter from "components/mypage/MyPageFooter";
 import Button from "components/elements/Button";
 import { getMyProfile } from "api/mypageApi";
-import { alarmListState, myListState } from "state/atom";
+import { alarmListState, myListState, myPageTitleState } from "state/atom";
 import handleRankColor from "utils/handleRankColor";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 
 const UserInfo = () => {
+  const setTitleState = useSetRecoilState(myPageTitleState);
   const [isOpenMyList, setIsOpenMyList] = useRecoilState(myListState);
   const [isOpenAlarmList, setIsOpenAlarmList] = useRecoilState(alarmListState);
   const [isOpenRankModal, setIsOpenRankModal] = useState(false);
@@ -52,12 +53,14 @@ const UserInfo = () => {
     setIsOpenMyList(true);
     setIsOpenAlarmList(false);
     setIsOpenRankModal(false);
+    setTitleState(`내가 쓴 게시글(${articleCount})`);
   };
 
   const handleShowAlarmList = () => {
     setIsOpenAlarmList(true);
     setIsOpenMyList(false);
     setIsOpenRankModal(false);
+    setTitleState("알림");
   };
 
   const handleShowRankModal = () => {
