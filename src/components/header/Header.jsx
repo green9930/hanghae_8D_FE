@@ -2,14 +2,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Button from "components/elements/Button";
-import { alarmListState, myListState } from "state/atom";
-import { fontSize } from "styles/theme";
-import icons from "assets";
+import { alarmListState, myListState, myPageTitleState } from "state/atom";
 import { getCookie } from "api/cookies";
+import { colors, fontSize } from "styles/theme";
+import icons from "assets";
 
 const Header = ({ title }) => {
   const setMyListState = useSetRecoilState(myListState);
   const setAlarmListState = useSetRecoilState(alarmListState);
+  const setTitleState = useSetRecoilState(myPageTitleState);
 
   const navigate = useNavigate();
   const { HeaderLogo, MyPageLogo } = icons;
@@ -18,6 +19,7 @@ const Header = ({ title }) => {
   const clickNavigator = () => {
     setMyListState(false);
     setAlarmListState(false);
+    setTitleState("MY");
     getCookie("accessToken") ? navigate("/mypage") : navigate("/login");
   };
 
@@ -44,18 +46,18 @@ const StHeader = styled.div`
   justify-content: space-between;
   position: relative;
   height: 64px;
-  background-color: #9083f7;
   padding: 0 20px;
+  background-color: ${colors.mainP};
 `;
 
 const StHeaderTitle = styled.div`
-  color: white;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: ${fontSize.large20};
+  color: ${colors.white};
   font-family: "twayfly", "Noto Sans KR", sans-serif;
+  font-size: ${fontSize.large20};
 `;
 
 export default Header;
