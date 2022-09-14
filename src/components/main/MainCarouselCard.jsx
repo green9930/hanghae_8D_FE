@@ -12,7 +12,7 @@ const MainCarouselCard = ({ data }) => {
   return (
     <StImgBox onClick={onClickDetail}>
       <StImg src={image} alt="이미지" />
-      <StTitle>{title.length < 9 ? title : title.slice(0, 9) + "⋯"}</StTitle>
+      <StTitle>{title.length < 7 ? title : title.slice(0, 7) + "⋯"}</StTitle>
       <StPrice>
         {price}
         <span>원</span>
@@ -47,8 +47,8 @@ const StPrice = styled.p`
 `;
 
 const StImg = styled.img`
-  width: 100%;
   height: 110px;
+  width:120px;
   border-radius: 10px 10px 0px 0px;
 `;
 
