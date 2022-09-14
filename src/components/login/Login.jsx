@@ -44,6 +44,8 @@ const Login = () => {
 };
 
 const StLogin = styled.div`
+  position: relative;
+  top: 64px;
   padding: 0 35px;
 `;
 const StLoginMessage = styled.div`
