@@ -212,6 +212,7 @@ const EditForm = () => {
                 type="file"
                 id="input-file"
                 multiple
+                accept="image/*"
               />
             </label>
             <StImages>
