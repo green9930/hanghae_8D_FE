@@ -27,7 +27,7 @@ const AlarmCard = ({ alarmItem }) => {
   };
   return (
     <StAlarmCard>
-      {alarmType === "Comment" && (
+      {alarmType === "comment" && (
         <StContent>
           <StTitle onClick={onClickNavigate}>
             {title.length < 10 ? title : title.slice(0, 10) + "⋯"}
@@ -82,7 +82,6 @@ const StTitle = styled.span`
   font-weight: 700;
   font-size: ${fontSize.small12};
   letter-spacing: -0.03em;
-  width: 82px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
