@@ -7,12 +7,12 @@ import styled from "styled-components";
 import { colors, fontSize } from "styles/theme";
 
 const AlarmCard = ({ alarmItem }) => {
-  const { notificationId, title, createdAt, alarmType,articlesId} = alarmItem;
+  const { notificationId, title, createdAt, alarmType, articlesId } = alarmItem;
   const { IconX } = icons;
-  const navigate=useNavigate();
-  const queryClient=useQueryClient();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
- /* ------------------------------- 데이터 delete ------------------------------- */
+  /* ------------------------------- 데이터 delete ------------------------------- */
   const { mutate: deleteAlert } = useMutation(deleteAlertList, {
     onSuccess: () => {
       queryClient.invalidateQueries("alertLists");
@@ -20,30 +20,33 @@ const AlarmCard = ({ alarmItem }) => {
   });
 
   const handleDelete = (id) => {
-  
-    deleteAlert(id)
-   console.log(id)
+    deleteAlert(id);
   };
-const onClickNavigate=()=>{
-  navigate(`/detail/${articlesId}`)
-}
+  const onClickNavigate = () => {
+    navigate(`/detail/${articlesId}`);
+  };
   return (
-    <StAlarmCard >
-      {alarmType === "COMMENT" && (
+    <StAlarmCard>
+      {alarmType === "Comment" && (
         <StContent>
-          <StTitle onClick={onClickNavigate}>{title.length < 10 ? title : title.slice(0, 10) + "⋯"}</StTitle>
-          <StText >
+          <StTitle onClick={onClickNavigate}>
+            {title.length < 10 ? title : title.slice(0, 10) + "⋯"}
+          </StTitle>
+          <StText>
             에 <StMessage>댓글</StMessage>이 달렸습니다.
           </StText>
           <StSubInfo>
             <StTime>{createdAt}</StTime>
-            <Button variant="image" onClickHandler={()=>handleDelete(notificationId)}>
-              <IconX stroke={colors.black}/>
+            <Button
+              variant="image"
+              onClickHandler={() => handleDelete(notificationId)}
+            >
+              <IconX stroke={colors.black} />
             </Button>
           </StSubInfo>
         </StContent>
       )}
-      {alarmType === "SELECTED" && (
+      {alarmType === "selected" && (
         <StContent>
           <StTitle onClick={onClickNavigate}>{title}</StTitle>
           <StText>
@@ -51,8 +54,11 @@ const onClickNavigate=()=>{
           </StText>
           <StSubInfo>
             <StTime>{createdAt}</StTime>
-            <Button variant="image" onClickHandler={()=>handleDelete(notificationId)}>
-              <IconX stroke={colors.black}/>
+            <Button
+              variant="image"
+              onClickHandler={() => handleDelete(notificationId)}
+            >
+              <IconX stroke={colors.black} />
             </Button>
           </StSubInfo>
         </StContent>
