@@ -9,11 +9,10 @@ const MainCarousel = () => {
 
   const { IconArrow } = icons;
   
- //데이터 Read
+/* -------------------------------- 데이터 Read -------------------------------- */
  const checkRandomLists= useQuery("randomList",getRandomCards,{
   refetchOnWindowFocus: false,
   onSuccess:(data)=>{
-    console.log(data.data.data)
   }
  })
 
