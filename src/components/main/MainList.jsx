@@ -90,7 +90,6 @@ const MainList = () => {
   }, [inView]);
 
   if (status === "loading") return <LoadingMessage />;
-  console.log(data);
 
   return (
     <StMain>
