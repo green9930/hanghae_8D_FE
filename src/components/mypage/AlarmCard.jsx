@@ -33,7 +33,7 @@ const AlarmCard = ({ alarmItem }) => {
             {title.length < 10 ? title : title.slice(0, 10) + "⋯"}
           </StTitle>
           <StText>
-            에 <StMessage>댓글</StMessage>이 달렸습니다.
+            에 <StMessage type={alarmType}>댓글</StMessage>이 달렸습니다.
           </StText>
           <StSubInfo>
             <StTime>{createdAt}</StTime>
@@ -109,8 +109,8 @@ const StMessage = styled.span`
   font-weight: 700;
   font-size: ${fontSize.small12};
   letter-spacing: -0.03em;
-  color: ${({ alarmType }) =>
-    alarmType === "comment" ? `${colors.mainP}` : `${colors.grey1}`};
+  color: ${({ type }) =>
+    type=== "comment" ? `${colors.grey1}` : `${colors.mainP}`};
 `;
 
 const StTime = styled.span`
