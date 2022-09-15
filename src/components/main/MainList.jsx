@@ -73,7 +73,7 @@ const MainList = () => {
   });
   const { data, isFetchingNextPage, fetchNextPage, remove, status, refetch } =
     useInfiniteQuery(
-      "[mainCheckList]",
+      "mainCheckList",
       ({ pageParam = 0 }) => getMainCheck(payload, pageParam),
       {
         refetchOnWindowFocus: false,
