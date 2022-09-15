@@ -1,42 +1,58 @@
+import { deleteAlertList } from "api/alarmApi";
 import icons from "assets";
 import Button from "components/elements/Button";
+import { useMutation, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors, fontSize } from "styles/theme";
 
 const AlarmCard = ({ alarmItem }) => {
-  const { alarmId, title, createdAt, type } = alarmItem;
+  const { notificationId, title, createdAt, alarmType,articlesId} = alarmItem;
   const { IconX } = icons;
+  const navigate=useNavigate();
+  const queryClient=useQueryClient();
 
-  const handleDelete = () => {
-    console.log("DELETE ALARM");
+ /* ------------------------------- 데이터 delete ------------------------------- */
+  const { mutate: deleteAlert } = useMutation(deleteAlertList, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("alertLists");
+    },
+  });
+
+  const handleDelete = (id) => {
+  
+    deleteAlert(id)
+   console.log(id)
   };
-
+const onClickNavigate=()=>{
+  navigate(`/detail/${articlesId}`)
+}
   return (
-    <StAlarmCard>
-      {type === "content" && (
+    <StAlarmCard >
+      {alarmType === "COMMENT" && (
         <StContent>
-          <StTitle>{title}</StTitle>
-          <StText>
+          <StTitle onClick={onClickNavigate}>{title.length < 10 ? title : title.slice(0, 10) + "⋯"}</StTitle>
+          <StText >
             에 <StMessage>댓글</StMessage>이 달렸습니다.
           </StText>
           <StSubInfo>
             <StTime>{createdAt}</StTime>
-            <Button variant="image" onClickHandler={handleDelete}>
-              <IconX />
+            <Button variant="image" onClickHandler={()=>handleDelete(notificationId)}>
+              <IconX stroke={colors.black}/>
             </Button>
           </StSubInfo>
         </StContent>
       )}
-      {type === "comment" && (
+      {alarmType === "SELECTED" && (
         <StContent>
-          <StTitle>{title}</StTitle>
+          <StTitle onClick={onClickNavigate}>{title}</StTitle>
           <StText>
-            에 댓글이 <StMessage type={type}>채택</StMessage>되었습니다.
+            에 댓글이 <StMessage type={alarmType}>채택</StMessage>되었습니다.
           </StText>
           <StSubInfo>
             <StTime>{createdAt}</StTime>
-            <Button variant="image" onClickHandler={handleDelete}>
-              <IconX />
+            <Button variant="image" onClickHandler={()=>handleDelete(notificationId)}>
+              <IconX stroke={colors.black}/>
             </Button>
           </StSubInfo>
         </StContent>
@@ -88,8 +104,8 @@ const StMessage = styled.span`
   font-weight: 700;
   font-size: ${fontSize.small12};
   letter-spacing: -0.03em;
-  color: ${({ type }) =>
-    type === "comment" ? `${colors.mainP}` : `${colors.grey1}`};
+  color: ${({ alarmType }) =>
+    alarmType === "comment" ? `${colors.mainP}` : `${colors.grey1}`};
 `;
 
 const StTime = styled.span`
