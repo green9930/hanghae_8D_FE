@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
@@ -15,10 +16,33 @@ const DetailDesc = ({
   process,
   createdAt,
 }) => {
-  const [isShow, setIsShow] = useState(false);
+  const [showMoreBtn, setShowMoreBtn] = useState(false);
+  const [styledContent, setStyledContent] = useState([]);
 
   const MAX_LENGTH = 44;
-  const styledPrice = content.substr(0, MAX_LENGTH);
+  const MAX_NEWLINE = 2;
+
+  const contentVali = (content) => {
+    if (!content.includes("\n") && content.length < MAX_LENGTH) return;
+    if (content.includes("\n")) {
+      const newlineNum = content.split("\n")?.length - 1;
+      if (newlineNum >= MAX_NEWLINE) {
+        setShowMoreBtn(true);
+        const splitContent = content.split("\n").slice(0, 2);
+        splitContent[1] = splitContent[1].substr(0, 20);
+        setStyledContent(splitContent);
+      }
+    } else {
+      if (content.length >= MAX_LENGTH) {
+        setShowMoreBtn(true);
+        setStyledContent([content.substr(0, MAX_LENGTH)]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    contentVali(content);
+  }, [content]);
 
   return (
     <StDetailDesc>
@@ -40,24 +64,40 @@ const DetailDesc = ({
           채택가 <span>{price}</span> 원
         </StPriceText>
       </StPrice>
-      {content.length < MAX_LENGTH ? (
-        <StDesc isShow={false}>
-          {content.split("\n").map((val, idx) => {
-            return (
-              <React.Fragment key={idx}>
-                {val}
-                <br />
-              </React.Fragment>
-            );
-          })}
-        </StDesc>
+      {content.length < MAX_LENGTH && styledContent.length < MAX_NEWLINE ? (
+        <StDesc isShow={false}>{content}</StDesc>
       ) : (
-        // <StDesc isShow={false}>{content}</StDesc>
-        <StDesc isShow={isShow}>
-          {isShow ? `${content}` : `${styledPrice}⋯`}
-          <button onClick={() => setIsShow(true)}>
-            <span>더 보기</span>
-          </button>
+        <StDesc isShow={!showMoreBtn}>
+          {showMoreBtn ? (
+            <>
+              {styledContent.map((val, idx) => (
+                <React.Fragment key={`${val}-${idx}`}>
+                  {styledContent.length === 1 ? (
+                    `${styledContent}⋯`
+                  ) : (
+                    <>
+                      {idx === 1 && styledContent[1].length === 20
+                        ? `${val}⋯`
+                        : val}
+                      <br />
+                    </>
+                  )}
+                </React.Fragment>
+              ))}
+              <button onClick={() => setShowMoreBtn(false)}>
+                <span>더 보기</span>
+              </button>
+            </>
+          ) : (
+            <StDesc isShow={true}>
+              {content.split("\n").map((val, idx) => (
+                <React.Fragment key={`${val}-${idx}`}>
+                  {val}
+                  <br />
+                </React.Fragment>
+              ))}
+            </StDesc>
+          )}
         </StDesc>
       )}
     </StDetailDesc>
