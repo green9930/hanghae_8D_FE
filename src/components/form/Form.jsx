@@ -56,7 +56,6 @@ const Form = () => {
     let target = "";
     if (name === "title") {
       target = value.substr(0, 30);
-      console.log("타이틀!!!!", target.trim().length);
       setTitle(target);
       target.length >= 0 ? setValidTitle(true) : setValidTitle(false);
     }
@@ -67,14 +66,12 @@ const Form = () => {
         setRealPrice(target);
         priceVali(target) &&
           setPrice(target.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-        console.log("Price", price.trim().length);
         target.length >= 0 ? setValidPrice(true) : setValidPrice(false);
       }
     }
     if (name === "desc") {
       target = value.substr(0, 400);
       setDesc(target);
-      console.log("desc", desc.trim().length);
       target.length >= 0 ? setValidDesc(true) : setValidDesc(false);
       target.length > 15 ? setValidLengthDesc(true) : setValidLengthDesc(false);
     }
@@ -187,7 +184,7 @@ const Form = () => {
               type="file"
               id="input-file"
               multiple
-              accept=".jpg,.jpeg,.png"
+              accept="image/*"
             />
           </label>
           <StImageList validImage={validImage}>
