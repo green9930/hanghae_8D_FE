@@ -19,8 +19,8 @@ const MainListCard = ({ data }) => {
     userRank,
   } = data;
   return (
-    <>
-      <StMainContainer selectedPrice={selectedPrice} onClick={onClickDetail}>
+    <StMainContainer>
+      <StMainWrap selectedPrice={selectedPrice} onClick={onClickDetail}>
         <StMainListImg src={image} alt="이미지" />
         <StMainDesc>
           <StFirstLine>
@@ -49,17 +49,19 @@ const MainListCard = ({ data }) => {
             )}
           </StPrice>
         </StMainDesc>
-      </StMainContainer>
-    </>
+      </StMainWrap>
+    </StMainContainer>
   );
 };
 const StMainContainer = styled.div`
+  padding: 0px 20px;
+`;
+const StMainWrap = styled.div`
   display: flex;
   padding: 15px;
   gap: 10px;
   color: ${({ selectedPrice }) =>
     selectedPrice ? `${colors.grey3}` : `${colors.black}`};
-  width: 335px;
   height: 100px;
   box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
