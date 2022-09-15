@@ -37,12 +37,15 @@ const UserInfo = () => {
         return "";
     }
   };
+
   /* ------------------------------- 게시물 수 read ------------------------------- */
   const { isLoading, data } = useQuery("myprofile", getMyProfile, {
+    refetchOnWindowFocus: false,
     onSuccess: (data) => {
       console.log("GET MYPROFILE", data);
     },
   });
+
   /* -------------------------------- 알림 수 read ------------------------------- */
 
   const alertNotification = useQuery("alertNoti", getMyNotification, {
@@ -52,7 +55,7 @@ const UserInfo = () => {
     },
     onError: () => {},
   });
-  console.log(alertNotification);
+
   if (isLoading) return null;
 
   const { articleCount, nickName, userEmail, userRank, userPoint } =
