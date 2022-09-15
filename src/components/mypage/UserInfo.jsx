@@ -8,7 +8,7 @@ import AlarmList from "components/mypage/AlarmList";
 import RankModal from "components/mypage/RankModal";
 import MyPageFooter from "components/mypage/MyPageFooter";
 import Button from "components/elements/Button";
-import { getMyProfile } from "api/mypageApi";
+import { getMyNotification, getMyProfile } from "api/mypageApi";
 import { alarmListState, myListState, myPageTitleState } from "state/atom";
 import handleRankColor from "utils/handleRankColor";
 import { colors, fontSize } from "styles/theme";
@@ -37,17 +37,30 @@ const UserInfo = () => {
         return "";
     }
   };
-
+  /* ------------------------------- 게시물 수 read ------------------------------- */
   const { isLoading, data } = useQuery("myprofile", getMyProfile, {
     onSuccess: (data) => {
       console.log("GET MYPROFILE", data);
     },
   });
+  /* -------------------------------- 알림 수 read ------------------------------- */
 
+  const alertNotification = useQuery("alertNoti", getMyNotification, {
+    refetchOnWindowFocus: false,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: () => {},
+  });
+  console.log(alertNotification);
   if (isLoading) return null;
 
   const { articleCount, nickName, userEmail, userRank, userPoint } =
     data.data.data;
+
+  if (alertNotification.isLoading) {
+    return null;
+  }
 
   const handleShowMyList = () => {
     setIsOpenMyList(true);
@@ -100,7 +113,7 @@ const UserInfo = () => {
                 <Alarm />
                 <StText>
                   <span>알림</span>
-                  <span>00개</span>
+                  <span>{alertNotification.data.data.count}개</span>
                 </StText>
               </Button>
             </StBtn>
