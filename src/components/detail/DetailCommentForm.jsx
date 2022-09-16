@@ -58,7 +58,9 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
     const { name, value } = e.target;
     let target = "";
     if (name === "price") {
-      const { isValid, realPrice, previewPrice } = handlePrice(value);
+      const { isValid, realPrice, previewPrice } = handlePrice(
+        value.replace(" ", "")
+      );
       isValid ? setIsPriceActive(true) : setIsPriceActive(false);
       setRealCommentPrice({ ...realCommentPrice, comment: realPrice });
       setCommentPrice(previewPrice);
@@ -72,6 +74,7 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
 
   const handleSubmitPrice = (e) => {
     e.preventDefault();
+    if (realCommentPrice.comment.trim().length === 0) return;
     postMutate(realCommentPrice);
   };
 

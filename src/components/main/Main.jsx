@@ -1,7 +1,6 @@
-import React from "react";
-import MainCarousel from "./MainCarousel";
-import MainList from "./MainList";
 import styled from "styled-components";
+import MainCarousel from "components/main/MainCarousel";
+import MainList from "components/main/MainList";
 
 const Main = () => {
   return (
@@ -15,11 +14,12 @@ const Main = () => {
 };
 
 const StMainWrap = styled.div`
+  width: 100%;
   position: relative;
   top: 64px;
   left: 0;
-  width: 100%;
 `;
+
 const StMainContainer = styled.div`
   position: sticky;
   top: 64px;

@@ -10,6 +10,7 @@ const DetailDesc = ({
   content,
   category,
   price,
+  selectedPrice,
   isMyArticles,
   userRank,
   process,
@@ -60,7 +61,8 @@ const DetailDesc = ({
           <StSelectedMessage>채택 완료</StSelectedMessage>
         )}
         <StPriceText>
-          채택가 <span>{price}</span> 원
+          {process === "채택 성공" ? "채택가" : null}
+          <span>{process === "채택 성공" ? selectedPrice : price}</span> 원
         </StPriceText>
       </StPrice>
       {content.length < MAX_LENGTH && styledContent.length < MAX_NEWLINE ? (

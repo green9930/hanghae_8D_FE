@@ -1,13 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import handleRankColor from "utils/handleRankColor";
 import { colors } from "styles/theme";
-import { useNavigate } from "react-router-dom";
 
 const MainListCard = ({ data }) => {
   const navigate = useNavigate();
-  const onClickDetail = () => {
-    navigate(`/detail/${articlesId}`);
-  };
+  const onClickDetail = () => navigate(`/detail/${articlesId}`);
+
   const {
     articlesId,
     nickName,
@@ -18,6 +17,7 @@ const MainListCard = ({ data }) => {
     selectedPrice,
     userRank,
   } = data;
+
   return (
     <StMainContainer>
       <StMainWrap selectedPrice={selectedPrice} onClick={onClickDetail}>
@@ -53,9 +53,11 @@ const MainListCard = ({ data }) => {
     </StMainContainer>
   );
 };
+
 const StMainContainer = styled.div`
   padding: 0px 20px;
 `;
+
 const StMainWrap = styled.div`
   display: flex;
   padding: 15px;
@@ -72,35 +74,43 @@ const StMainListImg = styled.img`
   width: 70px;
   height: 70px;
 `;
+
 const StMainDesc = styled.div`
   display: flex;
   flex-direction: column;
   width: 80%;
   justify-content: center;
 `;
+
 const StFirstLine = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
 const StTitle = styled.p`
   font-size: 14px;
   font-weight: 700;
   letter-spacing: -0.5px;
 `;
+
 const StSeller = styled.div`
   font-size: 12px;
   letter-spacing: -3%;
+
   span {
     color: ${({ rankColor }) => rankColor};
     padding-right: 4px;
   }
 `;
+
 const StPrice = styled.div`
   text-align: right;
+
   div {
     font-size: 10px;
     letter-spacing: -0.5px;
   }
+
   span {
     font-size: 20px;
     font-weight: 700;

@@ -1,16 +1,16 @@
-import styled from "styled-components";
 import { useEffect, useState } from "react";
-import MainListCard from "./MainListCard";
-import icons from "assets";
 import { useNavigate } from "react-router-dom";
-import { getCookie } from "api/cookies";
 import { useInfiniteQuery } from "react-query";
-import { getMainCheck } from "api/mainApi";
 import { useInView } from "react-intersection-observer";
-import LoadingMessage from "components/etc/LoadingMessage";
-import SelectBox from "components/elements/SelectBox";
+import styled from "styled-components";
 import Button from "components/elements/Button";
+import SelectBox from "components/elements/SelectBox";
+import MainListCard from "components/main/MainListCard";
+import LoadingMessage from "components/etc/LoadingMessage";
+import { getMainCheck } from "api/mainApi";
+import { getCookie } from "api/cookies";
 import { colors } from "styles/theme";
+import icons from "assets";
 
 const MainList = () => {
   const { IconPlus, GoBack } = icons;
@@ -51,26 +51,29 @@ const MainList = () => {
     remove();
     refetch();
   };
+
   const handleActiveStatus = (name) => {
     setActive(name);
     payload = { category: currentCategory, process: name };
     remove();
     refetch();
   };
+
   /* ------------------------------- goToTop 버튼 ------------------------------- */
   const [scrollPosition, setScrollPosition] = useState(0);
   const updateScroll = () => {
     setScrollPosition(window.scrollY);
   };
+
   useEffect(() => {
     window.addEventListener("scroll", updateScroll);
-    // return window.removeEventListener("scroll", updateScroll);
   }, [scrollPosition]);
 
   /* -------------------------------- 데이터 read -------------------------------- */
   const { ref, inView } = useInView({
     threshold: 0,
   });
+
   const { data, isFetchingNextPage, fetchNextPage, remove, status, refetch } =
     useInfiniteQuery(
       "mainCheckList",
@@ -130,7 +133,6 @@ const MainList = () => {
           </StDoneBtn>
         </StMainBtns>
       </StSelectList>
-
       <StMainContainer>
         {data?.pages.map((page, idx) => (
           <div key={idx}>
@@ -159,6 +161,7 @@ const MainList = () => {
 const StMain = styled.div`
   position: relative;
 `;
+
 const StSelectList = styled.div`
   position: sticky;
   top: 64px;
@@ -177,6 +180,7 @@ const StMainBtns = styled.div`
     font-family: "twayfly", "Noto Sans KR", sans-serif;
   }
 `;
+
 const StAllBtn = styled.div`
   button {
     background: ${({ active, name }) => {

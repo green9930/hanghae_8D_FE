@@ -11,12 +11,15 @@ import { useMutation } from "react-query";
 import Modal from "components/layout/Modal";
 import ImageAlert from "components/form/ImageAlert";
 import ImageNumAlert from "components/form/ImageNumAlert";
+import ImageFileAlert from "components/form/ImageFileAlert";
 import { postCheck } from "api/formApi";
+import handlePrice from "utils/handlePrice";
 // import heic2any from "heic2any";
 
 const Form = () => {
   const [openImageAlert, setOpenImageAlert] = useState(false);
   const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
+  const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
   const [title, setTitle] = useState("");
   const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
   const [currentCategory, setCurrentCategory] = useState("");
@@ -43,11 +46,6 @@ const Form = () => {
     price.trim().length > 0 &&
     files.length >= 0;
 
-  const priceVali = (text) => {
-    const regExp = /^[0-9\s+]*$/g;
-    return regExp.test(text);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     let target = "";
@@ -58,19 +56,17 @@ const Form = () => {
     }
 
     if (name === "price") {
-      target = value.replaceAll(",", "").substr(0, 8);
-      if (priceVali(target)) {
-        setRealPrice(target);
-        priceVali(target) &&
-          setPrice(target.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-        target.length >= 0 ? setValidPrice(true) : setValidPrice(false);
-      }
+      const { realPrice, previewPrice } = handlePrice(value.replace(" ", ""));
+      value.length >= 0 ? setValidPrice(true) : setValidPrice(false);
+      setRealPrice(realPrice);
+      setPrice(previewPrice);
     }
+
     if (name === "desc") {
       target = value.substr(0, 400);
       setDesc(target);
       target.length >= 0 ? setValidDesc(true) : setValidDesc(false);
-      target.length > 15 ? setValidLengthDesc(true) : setValidLengthDesc(false);
+      target.length >= 0 ? setValidLengthDesc(true) : setValidLengthDesc(false);
     }
   };
 
@@ -84,6 +80,8 @@ const Form = () => {
     }
 
     for (let i = 0; i < e.target.files.length; i++) {
+      if (e.target.files[i].name.split(".")[1] !== "png" || "jpg" || "jpeg")
+        return setOpenImageFileAlert(true);
       if (e.target.files[i].size > 20000000) return setOpenImageAlert(true);
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[i]);
@@ -200,7 +198,7 @@ const Form = () => {
               type="file"
               id="input-file"
               multiple
-              accept="image/*,.heic"
+              accept=".png, .jpg, .jpeg"
             />
           </label>
           <StImageList validImage={validImage}>
@@ -231,6 +229,13 @@ const Form = () => {
               />
             </Modal>
           )}
+          {openImageFileAlert && (
+            <Modal handleOpenModal={() => setOpenImageFileAlert(false)}>
+              <ImageFileAlert
+                handleOpenModal={() => setOpenImageFileAlert(false)}
+              />
+            </Modal>
+          )}
         </StPreview>
         <StSecondWrap>
           <StTitleInput validTitle={validTitle}>
@@ -257,7 +262,7 @@ const Form = () => {
               value={price}
               name="price"
             />
-            {price.trim().length > 0 ? <span>원</span> : null}
+            {price?.trim().length ? <span>원</span> : null}
           </StPriceInput>
         </StSecondWrap>
       </StFirstWrap>
