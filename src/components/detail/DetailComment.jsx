@@ -10,7 +10,7 @@ import { selectComment } from "api/detailApi";
 import { colors } from "styles/theme";
 import icons from "assets";
 
-const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
+const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
   const {
     commentsId,
     type,
@@ -81,14 +81,14 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
               <span>{comment}</span> 원
             </StPrice>
             <StBtnContainer>
-              {isMyArticles && !isSelected ? (
+              {isMyArticles && !isSelected && process === "진행중" ? (
                 isMyComment ? null : (
                   <Button variant="image" onClickHandler={handleSelectComment}>
                     <BSalectWhite />
                   </Button>
                 )
               ) : null}
-              {isSelected && <BSalectPurple />}
+              {isSelected ? <BSalectPurple /> : null}
               {isMyComment && !isSelected ? (
                 <Button variant="image" onClickHandler={handleDeleteComment}>
                   <IconTrash fill={`${colors.grey1}`} />
@@ -166,7 +166,8 @@ const StTime = styled.span`
 const StText = styled.p`
   margin-right: 4px;
   font-size: 12px;
-  line-height: 19px;
+  line-height: 18px;
+  word-break: break-all;
 `;
 
 const StTextBtnContainer = styled.div`

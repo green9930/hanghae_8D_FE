@@ -30,6 +30,7 @@ const Detail = ({ page }) => {
     content,
     category,
     price,
+    selectedPrice,
     isMyArticles,
     userRank,
     process,
@@ -56,6 +57,7 @@ const Detail = ({ page }) => {
         content={content}
         category={category}
         price={price}
+        selectedPrice={selectedPrice}
         isMyArticles={isMyArticles}
         userRank={userRank}
         process={process}
