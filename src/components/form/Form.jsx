@@ -12,6 +12,7 @@ import ImageAlert from "./ImageAlert";
 import ImageNumAlert from "./ImageNumAlert";
 import { useMutation } from "react-query";
 import { postCheck } from "api/formApi";
+// import heic2any from "heic2any";
 
 const Form = () => {
   const navigate = useNavigate();
@@ -81,32 +82,58 @@ const Form = () => {
   const handleAddImages = (e) => {
     setFiles([...files, ...e.target.files]);
 
-    console.log("file", files.length);
-    console.log("New file", e.target.files.length);
-
     if (files.length + e.target.files.length > 5) {
       setFiles(files.slice(0, 5));
-    }
-    console.log(files);
-    if (files.length + e.target.files.length <= 5) {
-      for (let i = 0; i < e.target.files.length; i++) {
-        if (e.target.files[i].size < 20000000) {
-          const reader = new FileReader();
-          reader.readAsDataURL(e.target.files[i]);
-          reader.onload = () => {
-            const previewImgUrl = reader.result;
-            setPreviewImg((previewImg) => [...previewImg, previewImgUrl]);
-          };
-        } else {
-          setOpenImageAlert(true);
-        }
-      }
-    } else {
-      setOpenImageNumberAlert(true);
+      return setOpenImageNumberAlert(true);
     }
 
+    for (let i = 0; i < e.target.files.length; i++) {
+      if (e.target.files[i].size > 20000000) {
+        return setOpenImageAlert(true);
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(e.target.files[i]);
+      reader.onload = () => {
+        const previewImgUrl = reader.result;
+        setPreviewImg((previewImg) => [...previewImg, previewImgUrl]);
+      };
+    }
     files.length >= 0 ? setValidImage(true) : setValidImage(false);
   };
+
+  // const element = e.target;
+  // const blob = element.files[0];
+
+  //   if (element.files && blob) {
+  //     const heicReader = new FileReader();
+  //     if (
+  //       blob.name.split(".")[1] === "heic" ||
+  //       blob.name.split(".")[1] === "HEIC"
+  //     ) {
+  //       let file;
+  //       (async () => {
+  //         const jpgFile = await heic2any({
+  //           blob,
+  //           toType: "image/jpeg",
+  //           quality: 0.5,
+  //         });
+  //         file = new File([jpgFile], blob.name.split(".")[0] + ".jpg", {
+  //           type: "image/jpeg",
+  //           lastModified: new Date().getTime(),
+  //         });
+  //         heicReader.readAsDataURL(file);
+  //         setFiles(file);
+  //         console.log(e.target.files[0]);
+  //         console.log(e.target.files[0]);
+  //         reader.onloadend = () => {
+  //           const previewImgUrl = reader.result;
+  //           setPreviewImg([previewImgUrl]);
+  //         };
+  //       })();
+  //     } else return;
+  //     console.log(files);
+  //     console.log(previewImg);
+  //   }
 
   const handleDeleteImage = (id) => {
     setPreviewImg(previewImg.filter((_, index) => index !== id));
@@ -136,16 +163,12 @@ const Form = () => {
   /* -------------------------------- 데이터 Post -------------------------------- */
   const { mutate: addCheck } = useMutation(postCheck, {
     onSuccess: () => {
-      console.log("성공!");
       navigate("/");
     },
-    onError: (err) => {
-      console.log(err);
-    },
+    onError: (err) => {},
   });
 
   const onSubmitHandler = async () => {
-    console.log("올려!!");
     let formData = new FormData();
     const dataSet = {
       title: title,
@@ -184,7 +207,7 @@ const Form = () => {
               type="file"
               id="input-file"
               multiple
-              accept="image/*"
+              accept="image/*,.heic"
             />
           </label>
           <StImageList validImage={validImage}>
