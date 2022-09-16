@@ -9,6 +9,7 @@ import SelectBox from "components/elements/SelectBox";
 import Textarea from "components/elements/Textarea";
 import ImageNumAlert from "components/form/ImageNumAlert";
 import ImageAlert from "components/form/ImageAlert";
+import ImageFileAlert from "components/form/ImageFileAlert";
 import LoadingMessage from "components/etc/LoadingMessage";
 import { getDetailCheck } from "api/detailApi";
 import { patchDetailCheck } from "api/editApi";
@@ -32,6 +33,7 @@ const EditForm = () => {
   /* IMAGE ALERT -------------------------------------------------------------- */
   const [openImageAlert, setOpenImageAlert] = useState(false);
   const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
+  const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
   /* VALIDATION : TITLE, PRICE, CONTENT --------------------------------------- */
   const [isValidTitle, setIsValidTitle] = useState(true);
   const [isValidPrice, setIsValidPrice] = useState(true);
@@ -86,6 +88,10 @@ const EditForm = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries("detailCheck");
     },
+    onError: (error) => {
+      navigate(`/detail/${id}`);
+      window.alert("게시글 수정을 실패했습니다.");
+    },
   });
 
   useEffect(() => {
@@ -104,6 +110,8 @@ const EditForm = () => {
 
       [...e.target.files].map((item) => {
         if (item.size > MAX_IMG_SIZE) return setOpenImageAlert(true);
+        if (item.name.split(".")[1] !== "png" || "jpg" || "jpeg")
+          return setOpenImageFileAlert(true);
         const reader = new FileReader();
         reader.readAsDataURL(item);
         reader.onload = () =>
@@ -133,7 +141,9 @@ const EditForm = () => {
       const { name, value } = e.target;
 
       if (name === "price") {
-        const { isValid, realPrice, previewPrice } = handlePrice(value);
+        const { isValid, realPrice, previewPrice } = handlePrice(
+          value.replace(" ", "")
+        );
         if (value.length === 0) {
           setEditText({ ...editText, price: "" });
           setPreviewPrice("");
@@ -251,6 +261,13 @@ const EditForm = () => {
               <Modal handleOpenModal={() => setOpenImageNumberAlert(false)}>
                 <ImageNumAlert
                   handleOpenModal={() => setOpenImageNumberAlert(false)}
+                />
+              </Modal>
+            )}
+            {openImageFileAlert && (
+              <Modal handleOpenModal={() => setOpenImageFileAlert(false)}>
+                <ImageFileAlert
+                  handleOpenModal={() => setOpenImageFileAlert(false)}
                 />
               </Modal>
             )}
