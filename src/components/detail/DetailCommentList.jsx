@@ -45,6 +45,7 @@ const DetailCommentList = ({ process, articlesId, isMyArticles }) => {
             commentVal={comment}
             isMyArticles={comments.data.isMyArticles}
             articlesId={articlesId}
+            process={process}
           />
         </li>
       ))}
