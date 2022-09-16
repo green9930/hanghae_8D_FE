@@ -11,12 +11,14 @@ import { useMutation } from "react-query";
 import Modal from "components/layout/Modal";
 import ImageAlert from "components/form/ImageAlert";
 import ImageNumAlert from "components/form/ImageNumAlert";
+import ImageFileAlert from "components/form/ImageFileAlert";
 import { postCheck } from "api/formApi";
 // import heic2any from "heic2any";
 
 const Form = () => {
   const [openImageAlert, setOpenImageAlert] = useState(false);
   const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
+  const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
   const [title, setTitle] = useState("");
   const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
   const [currentCategory, setCurrentCategory] = useState("");
@@ -84,6 +86,8 @@ const Form = () => {
     }
 
     for (let i = 0; i < e.target.files.length; i++) {
+      if (e.target.files[i].name.split(".")[1] !== "png" || "jpg" || "jpeg")
+        return setOpenImageFileAlert(true);
       if (e.target.files[i].size > 20000000) return setOpenImageAlert(true);
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[i]);
@@ -200,7 +204,7 @@ const Form = () => {
               type="file"
               id="input-file"
               multiple
-              accept="image/*,.heic"
+              accept=".png, .jpg, .jpeg"
             />
           </label>
           <StImageList validImage={validImage}>
@@ -228,6 +232,13 @@ const Form = () => {
             <Modal handleOpenModal={() => setOpenImageNumberAlert(false)}>
               <ImageNumAlert
                 handleOpenModal={() => setOpenImageNumberAlert(false)}
+              />
+            </Modal>
+          )}
+          {openImageFileAlert && (
+            <Modal handleOpenModal={() => setOpenImageFileAlert(false)}>
+              <ImageFileAlert
+                handleOpenModal={() => setOpenImageFileAlert(false)}
               />
             </Modal>
           )}
