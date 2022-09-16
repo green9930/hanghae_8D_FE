@@ -29,28 +29,20 @@ const KakaoLogin = () => {
               `${process.env.REACT_APP_BASE_URL}/api/subscribe`
             );
             msetEventSource(eventSource); //구독
-
-            eventSource.onopen = (event) => {
-              console.log("EVENTSOURCE OPENED");
-            };
             eventSource.onmessage = (event) => {
-              console.log("result", event.data);
               setData((old) => [...old, event.data]);
               setValue(event.data);
             };
             eventSource.onerror = (event) => {
-              console.log(event.target.readyState);
-              if (event.target.readyState === EventSource.CLOSED) {
-                console.log(
-                  "eventsource closed (" + event.target.readyState + ")"
-                );
-              }
+              // if (event.target.readyState === EventSource.CLOSED) {
+              //   console.log(
+              //     "eventsource closed (" + event.target.readyState + ")"
+              //   );
+              // }
               eventSource.close();
             };
-
             setListening(true);
           }
-          window.alert("LOGIN SUCCESS!");
           setIsLogin(true);
           navigate("/");
         } catch (err) {
@@ -62,7 +54,6 @@ const KakaoLogin = () => {
     }
     return () => {
       eventSource.close();
-      console.log("eventsource closed");
     };
   }, []);
 

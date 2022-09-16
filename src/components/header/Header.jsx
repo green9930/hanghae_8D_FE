@@ -13,8 +13,8 @@ const Header = ({ title }) => {
   const setTitleState = useSetRecoilState(myPageTitleState);
 
   const navigate = useNavigate();
-  const { HeaderLogo, MyPageLogo } = icons;
   const location = useLocation();
+  const { HeaderLogo, MyPageLogo } = icons;
 
   const clickNavigator = () => {
     setMyListState(false);
@@ -23,9 +23,8 @@ const Header = ({ title }) => {
     getCookie("accessToken") ? navigate("/mypage") : navigate("/login");
   };
 
-  const clickLogo = () => {
+  const clickLogo = () =>
     location.pathname === "/" ? window.location.reload() : navigate("/");
-  };
 
   return (
     <StHeader>

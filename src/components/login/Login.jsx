@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, NAVER_AUTH_URL } from "api/login";
 import Button from "components/elements/Button";
-import icons from "assets";
+import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, NAVER_AUTH_URL } from "api/login";
 import { colors, fontSize } from "styles/theme";
+import icons from "assets";
 
 const Login = () => {
   const { LogoKakao, LogoGoogle, LogoNaver } = icons;
