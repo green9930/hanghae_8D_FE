@@ -21,7 +21,6 @@ const GoogleLogin = () => {
       const google = async () => {
         try {
           const res = await instance.get(`/user/signin/google?code=${code}`);
-          console.log(res);
           if (await res.headers.authorization) {
             setCookie("accessToken", res.headers.authorization);
             setCookie("refreshToken", res.headers.refreshtoken);
