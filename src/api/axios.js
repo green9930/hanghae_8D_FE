@@ -75,9 +75,9 @@ tokenInstance.interceptors.response.use(
       }
     } catch (error) {
       console.log("GET NEW ACCESSTOKEN : FAIL", error);
-      // removeCookie("accessToken");
-      // removeCookie("refreshToken");
-      // window.location.href = "/";
+      removeCookie("accessToken");
+      removeCookie("refreshToken");
+      window.location.href = "/";
       return false;
     }
     return Promise.reject(error);
@@ -149,9 +149,9 @@ tokenImageInstance.interceptors.response.use(
       }
     } catch (error) {
       console.log("GET NEW ACCESSTOKEN : FAIL", error);
-      // removeCookie("accessToken");
-      // removeCookie("refreshToken");
-      // window.location.href = "/";
+      removeCookie("accessToken");
+      removeCookie("refreshToken");
+      window.location.href = "/";
       return false;
     }
     return Promise.reject(error);
@@ -224,9 +224,9 @@ tokenAlertInstance.interceptors.response.use(
       }
     } catch (error) {
       console.log("GET NEW ACCESSTOKEN : FAIL", error);
-      // removeCookie("accessToken");
-      // removeCookie("refreshToken");
-      // window.location.href = "/";
+      removeCookie("accessToken");
+      removeCookie("refreshToken");
+      window.location.href = "/";
       return false;
     }
     return Promise.reject(error);
