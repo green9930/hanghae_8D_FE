@@ -1,14 +1,14 @@
 import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
-import Button from "components/elements/Button";
 import Modal from "components/layout/Modal";
+import Button from "components/elements/Button";
 import DeleteAlert from "components/detail/DeleteAlert";
 import SelectAlert from "components/detail/SelectAlert";
-import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
-import icons from "assets/index";
-import { useMutation, useQueryClient } from "react-query";
 import { selectComment } from "api/detailApi";
+import { colors } from "styles/theme";
+import icons from "assets";
 
 const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
   const {
@@ -28,9 +28,9 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
   const { BSalectPurple, BSalectWhite, IconTrash } = icons;
 
   const queryClient = useQueryClient();
+
   const { mutate: selectMutate } = useMutation(selectComment, {
     onSuccess: (data) => {
-      console.log("SELECT COMMENT", data);
       queryClient.invalidateQueries("detailCheck");
       queryClient.invalidateQueries("checkComments");
     },
@@ -42,6 +42,8 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
   };
 
   const handleDeleteComment = () => setOpenDeleteAlert(true);
+  const handleSelectAlert = () => setOpenSelectAlert(false);
+  const handleDeleteAlert = () => setOpenDeleteAlert(false);
 
   return (
     <>
@@ -97,19 +99,19 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
         </StPriceComment>
       )}
       {openSelectAlert && (
-        <Modal handleOpenModal={() => setOpenSelectAlert(false)}>
+        <Modal handleOpenModal={handleSelectAlert}>
           <SelectAlert
             nickName={nickName}
-            handleOpenModal={() => setOpenSelectAlert(false)}
+            handleOpenModal={handleSelectAlert}
           />
         </Modal>
       )}
       {openDeleteAlert && (
-        <Modal handleOpenModal={() => setOpenDeleteAlert(false)}>
+        <Modal handleOpenModal={handleDeleteAlert}>
           <DeleteAlert
             isArticle={false}
             commentsId={commentsId}
-            handleOpenModal={() => setOpenDeleteAlert(false)}
+            handleOpenModal={handleDeleteAlert}
           />
         </Modal>
       )}

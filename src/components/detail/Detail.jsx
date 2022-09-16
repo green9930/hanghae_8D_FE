@@ -16,7 +16,6 @@ const Detail = ({ page }) => {
     () => getDetailCheck(page),
     {
       onSuccess: (data) => {
-        // console.log("GET DETAIL CHECK", data.data);
         setDetailCheckState(data.data);
       },
     }
@@ -62,16 +61,14 @@ const Detail = ({ page }) => {
         process={process}
         createdAt={createdAt}
       />
-      <StCommentContainer>
-        <StCommment>
-          <StCommentList>
-            <DetailCommentList process={process} articlesId={page} />
-          </StCommentList>
-          {process === "진행중" ? (
-            <DetailCommentForm isMyArticles={isMyArticles} articlesId={page} />
-          ) : null}
-        </StCommment>
-      </StCommentContainer>
+      <StCommment>
+        <StCommentList>
+          <DetailCommentList process={process} articlesId={page} />
+        </StCommentList>
+        {process === "진행중" ? (
+          <DetailCommentForm isMyArticles={isMyArticles} articlesId={page} />
+        ) : null}
+      </StCommment>
     </StDetail>
   );
 };
@@ -83,8 +80,6 @@ const StDetail = styled.div`
   min-height: 100vh;
   height: 100%;
 `;
-
-const StCommentContainer = styled.div``;
 
 const StCommment = styled.div`
   position: relative;
