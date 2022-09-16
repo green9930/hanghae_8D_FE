@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
 import Button from "components/elements/Button";
@@ -7,9 +8,8 @@ import Input from "components/elements/Input";
 import CommentNumAlert from "components/detail/CommentNumAlert";
 import handlePrice from "utils/handlePrice";
 import { postComment } from "api/detailApi";
-import { colors, fontSize } from "styles/theme";
-import { useSetRecoilState } from "recoil";
 import { commentRefState } from "state/atom";
+import { colors, fontSize } from "styles/theme";
 
 const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   const [commentPrice, setCommentPrice] = useState("");
@@ -33,9 +33,9 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   const MAX_LENGTH_TEXT = 80;
 
   const queryClient = useQueryClient();
+
   const { mutate: postMutate } = useMutation(postComment, {
     onSuccess: (data) => {
-      console.log("POST COMMENTS", data);
       queryClient.invalidateQueries("checkComments");
       setCommentText({ ...commentText, comment: "" });
       setRealCommentPrice({ ...realCommentPrice, comment: "" });

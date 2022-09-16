@@ -88,14 +88,14 @@ const DetailDesc = ({
               </button>
             </>
           ) : (
-            <StDesc isShow={true}>
+            <>
               {content.split("\n").map((val, idx) => (
                 <React.Fragment key={`${val}-${idx}`}>
                   {val}
                   <br />
                 </React.Fragment>
               ))}
-            </StDesc>
+            </>
           )}
         </StDesc>
       )}

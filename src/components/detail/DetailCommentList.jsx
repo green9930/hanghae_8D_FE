@@ -7,15 +7,16 @@ import { getComments } from "api/detailApi";
 import { commentRefState } from "state/atom";
 
 const DetailCommentList = ({ process, articlesId }) => {
-  const [refState, setRefState] = useRecoilState(commentRefState);
   const commentRef = useRef();
   const mountRef = useRef(false);
+
+  const [refState, setRefState] = useRecoilState(commentRefState);
 
   const { isLoading, data: comments } = useQuery(
     "checkComments",
     () => getComments(articlesId),
     {
-      onSuccess: (data) => {},
+      onError: (error) => {},
     }
   );
 

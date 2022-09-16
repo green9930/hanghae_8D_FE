@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
-import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
+import styled from "styled-components";
 import Button from "components/elements/Button";
-import { colors, fontSize } from "styles/theme";
 import { deleteComment, deleteDetailCheck } from "api/detailApi";
 import { commentRefState } from "state/atom";
+import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 
 const DeleteAlert = ({
@@ -20,9 +20,9 @@ const DeleteAlert = ({
   const { IconTrash } = icons;
 
   const queryClient = useQueryClient();
+
   const { mutate: detailDeleteMutate } = useMutation(deleteDetailCheck, {
     onSuccess: (data) => {
-      console.log("DELETE DETAIL", data);
       queryClient.invalidateQueries("detailCheck");
       handleOpenModal();
       navigate(-1);
@@ -31,7 +31,6 @@ const DeleteAlert = ({
 
   const { mutate: commentDeleteMutate } = useMutation(deleteComment, {
     onSuccess: (data) => {
-      console.log("DELETE COMMENTS", data);
       setCommentRefState(false);
       queryClient.invalidateQueries("checkComments");
       handleOpenModal();
