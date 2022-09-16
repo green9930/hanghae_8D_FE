@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
+import { colors } from "styles/theme";
 import icons from "assets";
-import { colors} from "styles/theme";
 
-const SelectBox = ({ data, size,currentValue,handleOnChangeSelectValue }) => {
-  const { IconArrow } = icons;
+const SelectBox = ({ data, size, currentValue, handleOnChangeSelectValue }) => {
   const [showOptions, setShowOptions] = useState(false);
-
   const modalRef = useRef();
+
+  const { IconArrow } = icons;
 
   useEffect(() => {
     document.addEventListener("mousedown", clickModalOutside);
-
     return () => {
       document.removeEventListener("mousedown", clickModalOutside);
     };
@@ -69,7 +68,7 @@ const StSelectBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  ${({size}) => {
+  ${({ size }) => {
     return (
       size === "small" &&
       css`
@@ -78,14 +77,13 @@ const StSelectBox = styled.div`
         width: 120px;
         border: 1px solid ${colors.grey3};
         padding: 3px 5px;
-    
       `
     );
   }}
 `;
 const StArrow = styled.div`
   padding-left: 10px;
-  ${({size}) => {
+  ${({ size }) => {
     return (
       size === "small" &&
       css`
@@ -102,21 +100,26 @@ const StLabel = styled.label`
   text-align: center;
   width: 100%;
   padding-right: 10px;
+
   span {
+    text-align: center;
     font-size: 16px;
     letter-spacing: -0.5px;
-    text-align: center;
-    color: ${({currentValue}) =>
-      currentValue === "카테고리를 선택해 주세요." ? `${colors.grey3}`: `${colors.black}`};
-    ${({size}) => {
+    color: ${({ currentValue }) =>
+      currentValue === "카테고리를 선택해 주세요."
+        ? `${colors.grey3}`
+        : `${colors.black}`};
+    ${({ size }) => {
       return (
         size === "small" &&
         css`
-          color: ${({currentValue}) =>
-            currentValue === "카테고리 전체" ? `${colors.grey3}`: `${colors.black}`};
+          color: ${({ currentValue }) =>
+            currentValue === "카테고리 전체"
+              ? `${colors.grey3}`
+              : `${colors.black}`};
           font-size: 12px;
           padding-right: 4px;
-          font-family: 'twayfly', 'Noto Sans KR', sans-serif
+          font-family: "twayfly", "Noto Sans KR", sans-serif;
         `
       );
     }};
@@ -129,23 +132,23 @@ const StSelectOptions = styled.ul`
   top: 100%;
   left: 50%;
   transform: translate(-50%, 0%);
-  width: 100%;
   overflow: scroll;
+  width: 100%;
   height: 190px;
-  max-height: ${({show}) => (show ? "none" : "0")};
+  max-height: ${({ show }) => (show ? "none" : "0")};
   padding: 0;
-  border-radius: 8px;
-  background-color:  ${colors.white};
+  background-color: ${colors.white};
   color: ${colors.grey1};
-  border: ${({show}) => (show ? `0.5px solid ${colors.grey3}` : 0)};
-  ${({size}) => {
+  border: ${({ show }) => (show ? `0.5px solid ${colors.grey3}` : 0)};
+  border-radius: 8px;
+  ${({ size }) => {
     return (
       size === "small" &&
       css`
         top: 23px;
         height: 100px;
         width: 120px;
-        border: ${({show}) => (show ? ` 1px solid ${colors.grey3}` : 0)};
+        border: ${({ show }) => (show ? ` 1px solid ${colors.grey3}` : 0)};
       `
     );
   }};
@@ -159,13 +162,13 @@ const StOption = styled.li`
   &:hover {
     font-weight: 600;
   }
-  ${({size}) => {
+  ${({ size }) => {
     return (
       size === "small" &&
       css`
         padding: 6px 10px;
         font-size: 12px;
-        font-family: 'twayfly', 'Noto Sans KR', sans-serif;
+        font-family: "twayfly", "Noto Sans KR", sans-serif;
       `
     );
   }}
