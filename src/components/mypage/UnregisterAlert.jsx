@@ -11,11 +11,11 @@ const UnregisterAlert = ({ handleOpenModal }) => {
 
   const { MainArrow } = icons;
 
-  const handleUnregister = async () => {
-    await deleteMyProfile();
-    await removeCookie("accessToken");
-    await removeCookie("refreshToken");
-    await setIsUnregister(true);
+  const handleUnregister = () => {
+    deleteMyProfile();
+    removeCookie("accessToken");
+    removeCookie("refreshToken");
+    setIsUnregister(true);
     window.location.reload("/");
   };
 

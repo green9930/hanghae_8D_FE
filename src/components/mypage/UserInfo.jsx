@@ -15,10 +15,11 @@ import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 
 const UserInfo = () => {
+  const [isOpenRankModal, setIsOpenRankModal] = useState(false);
+
   const setTitleState = useSetRecoilState(myPageTitleState);
   const [isOpenMyList, setIsOpenMyList] = useRecoilState(myListState);
   const [isOpenAlarmList, setIsOpenAlarmList] = useRecoilState(alarmListState);
-  const [isOpenRankModal, setIsOpenRankModal] = useState(false);
 
   const { List, Alarm, RankList } = icons;
   const fullUserRank = (rank) => {
@@ -38,32 +39,30 @@ const UserInfo = () => {
     }
   };
 
-  /* ------------------------------- 게시물 수 read ------------------------------- */
-  const { isLoading, data } = useQuery("myprofile", getMyProfile, {
-    refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      console.log("GET MYPROFILE", data);
-    },
-  });
+  const { isLoading: myProfileLoading, data: myProfileData } = useQuery(
+    "myprofile",
+    getMyProfile,
+    {
+      onSuccess: (data) => {},
+      refetchOnWindowFocus: false,
+    }
+  );
 
-  /* -------------------------------- 알림 수 read ------------------------------- */
+  const { isLoading: alertNotiLoading, data: alertNotiData } = useQuery(
+    "alertNoti",
+    getMyNotification,
+    {
+      onSuccess: (data) => {},
+      refetchOnWindowFocus: false,
+    }
+  );
 
-  const alertNotification = useQuery("alertNoti", getMyNotification, {
-    refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: () => {},
-  });
-
-  if (isLoading) return null;
+  if (myProfileLoading) return null;
 
   const { articleCount, nickName, userEmail, userRank, userPoint } =
-    data.data.data;
+    myProfileData.data.data;
 
-  if (alertNotification.isLoading) {
-    return null;
-  }
+  if (alertNotiLoading) return null;
 
   const handleShowMyList = () => {
     setIsOpenMyList(true);
@@ -79,11 +78,7 @@ const UserInfo = () => {
     setTitleState("알림");
   };
 
-  const handleShowRankModal = () => {
-    setIsOpenRankModal(true);
-    setIsOpenMyList(false);
-    setIsOpenAlarmList(false);
-  };
+  const handleShowRankModal = () => setIsOpenRankModal(!isOpenRankModal);
 
   return (
     <UserInfoContainer>
@@ -116,7 +111,7 @@ const UserInfo = () => {
                 <Alarm />
                 <StText>
                   <span>알림</span>
-                  <span>{alertNotification.data.data.count}개</span>
+                  <span>{alertNotiData.data.count}개</span>
                 </StText>
               </Button>
             </StBtn>
@@ -130,11 +125,8 @@ const UserInfo = () => {
             </StBtn>
           </StActivities>
           {isOpenRankModal && (
-            <Modal
-              height="354px"
-              handleOpenModal={() => setIsOpenRankModal(false)}
-            >
-              <RankModal handleOpenModal={() => setIsOpenRankModal(false)} />
+            <Modal height="354px" handleOpenModal={handleShowRankModal}>
+              <RankModal handleOpenModal={handleShowRankModal} />
             </Modal>
           )}
           <MyPageFooter />
