@@ -16,7 +16,6 @@ const NaverLogin = () => {
       const naver = async () => {
         try {
           const res = await instance.get(`/user/signin/naver?code=${code}`);
-          console.log(res);
           if (await res.headers.authorization) {
             setCookie("accessToken", res.headers.authorization);
             setCookie("refreshToken", res.headers.refreshtoken);
