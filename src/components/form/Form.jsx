@@ -70,7 +70,7 @@ const Form = () => {
       target = value.substr(0, 400);
       setDesc(target);
       target.length >= 0 ? setValidDesc(true) : setValidDesc(false);
-      target.length > 14 ? setValidLengthDesc(true) : setValidLengthDesc(false);
+      target.length >= 0 ? setValidLengthDesc(true) : setValidLengthDesc(false);
     }
   };
 
