@@ -39,13 +39,14 @@ const StMessage = styled.div`
     text-align: center;
     font-size: ${fontSize.large22};
     line-height: 30px;
-    letter-spacing:-5%;
+    letter-spacing: -5%;
   }
+
   span {
     font-weight: 700;
     font-size: ${fontSize.large22};
     line-height: 30px;
-    letter-spacing:-5%;
+    letter-spacing: -5%;
   }
 `;
 

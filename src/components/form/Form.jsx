@@ -7,38 +7,34 @@ import { useState } from "react";
 import icons from "assets";
 import { colors } from "styles/theme";
 import { useNavigate } from "react-router-dom";
-import Modal from "components/layout/Modal";
-import ImageAlert from "./ImageAlert";
-import ImageNumAlert from "./ImageNumAlert";
 import { useMutation } from "react-query";
+import Modal from "components/layout/Modal";
+import ImageAlert from "components/form/ImageAlert";
+import ImageNumAlert from "components/form/ImageNumAlert";
 import { postCheck } from "api/formApi";
 // import heic2any from "heic2any";
 
 const Form = () => {
-  const navigate = useNavigate();
-
   const [openImageAlert, setOpenImageAlert] = useState(false);
   const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
-
-  const { IconPlus, IconX } = icons;
   const [title, setTitle] = useState("");
   const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
   const [currentCategory, setCurrentCategory] = useState("");
   const [price, setPrice] = useState("");
   const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
-
   const [files, setFiles] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
-
   /* ---------------------------------- 유효성검사 --------------------------------- */
-
   const [validTitle, setValidTitle] = useState(true);
   const [validImage, setValidImage] = useState(true);
   const [validCategory, setValidCategory] = useState(true);
   const [validPrice, setValidPrice] = useState(true);
   const [validLengthDesc, setValidLengthDesc] = useState(true);
   const [validDesc, setValidDesc] = useState(true);
+
+  const navigate = useNavigate();
+  const { IconPlus, IconX } = icons;
 
   const checkVali =
     title.trim().length > 0 &&
@@ -88,9 +84,7 @@ const Form = () => {
     }
 
     for (let i = 0; i < e.target.files.length; i++) {
-      if (e.target.files[i].size > 20000000) {
-        return setOpenImageAlert(true);
-      }
+      if (e.target.files[i].size > 20000000) return setOpenImageAlert(true);
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[i]);
       reader.onload = () => {
@@ -141,7 +135,6 @@ const Form = () => {
   };
 
   /* ----------------------------- 카테고리 select-box ---------------------------- */
-
   const data = [
     { key: 1, value: "디지털/생활가전", category: "digital" },
     { key: 2, value: "의류/잡화", category: "clothes" },
@@ -308,6 +301,7 @@ const StTitleInput = styled.div`
         return validTitle ? `${colors.grey3}` : `${colors.red}`;
       }};
     }
+
     border-color: ${({ validTitle }) =>
       validTitle ? `${colors.grey3}` : `${colors.red}`};
   }
@@ -322,6 +316,7 @@ const StSelectBox = styled.div`
     border-color: ${({ validCategory }) =>
       validCategory ? `${colors.grey3}` : `${colors.red}`};
   }
+
   svg {
     fill: ${({ validCategory }) =>
       validCategory ? `${colors.grey3}` : `${colors.red}`};
@@ -330,6 +325,7 @@ const StSelectBox = styled.div`
 
 const StPriceInput = styled.div`
   position: relative;
+
   input {
     ::placeholder {
       color: ${({ validPrice }) =>
@@ -338,6 +334,7 @@ const StPriceInput = styled.div`
     border-color: ${({ validPrice }) =>
       validPrice ? `${colors.grey3}` : `${colors.red}`};
   }
+
   span {
     position: absolute;
     top: 50%;
@@ -353,17 +350,21 @@ const StPreview = styled.div`
   justify-content: left;
   height: 70px;
   align-items: center;
+
   input {
     display: none;
   }
 `;
+
 const StImageList = styled.div`
   padding-left: 10px;
   overflow: scroll;
+
   div {
     display: flex;
     gap: 4px;
   }
+
   p {
     font-size: 16px;
     letter-spacing: -0.5px;
@@ -371,14 +372,17 @@ const StImageList = styled.div`
       validImage ? `${colors.grey3}` : `${colors.red}`};
   }
 `;
+
 const StImage = styled.div`
   position: relative;
 `;
+
 const StImg = styled.img`
   width: 70px;
   height: 70px;
   object-fit: cover;
 `;
+
 const StBtn = styled.button`
   position: absolute;
   right: 0;
@@ -390,6 +394,7 @@ const StBtn = styled.button`
   background-color: ${colors.black};
   opacity: 0.3;
 `;
+
 const StThirdWrap = styled.div`
   padding: 20px 35px 0 35px;
 
@@ -402,6 +407,7 @@ const StThirdWrap = styled.div`
       ${({ validLengthDesc }) =>
         validLengthDesc ? `${colors.grey3}` : `${colors.red}`};
   }
+
   p {
     font-size: 12px;
     letter-spacing: -3%;
@@ -411,6 +417,7 @@ const StThirdWrap = styled.div`
     text-align: right;
   }
 `;
+
 const StButton = styled.div`
   position: fixed;
   bottom: 30px;
