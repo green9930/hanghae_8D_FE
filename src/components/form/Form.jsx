@@ -13,6 +13,7 @@ import ImageAlert from "components/form/ImageAlert";
 import ImageNumAlert from "components/form/ImageNumAlert";
 import ImageFileAlert from "components/form/ImageFileAlert";
 import { postCheck } from "api/formApi";
+import handlePrice from "utils/handlePrice";
 // import heic2any from "heic2any";
 
 const Form = () => {
@@ -45,11 +46,6 @@ const Form = () => {
     price.trim().length > 0 &&
     files.length >= 0;
 
-  const priceVali = (text) => {
-    const regExp = /^[0-9\s+]*$/g;
-    return regExp.test(text);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     let target = "";
@@ -60,14 +56,12 @@ const Form = () => {
     }
 
     if (name === "price") {
-      target = value.replaceAll(",", "").substr(0, 8);
-      if (priceVali(target)) {
-        setRealPrice(target);
-        priceVali(target) &&
-          setPrice(target.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-        target.length >= 0 ? setValidPrice(true) : setValidPrice(false);
-      }
+      const { realPrice, previewPrice } = handlePrice(value.replace(" ", ""));
+      value.length >= 0 ? setValidPrice(true) : setValidPrice(false);
+      setRealPrice(realPrice);
+      setPrice(previewPrice);
     }
+
     if (name === "desc") {
       target = value.substr(0, 400);
       setDesc(target);
@@ -268,7 +262,7 @@ const Form = () => {
               value={price}
               name="price"
             />
-            {price.trim().length > 0 ? <span>원</span> : null}
+            {price?.trim().length ? <span>원</span> : null}
           </StPriceInput>
         </StSecondWrap>
       </StFirstWrap>
