@@ -3,10 +3,11 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter } from "react-router-dom";
-import GlobalStyle from "styles/GlobalStyle";
-import App from "./App";
 import { RecoilRoot } from "recoil";
+import App from "./App";
 import LoadingMessage from "components/etc/LoadingMessage";
+import ScrollToTop from "components/etc/ScrollToTop";
+import GlobalStyle from "styles/GlobalStyle";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,6 +23,7 @@ root.render(
     <Suspense fallback={<LoadingMessage />}>
       <GlobalStyle />
       <BrowserRouter>
+        <ScrollToTop />
         <QueryClientProvider client={queryClient}>
           <RecoilRoot>
             <ReactQueryDevtools initialIsOpen={true} />
