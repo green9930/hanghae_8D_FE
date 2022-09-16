@@ -29,8 +29,8 @@ const MyPageFooter = () => {
 
   const handleUnregisterAlert = () => {
     setOpenUnregisterAlert(false);
-    setIsLogin(false);
-    navigate("/");
+    setIsLogin(true);
+    navigate("/mypage");
   };
 
   return (
