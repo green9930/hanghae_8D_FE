@@ -21,16 +21,14 @@ export const tokenInstance = axios.create({
 
 /* REQUEST INTERCEPTORS ----------------------------------------------------- */
 tokenInstance.interceptors.request.use(
+  // 요청이 전달되기 전에 작업 수행
   (config) => {
-    // 요청이 전달되기 전에 작업 수행
-    // console.log("REQUEST INTERCEPTORS : SUCCESS");
     const accessToken = getCookie("accessToken");
     config.headers.Authorization = `${accessToken}`;
     return config;
   },
   (error) => {
     // 요청 오류가 있는 작업 수행
-    console.log("REQUEST INTERCEPTORS : FAILED", error);
     return Promise.reject(error);
   }
 );
@@ -39,7 +37,6 @@ tokenInstance.interceptors.request.use(
 tokenInstance.interceptors.response.use(
   (response) => {
     // 응답 데이터가 있는 작업 수행 : STATUS CODE 2XX
-    // console.log("RESPONSE INTERCEPTORS : SUCCESS");
     return response;
   },
   async (error) => {
@@ -49,10 +46,8 @@ tokenInstance.interceptors.response.use(
       const { message, response, config } = error;
       const originalRequest = config;
 
-      // ERROR CODE 수정 필요
       if (message === "Network Error" || response.data.errorCode === "400") {
         const refreshToken = getCookie("refreshToken");
-        console.log("REFRESHTOKEN", refreshToken);
         /* GET : NEW ACCESSTOKEN ---------------------------------------------------- */
         const response = await axios({
           method: "get",
@@ -62,161 +57,11 @@ tokenInstance.interceptors.response.use(
             refreshToken: refreshToken,
           },
         });
-        console.log("GET NEW ACCESSTOKEN : SUCCESS", response);
         /* CHANGE ACCESSTOKEN ------------------------------------------------------- */
-        console.log(
-          "NEW ACCESSTOKEN AUTHORIZATION",
-          response.headers.authorization
-        );
-        originalRequest.headers.Authorization = response.headers.authorization;
-        removeCookie("accessToken");
-        setCookie("accessToken", response.headers.authorization);
-        return axios(originalRequest);
-      }
-    } catch (error) {
-      console.log("GET NEW ACCESSTOKEN : FAIL", error);
-      removeCookie("accessToken");
-      removeCookie("refreshToken");
-      window.location.href = "/";
-      return false;
-    }
-    return Promise.reject(error);
-  }
-);
-
-/* IMAGE INSTANCE WITH TOKEN ------------------------------------------------------ */
-export const tokenImageInstance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
-  headers: {
-    "Content-Type": "multipart/form-data",
-    responseType: "blob",
-  },
-});
-
-/*IMAGE REQUEST INTERCEPTORS ----------------------------------------------------- */
-tokenImageInstance.interceptors.request.use(
-  (config) => {
-    // 요청이 전달되기 전에 작업 수행
-    console.log("REQUEST INTERCEPTORS : SUCCESS");
-    const accessToken = getCookie("accessToken");
-    config.headers.Authorization = `${accessToken}`;
-    return config;
-  },
-  (error) => {
-    // 요청 오류가 있는 작업 수행
-    console.log("REQUEST INTERCEPTORS : FAILED", error);
-    return Promise.reject(error);
-  }
-);
-
-/*IMAGE RESPONSE INTERCEPTORS ---------------------------------------------------- */
-tokenImageInstance.interceptors.response.use(
-  (response) => {
-    // 응답 데이터가 있는 작업 수행 : STATUS CODE 2XX
-    console.log("RESPONSE INTERCEPTORS : SUCCESS");
-    return response;
-  },
-  async (error) => {
-    // 응답 오류가 있는 작업 수행 : STATUS CODE WITHOUT 2XX
-    console.log("RESPONSE INTERCEPTORS : FAILED", error);
-    try {
-      const { message, response, config } = error;
-      const originalRequest = config;
-
-      // ERROR CODE 수정 필요
-      if (message === "Network Error" || response.data.errorCode === "400") {
-        const refreshToken = getCookie("refreshToken");
-        console.log("REFRESHTOKEN", refreshToken);
-        /* GET : NEW ACCESSTOKEN ---------------------------------------------------- */
-        const response = await axios({
-          method: "get",
-          url: `${process.env.REACT_APP_BASE_URL}/auth/user/token`,
-          headers: {
-            "Content-Type": "application/json",
-            refreshToken: refreshToken,
-          },
-        });
-        console.log("GET NEW ACCESSTOKEN : SUCCESS", response);
-        /* CHANGE ACCESSTOKEN ------------------------------------------------------- */
-        console.log(
-          "NEW ACCESSTOKEN AUTHORIZATION",
-          response.headers.authorization
-        );
-        originalRequest.headers.Authorization = response.headers.authorization;
-        removeCookie("accessToken");
-        setCookie("accessToken", response.headers.authorization);
-        return axios(originalRequest);
-      }
-    } catch (error) {
-      console.log("GET NEW ACCESSTOKEN : FAIL", error);
-      removeCookie("accessToken");
-      removeCookie("refreshToken");
-      window.location.href = "/";
-      return false;
-    }
-    return Promise.reject(error);
-  }
-);
-
-/* Alert INSTANCE WITH TOKEN ------------------------------------------------------ */
-export const tokenAlertInstance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
-  headers: {
-    Connection: "keep-alive",
-    "Content-Type": "text/event-stream",
-    "Cache-Control": "no-cache",
-  },
-});
-
-/*Alert REQUEST INTERCEPTORS ----------------------------------------------------- */
-tokenAlertInstance.interceptors.request.use(
-  (config) => {
-    // 요청이 전달되기 전에 작업 수행
-    console.log("REQUEST INTERCEPTORS : SUCCESS");
-    const accessToken = getCookie("accessToken");
-    config.headers.Authorization = `${accessToken}`;
-    return config;
-  },
-  (error) => {
-    // 요청 오류가 있는 작업 수행
-    console.log("REQUEST INTERCEPTORS : FAILED", error);
-    return Promise.reject(error);
-  }
-);
-
-/*Alert RESPONSE INTERCEPTORS ---------------------------------------------------- */
-tokenAlertInstance.interceptors.response.use(
-  (response) => {
-    // 응답 데이터가 있는 작업 수행 : STATUS CODE 2XX
-    console.log("RESPONSE INTERCEPTORS : SUCCESS");
-    return response;
-  },
-  async (error) => {
-    // 응답 오류가 있는 작업 수행 : STATUS CODE WITHOUT 2XX
-    console.log("RESPONSE INTERCEPTORS : FAILED", error);
-    try {
-      const { message, response, config } = error;
-      const originalRequest = config;
-
-      // ERROR CODE 수정 필요
-      if (message === "Network Error" || response.data.errorCode === "400") {
-        const refreshToken = getCookie("refreshToken");
-        console.log("REFRESHTOKEN", refreshToken);
-        /* GET : NEW ACCESSTOKEN ---------------------------------------------------- */
-        const response = await axios({
-          method: "get",
-          url: `${process.env.REACT_APP_BASE_URL}/auth/user/token`,
-          headers: {
-            "Content-Type": "application/json",
-            refreshToken: refreshToken,
-          },
-        });
-        console.log("GET NEW ACCESSTOKEN : SUCCESS", response);
-        /* CHANGE ACCESSTOKEN ------------------------------------------------------- */
-        console.log(
-          "NEW ACCESSTOKEN AUTHORIZATION",
-          response.headers.authorization
-        );
+        // console.log(
+        //   "NEW ACCESSTOKEN AUTHORIZATION"
+        //   response.headers.authorization
+        // );
         originalRequest.headers.Authorization = response.headers.authorization;
         removeCookie("accessToken");
         setCookie("accessToken", response.headers.authorization);
