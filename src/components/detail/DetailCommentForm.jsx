@@ -1,19 +1,17 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import styled from "styled-components";
+import Modal from "components/layout/Modal";
 import Button from "components/elements/Button";
 import Input from "components/elements/Input";
-import styled from "styled-components";
-import { colors, fontSize } from "styles/theme";
-import { useMutation, useQueryClient } from "react-query";
-import { postComment } from "api/detailApi";
+import CommentNumAlert from "components/detail/CommentNumAlert";
 import handlePrice from "utils/handlePrice";
-import Modal from "components/layout/Modal";
-import CommentNumAlert from "./CommentNumAlert";
+import { postComment } from "api/detailApi";
+import { colors, fontSize } from "styles/theme";
 import { useSetRecoilState } from "recoil";
-import { commentScrollState } from "state/atom";
+import { commentRefState } from "state/atom";
 
 const DetailCommentForm = ({ isMyArticles, articlesId }) => {
-  const setCommentScrollState = useSetRecoilState(commentScrollState);
-  const commentRef = useRef();
   const [commentPrice, setCommentPrice] = useState("");
   const [realCommentPrice, setRealCommentPrice] = useState({
     articlesId: articlesId,
@@ -30,24 +28,23 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   const [openCommentNumAlert, setOpenCommentNumAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const setCommentRefState = useSetRecoilState(commentRefState);
+
   const MAX_LENGTH_TEXT = 80;
 
   const queryClient = useQueryClient();
   const { mutate: postMutate } = useMutation(postComment, {
     onSuccess: (data) => {
       console.log("POST COMMENTS", data);
-      // console.log("commentRef.current", commentRef.current);
-      // commentRef.current.focus();
       queryClient.invalidateQueries("checkComments");
       setCommentText({ ...commentText, comment: "" });
       setRealCommentPrice({ ...realCommentPrice, comment: "" });
       setCommentPrice("");
       setIsTextActive(false);
       setIsPriceActive(false);
-      setCommentScrollState(true);
+      setCommentRefState(true);
     },
     onError: ({ response }) => {
-      console.log("POST COMMENT ERROR", response.data.errorMessage); // 댓글은 10개 이상 작성이 불가능합니다.
       setErrorMessage(response.data.errorMessage);
       setOpenCommentNumAlert(true);
       setCommentPrice("");
@@ -62,7 +59,6 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
     let target = "";
     if (name === "price") {
       const { isValid, realPrice, previewPrice } = handlePrice(value);
-      console.log(isValid, realPrice, previewPrice);
       isValid ? setIsPriceActive(true) : setIsPriceActive(false);
       setRealCommentPrice({ ...realCommentPrice, comment: realPrice });
       setCommentPrice(previewPrice);
@@ -76,21 +72,22 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
 
   const handleSubmitPrice = (e) => {
     e.preventDefault();
-    console.log("REALCOMMENTPRICE", realCommentPrice);
     postMutate(realCommentPrice);
   };
 
   const handleSubmitText = (e) => {
     e.preventDefault();
-    console.log("REALCOMMENTTEXT", commentText);
     postMutate(commentText);
   };
 
   return (
-    <StCommentFormContainer>
-      {!isMyArticles && (
-        <form onSubmit={handleSubmitPrice}>
-          <StPriceInput isPriceActive={isPriceActive}>
+    <>
+      <StCommentFormContainer>
+        {!isMyArticles && (
+          <StPriceForm
+            isPriceActive={isPriceActive}
+            onSubmit={handleSubmitPrice}
+          >
             <Input
               value={commentPrice}
               name="price"
@@ -106,36 +103,36 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
             >
               <span>가격 전송</span>
             </Button>
-          </StPriceInput>
-        </form>
-      )}
-      <StTextForm onSubmit={handleSubmitText}>
-        <StTextInput>
-          <Input
-            value={commentText.comment}
-            name="text"
-            onChangeHandler={handleChange}
-            theme="comment"
-          />
-          <Button
-            type="submit"
-            variant="text"
-            theme="transparent"
-            isDisabled={!isTextActive}
-          >
-            <span>전송</span>
-          </Button>
-        </StTextInput>
-      </StTextForm>
-      {openCommentNumAlert && (
-        <Modal handleOpenModal={() => setOpenCommentNumAlert(false)}>
-          <CommentNumAlert
-            message={errorMessage}
-            handleOpenModal={() => setOpenCommentNumAlert(false)}
-          />
-        </Modal>
-      )}
-    </StCommentFormContainer>
+          </StPriceForm>
+        )}
+        <StTextForm onSubmit={handleSubmitText}>
+          <StTextInput>
+            <Input
+              value={commentText.comment}
+              name="text"
+              onChangeHandler={handleChange}
+              theme="comment"
+            />
+            <Button
+              type="submit"
+              variant="text"
+              theme="transparent"
+              isDisabled={!isTextActive}
+            >
+              <span>전송</span>
+            </Button>
+          </StTextInput>
+        </StTextForm>
+        {openCommentNumAlert && (
+          <Modal handleOpenModal={() => setOpenCommentNumAlert(false)}>
+            <CommentNumAlert
+              message={errorMessage}
+              handleOpenModal={() => setOpenCommentNumAlert(false)}
+            />
+          </Modal>
+        )}
+      </StCommentFormContainer>
+    </>
   );
 };
 
@@ -143,10 +140,11 @@ const StCommentFormContainer = styled.div`
   width: 100%;
 `;
 
-const StPriceInput = styled.div`
-  position: relative;
-  padding: 5px 20px;
+const StPriceForm = styled.form`
+  position: fixed;
+  bottom: 50px;
   width: 100%;
+  padding: 5px 20px;
 
   input {
     color: ${colors.white};
@@ -175,6 +173,7 @@ const StPriceInput = styled.div`
 `;
 
 const StTextForm = styled.form`
+  position: relative;
   background: ${colors.grey1};
   width: 100%;
   padding: 5px 20px;

@@ -1,14 +1,14 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import icons from "assets";
-import { colors, fontSize } from "styles/theme";
-import Button from "components/elements/Button";
-import { useState } from "react";
-import DeleteAlert from "./DeleteAlert";
 import Modal from "components/layout/Modal";
-import { useNavigate } from "react-router-dom";
+import Button from "components/elements/Button";
+import DeleteAlert from "components/detail/DeleteAlert";
+import { colors, fontSize } from "styles/theme";
+import icons from "assets";
 
 const DetailCarousel = ({
   children,

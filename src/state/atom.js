@@ -24,7 +24,8 @@ export const myPageTitleState = atom({
   key: "myPageTitleState",
   default: "MY",
 });
-export const commentScrollState = atom({
-  key: "commentScrollState",
+
+export const commentRefState = atom({
+  key: "commentRefState",
   default: false,
 });
