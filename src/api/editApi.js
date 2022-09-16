@@ -1,4 +1,9 @@
-import { tokenImageInstance } from "api/axios";
+import { tokenInstance } from "api/axios";
 
 export const patchDetailCheck = ({ articlesId, data }) =>
-  tokenImageInstance.patch(`/api/auth/detail/${articlesId}`, data);
+  tokenInstance.patch(`/api/auth/detail/${articlesId}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      responseType: "blob",
+    },
+  });

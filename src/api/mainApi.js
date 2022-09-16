@@ -1,4 +1,4 @@
-import { instance } from "./axios";
+import { instance } from "api/axios";
 
 export const getMainCheck = async ({ category, process }, pageParam) => {
   const data = await instance.get(
@@ -11,6 +11,5 @@ export const getMainCheck = async ({ category, process }, pageParam) => {
   };
 };
 
-export const getRandomCards = async () => {
-  return await instance.get("/api/main/randomcards");
-};
+export const getRandomCards = async () =>
+  await instance.get("/api/main/randomcards");

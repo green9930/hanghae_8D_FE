@@ -1,5 +1,9 @@
-import { tokenImageInstance } from "./axios";
+import { tokenInstance } from "api/axios";
 
-export const postCheck = (payload) => {
-  return tokenImageInstance.post("/api/auth/form", payload);
-};
+export const postCheck = (payload) =>
+  tokenInstance.post("/api/auth/form", payload, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      responseType: "blob",
+    },
+  });
