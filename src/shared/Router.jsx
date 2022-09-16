@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import DetailPage from "pages/DetailPage";
 import ErrorPage from "pages/ErrorPage";
 import FormPage from "pages/FormPage";
@@ -9,9 +11,7 @@ import LoginPage from "pages/LoginPage";
 import KakaoLogin from "components/login/KakaoLogin";
 import NaverLogin from "components/login/NaverLogin";
 import GoogleLogin from "components/login/GoogleLogin";
-import { useRecoilState } from "recoil";
 import { loginState } from "state/atom";
-import { useEffect } from "react";
 import { getCookie } from "api/cookies";
 
 const Router = () => {
