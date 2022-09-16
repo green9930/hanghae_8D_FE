@@ -12,7 +12,9 @@ const handlePrice = (val) => {
 
   if (priceVali(price)) {
     isValid = price.length ? true : false;
-    realPrice = price;
+    realPrice = price.replace(/(^0+)/, "").length
+      ? price.replace(/(^0+)/, "")
+      : "0";
     previewPrice = price.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
   return { isValid, realPrice, previewPrice };
