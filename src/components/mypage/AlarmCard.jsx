@@ -1,10 +1,10 @@
-import { deleteAlertList } from "api/alarmApi";
-import icons from "assets";
-import Button from "components/elements/Button";
 import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Button from "components/elements/Button";
+import { deleteAlertList } from "api/alarmApi";
 import { colors, fontSize } from "styles/theme";
+import icons from "assets";
 
 const AlarmCard = ({ alarmItem }) => {
   const { notificationId, title, createdAt, alarmType, articlesId } = alarmItem;
@@ -14,17 +14,12 @@ const AlarmCard = ({ alarmItem }) => {
 
   /* ------------------------------- 데이터 delete ------------------------------- */
   const { mutate: deleteAlert } = useMutation(deleteAlertList, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("alertLists");
-    },
+    onSuccess: () => queryClient.invalidateQueries("alertLists"),
   });
 
-  const handleDelete = (id) => {
-    deleteAlert(id);
-  };
-  const onClickNavigate = () => {
-    navigate(`/detail/${articlesId}`);
-  };
+  const handleDelete = (id) => deleteAlert(id);
+  const onClickNavigate = () => navigate(`/detail/${articlesId}`);
+
   return (
     <StAlarmCard>
       {alarmType === "comment" && (
@@ -79,8 +74,8 @@ const StContent = styled.div`
 
 const StTitle = styled.span`
   color: ${colors.black};
-  font-weight: 700;
   font-size: ${fontSize.small12};
+  font-weight: 700;
   letter-spacing: -0.03em;
   overflow: hidden;
   white-space: nowrap;
@@ -106,11 +101,11 @@ const StSubInfo = styled.div`
 `;
 
 const StMessage = styled.span`
-  font-weight: 700;
   font-size: ${fontSize.small12};
+  font-weight: 700;
   letter-spacing: -0.03em;
   color: ${({ type }) =>
-    type=== "comment" ? `${colors.grey1}` : `${colors.mainP}`};
+    type === "comment" ? `${colors.grey1}` : `${colors.mainP}`};
 `;
 
 const StTime = styled.span`

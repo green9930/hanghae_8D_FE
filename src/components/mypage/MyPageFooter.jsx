@@ -1,14 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Button from "components/elements/Button";
 import Modal from "components/layout/Modal";
 import LogoutAlert from "components/mypage/LogoutAlert";
 import UnregisterAlert from "components/mypage/UnregisterAlert";
-import icons from "assets";
-import { colors } from "styles/theme";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
 import { loginState } from "state/atom";
+import { colors } from "styles/theme";
+import icons from "assets";
 
 const MyPageFooter = () => {
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
@@ -19,9 +19,7 @@ const MyPageFooter = () => {
   const navigate = useNavigate();
   const { SendMessage, Logout, Unregister } = icons;
 
-  const handleLogout = () => {
-    setOpenLogoutAlert(true);
-  };
+  const handleLogout = () => setOpenLogoutAlert(true);
 
   const handleLogoutAlert = () => {
     setOpenLogoutAlert(false);
