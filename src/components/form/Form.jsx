@@ -28,6 +28,8 @@ const Form = () => {
   const [desc, setDesc] = useState("");
   const [files, setFiles] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
+
+  const VALID_IMAGE_TYPE = ["png", "jpg", "jpeg"];
   /* ---------------------------------- 유효성검사 --------------------------------- */
   const [validTitle, setValidTitle] = useState(true);
   const [validImage, setValidImage] = useState(true);
@@ -72,15 +74,18 @@ const Form = () => {
 
   /* ---------------------------------- 사진 미리보기 ------------------------------- */
   const handleAddImages = (e) => {
-    setFiles([...files, ...e.target.files]);
-
     if (files.length + e.target.files.length > 5) {
-      setFiles(files.slice(0, 5));
       return setOpenImageNumberAlert(true);
     }
 
     for (let i = 0; i < e.target.files.length; i++) {
-      if (e.target.files[i].name.split(".")[1] !== "png" || "jpg" || "jpeg")
+      if (
+        !VALID_IMAGE_TYPE.includes(
+          e.target.files[i].name
+            .split(".")
+            [e.target.files[i].name.split(".").length - 1].toLowerCase()
+        )
+      )
         return setOpenImageFileAlert(true);
       if (e.target.files[i].size > 20000000) return setOpenImageAlert(true);
       const reader = new FileReader();
@@ -90,7 +95,9 @@ const Form = () => {
         setPreviewImg((previewImg) => [...previewImg, previewImgUrl]);
       };
     }
+
     files.length >= 0 ? setValidImage(true) : setValidImage(false);
+    setFiles([...files, ...e.target.files]);
   };
 
   // const element = e.target;
@@ -131,7 +138,6 @@ const Form = () => {
     setPreviewImg(previewImg.filter((_, index) => index !== id));
     setFiles(files.filter((_, index) => index !== id));
   };
-
   /* ----------------------------- 카테고리 select-box ---------------------------- */
   const data = [
     { key: 1, value: "디지털/생활가전", category: "digital" },
