@@ -6,7 +6,7 @@ import DetailComment from "components/detail/DetailComment";
 import { getComments } from "api/detailApi";
 import { commentRefState } from "state/atom";
 
-const DetailCommentList = ({ process, articlesId }) => {
+const DetailCommentList = ({ process, articlesId, isMyArticles }) => {
   const commentRef = useRef();
   const mountRef = useRef(false);
 
@@ -38,7 +38,7 @@ const DetailCommentList = ({ process, articlesId }) => {
   if (isLoading) return null;
 
   return (
-    <StCommentList process={process}>
+    <StCommentList process={process} isMyArticles={isMyArticles}>
       {comments?.data.comments.map((comment) => (
         <li key={comment.commentsId}>
           <DetailComment
@@ -54,7 +54,8 @@ const DetailCommentList = ({ process, articlesId }) => {
 };
 
 const StCommentList = styled.ul`
-  padding: 0 35px 60px 35px;
+  padding: ${({ isMyArticles }) =>
+    isMyArticles ? "0 35px 16px 35px" : "0 35px 60px 35px"};
   display: flex;
   flex-direction: column;
 `;

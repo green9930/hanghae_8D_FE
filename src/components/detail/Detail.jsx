@@ -63,7 +63,11 @@ const Detail = ({ page }) => {
       />
       <StCommment>
         <StCommentList>
-          <DetailCommentList process={process} articlesId={page} />
+          <DetailCommentList
+            process={process}
+            articlesId={page}
+            isMyArticles={isMyArticles}
+          />
         </StCommentList>
         {process === "진행중" ? (
           <DetailCommentForm isMyArticles={isMyArticles} articlesId={page} />
