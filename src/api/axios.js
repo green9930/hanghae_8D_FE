@@ -41,7 +41,7 @@ tokenInstance.interceptors.response.use(
   },
   async (error) => {
     // 응답 오류가 있는 작업 수행 : STATUS CODE WITHOUT 2XX
-    console.log("RESPONSE INTERCEPTORS : FAILED", error);
+    // console.log("RESPONSE INTERCEPTORS : FAILED", error);
     try {
       const { message, response, config } = error;
       const originalRequest = config;
@@ -68,7 +68,7 @@ tokenInstance.interceptors.response.use(
         return axios(originalRequest);
       }
     } catch (error) {
-      console.log("GET NEW ACCESSTOKEN : FAIL", error);
+      // console.log("GET NEW ACCESSTOKEN : FAIL", error);
       removeCookie("accessToken");
       removeCookie("refreshToken");
       window.location.href = "/";
