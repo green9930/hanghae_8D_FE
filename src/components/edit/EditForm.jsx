@@ -42,6 +42,7 @@ const EditForm = () => {
   const MAX_IMG_SIZE = 20000000;
   const MAX_TITLE_LENGTH = 30;
   const MAX_CONTENT_LENGTH = 400;
+  const VALID_IMAGE_TYPE = ["png", "jpg", "jpeg"];
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -110,7 +111,11 @@ const EditForm = () => {
 
       [...e.target.files].map((item) => {
         if (item.size > MAX_IMG_SIZE) return setOpenImageAlert(true);
-        if (item.name.split(".")[1] !== "png" || "jpg" || "jpeg")
+        if (
+          !VALID_IMAGE_TYPE.includes(
+            item.name.split(".")[item.name.split(".").length - 1].toLowerCase()
+          )
+        )
           return setOpenImageFileAlert(true);
         const reader = new FileReader();
         reader.readAsDataURL(item);
