@@ -1,31 +1,24 @@
+import { useQuery } from "react-query";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import DetailCarousel from "components/detail/DetailCarousel";
 import DetailDesc from "components/detail/DetailDesc";
 import DetailCommentList from "components/detail/DetailCommentList";
 import DetailCommentForm from "components/detail/DetailCommentForm";
-import { useQuery } from "react-query";
-import { getDetailCheck } from "api/detailApi";
 import LoadingMessage from "components/etc/LoadingMessage";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { commentScrollState, detailCheckState } from "state/atom";
-import { useRef } from "react";
-import { useEffect } from "react";
-// import { Suspense } from "react";
+import { getDetailCheck } from "api/detailApi";
+import { detailCheckState } from "state/atom";
 
 const Detail = ({ page }) => {
-  const commentRef = useRef();
-  const [commentScroll, setCommentScroll] = useRecoilState(commentScrollState);
-
   const setDetailCheckState = useSetRecoilState(detailCheckState);
   const { isLoading, data } = useQuery(
     "detailCheck",
     () => getDetailCheck(page),
     {
       onSuccess: (data) => {
-        console.log("GET DETAIL CHECK", data.data);
+        // console.log("GET DETAIL CHECK", data.data);
         setDetailCheckState(data.data);
       },
-      staleTime: 0,
     }
   );
 
@@ -47,7 +40,6 @@ const Detail = ({ page }) => {
 
   return (
     <StDetail>
-      {/* // <StDetail ref={commentScroll ? commentRef : null}> */}
       <DetailCarousel
         width="100%"
         height="230px"
@@ -70,16 +62,16 @@ const Detail = ({ page }) => {
         process={process}
         createdAt={createdAt}
       />
-      <StCommment>
-        <StCommentList>
-          <DetailCommentList process={process} articlesId={page} />
-        </StCommentList>
-        {process === "진행중" ? (
-          <StCommentForm>
+      <StCommentContainer>
+        <StCommment>
+          <StCommentList>
+            <DetailCommentList process={process} articlesId={page} />
+          </StCommentList>
+          {process === "진행중" ? (
             <DetailCommentForm isMyArticles={isMyArticles} articlesId={page} />
-          </StCommentForm>
-        ) : null}
-      </StCommment>
+          ) : null}
+        </StCommment>
+      </StCommentContainer>
     </StDetail>
   );
 };
@@ -87,25 +79,19 @@ const Detail = ({ page }) => {
 const StDetail = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
-  top: 64px;
-  margin-bottom: 174px;
+  padding-top: 64px;
+  min-height: 100vh;
+  height: 100%;
 `;
+
+const StCommentContainer = styled.div``;
 
 const StCommment = styled.div`
   position: relative;
 `;
 
 const StCommentList = styled.div`
-  flex-grow: 1;
-`;
-
-const StCommentForm = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 110px;
+  min-height: calc(100vh - 495px);
 `;
 
 export default Detail;

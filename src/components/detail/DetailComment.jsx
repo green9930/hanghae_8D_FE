@@ -87,11 +87,11 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
                 )
               ) : null}
               {isSelected && <BSalectPurple />}
-              {isMyComment && (
+              {isMyComment && !isSelected ? (
                 <Button variant="image" onClickHandler={handleDeleteComment}>
                   <IconTrash fill={`${colors.grey1}`} />
                 </Button>
-              )}
+              ) : null}
             </StBtnContainer>
           </StPriceContainer>
         </StPriceComment>

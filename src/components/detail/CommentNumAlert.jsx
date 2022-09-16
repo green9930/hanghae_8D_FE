@@ -1,7 +1,7 @@
-import icons from "assets";
-import Button from "components/elements/Button";
 import styled from "styled-components";
+import Button from "components/elements/Button";
 import { colors, fontSize } from "styles/theme";
+import icons from "assets";
 
 const CommentNumAlert = ({ message, handleOpenModal }) => {
   const { IconOops } = icons;

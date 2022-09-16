@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
+import { colors } from "styles/theme";
 
 const DetailDesc = ({
   nickName,
@@ -109,6 +108,7 @@ const StDetailDesc = styled.div`
   width: 100%;
   padding: 10px 35px;
   overflow: visible;
+  min-height: 150px;
 
   h2 {
     margin: 2px 0;
