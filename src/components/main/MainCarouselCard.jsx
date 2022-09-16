@@ -6,9 +6,8 @@ const MainCarouselCard = ({ data }) => {
   const { articlesId, title, price, image } = data;
   const navigate = useNavigate();
 
-  const onClickDetail = () => {
-    navigate(`/detail/${articlesId}`);
-  };
+  const onClickDetail = () => navigate(`/detail/${articlesId}`);
+
   return (
     <StImgBox onClick={onClickDetail}>
       <StImg src={image} alt="이미지" />
@@ -20,35 +19,39 @@ const MainCarouselCard = ({ data }) => {
     </StImgBox>
   );
 };
+
 const StImgBox = styled.div`
+  background-color: ${colors.white};
   min-width: 120px;
   min-height: 160px;
   border-radius: 10px;
-  background-color: ${colors.white}; ;
 `;
+
 const StTitle = styled.div`
+  padding-left: 10px;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.5px;
-  padding-left: 10px;
 `;
+
 const StPrice = styled.p`
+  padding-right: 12px;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.5px;
   text-align: right;
-  padding-right: 12px;
+
   span {
+    margin-left: 2px;
     font-size: 10px;
     font-weight: 400;
     letter-spacing: -0.5px;
-    margin-left: 2px;
   }
 `;
 
 const StImg = styled.img`
   height: 110px;
-  width:120px;
+  width: 120px;
   border-radius: 10px 10px 0px 0px;
 `;
 
