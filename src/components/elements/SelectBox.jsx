@@ -134,7 +134,7 @@ const StSelectOptions = styled.ul`
   transform: translate(-50%, 0%);
   overflow: scroll;
   width: 100%;
-  height: 190px;
+  height: 200px;
   max-height: ${({ show }) => (show ? "none" : "0")};
   padding: 0;
   background-color: ${colors.white};
@@ -146,7 +146,7 @@ const StSelectOptions = styled.ul`
       size === "small" &&
       css`
         top: 23px;
-        height: 100px;
+        height: 120px;
         width: 120px;
         border: ${({ show }) => (show ? ` 1px solid ${colors.grey3}` : 0)};
       `
