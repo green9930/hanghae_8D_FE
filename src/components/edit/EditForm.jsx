@@ -35,6 +35,7 @@ const EditForm = () => {
   const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
   const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
   /* VALIDATION : TITLE, PRICE, CONTENT --------------------------------------- */
+  const [isValidFiles, setIsValidFiles] = useState(true);
   const [isValidTitle, setIsValidTitle] = useState(true);
   const [isValidPrice, setIsValidPrice] = useState(true);
   const [isValidContent, setIsValidContent] = useState(true);
@@ -178,14 +179,19 @@ const EditForm = () => {
     const handleSubmit = (e) => {
       e.preventDefault();
 
-      !editText.title.trim().length && setIsValidTitle(false);
-      !editText.price.trim().length && setIsValidPrice(false);
-      !editText.content.trim().length && setIsValidContent(false);
+      if (!editText.title.trim().length) setIsValidTitle(false);
+      if (!editText.price.trim().length) setIsValidPrice(false);
+      if (!editText.content.trim().length) setIsValidContent(false);
+      if (!previewFiles.length) {
+        setIsValidFiles(false);
+        setOpenImageNumberAlert(true);
+      }
 
       if (
         editText.title.trim().length &&
         editText.price.trim().length &&
-        editText.content.trim().length
+        editText.content.trim().length &&
+        previewFiles.length
       ) {
         const textData = {
           ...editText,
