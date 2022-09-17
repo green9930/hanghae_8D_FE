@@ -43,7 +43,9 @@ const AlarmCard = ({ alarmItem }) => {
       )}
       {alarmType === "selected" && (
         <StContent>
-          <StTitle onClick={onClickNavigate}>{title}</StTitle>
+          <StTitle onClick={onClickNavigate}>
+          {title.length < 10 ? title : title.slice(0, 10) + "⋯"}
+            </StTitle>
           <StText>
             에 댓글이 <StMessage type={alarmType}>채택</StMessage>되었습니다.
           </StText>
