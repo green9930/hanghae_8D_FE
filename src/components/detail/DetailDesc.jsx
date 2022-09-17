@@ -160,6 +160,7 @@ const StDesc = styled.p`
   margin-top: 14px;
   position: relative;
   color: ${colors.grey1};
+  word-break: break-all;
 
   button {
     display: ${({ isShow }) => (isShow ? "none" : "flex")};
