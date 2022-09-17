@@ -46,7 +46,7 @@ const Form = () => {
     desc.trim().length >= 15 &&
     currentValue !== "카테고리를 선택해 주세요." &&
     price.trim().length > 0 &&
-    files.length >= 0;
+    files.length > 0;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
