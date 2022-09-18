@@ -11,7 +11,7 @@ const ImageAlert = ({ handleOpenModal }) => {
       <StMessage>
         <MainArrow width="40px" height="40px" fill={`${colors.mainP}`} />
         <p>
-          <span>20MB</span> 이하 <br />
+          <span>10MB</span> 이하 <br />
           이미지를 올려주세요!🤓
         </p>
       </StMessage>
