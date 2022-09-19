@@ -87,7 +87,7 @@ const Form = () => {
         )
       )
         return setOpenImageFileAlert(true);
-      if (e.target.files[i].size > 20000000) return setOpenImageAlert(true);
+      if (e.target.files[i].size > 10000000) return setOpenImageAlert(true);
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[i]);
       reader.onload = () => {
