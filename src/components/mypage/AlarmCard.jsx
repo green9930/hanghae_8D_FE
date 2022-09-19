@@ -36,7 +36,7 @@ const AlarmCard = ({ alarmItem }) => {
               variant="image"
               onClickHandler={() => handleDelete(notificationId)}
             >
-              <IconX stroke={colors.black} />
+              <IconX stroke={colors.grey2} />
             </Button>
           </StSubInfo>
         </StContent>
@@ -55,7 +55,7 @@ const AlarmCard = ({ alarmItem }) => {
               variant="image"
               onClickHandler={() => handleDelete(notificationId)}
             >
-              <IconX stroke={colors.black} />
+              <IconX stroke={colors.grey2} />
             </Button>
           </StSubInfo>
         </StContent>
@@ -65,7 +65,7 @@ const AlarmCard = ({ alarmItem }) => {
 };
 
 const StAlarmCard = styled.div`
-  padding: 10px 0;
+  padding: 10px 0px;
 `;
 
 const StContent = styled.div`
@@ -98,7 +98,7 @@ const StSubInfo = styled.div`
   gap: 8px;
 
   button {
-    color: ${colors.grey2};
+    padding-left:8px;
   }
 `;
 

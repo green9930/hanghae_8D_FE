@@ -78,11 +78,15 @@ const StButton = styled.button`
       if (size === "small_round") {
         return css`
           width: 72px;
-          height: 24px;
+          height: 30px;
           border-radius: 30px;
           text-align: center;
           font-size: 12px;
           letter-spacing: -0.03em;
+          @media screen and (max-width: 350px) {
+            width: 53px;
+            font-size: 10px;
+          }
         `;
       }
       if (size === "large_round") {

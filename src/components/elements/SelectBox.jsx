@@ -72,11 +72,15 @@ const StSelectBox = styled.div`
     return (
       size === "small" &&
       css`
-        height: 24px;
+        height: 30px;
         border-radius: 30px;
         width: 120px;
         border: 1px solid ${colors.grey3};
         padding: 3px 5px;
+        @media screen and (max-width: 350px) {
+          width: 100px;
+          font-size: 10px;
+        }
       `
     );
   }}
@@ -120,6 +124,9 @@ const StLabel = styled.label`
           font-size: 12px;
           padding-right: 4px;
           font-family: "twayfly", "Noto Sans KR", sans-serif;
+          @media screen and (max-width: 350px) {
+            font-size: 10px;
+          }
         `
       );
     }};
@@ -146,9 +153,13 @@ const StSelectOptions = styled.ul`
       size === "small" &&
       css`
         top: 23px;
-        height: 120px;
+        height: 178px;
         width: 120px;
         border: ${({ show }) => (show ? ` 1px solid ${colors.grey3}` : 0)};
+        @media screen and (max-width: 350px) {
+          width: 100px;
+          font-size: 10px;
+        }
       `
     );
   }};
@@ -166,9 +177,12 @@ const StOption = styled.li`
     return (
       size === "small" &&
       css`
-        padding: 6px 10px;
+        padding: 10px 10px;
         font-size: 12px;
         font-family: "twayfly", "Noto Sans KR", sans-serif;
+        @media screen and (max-width: 350px) {
+          font-size: 10px;
+        }
       `
     );
   }}
