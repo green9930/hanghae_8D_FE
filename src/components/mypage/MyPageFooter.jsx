@@ -9,6 +9,7 @@ import UnregisterAlert from "components/mypage/UnregisterAlert";
 import { loginState } from "state/atom";
 import { colors } from "styles/theme";
 import icons from "assets";
+import { getCookie } from "api/cookies";
 
 const MyPageFooter = () => {
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
@@ -29,6 +30,8 @@ const MyPageFooter = () => {
 
   const handleUnregisterAlert = () => {
     setOpenUnregisterAlert(false);
+    if (!getCookie("accessToken") && !getCookie("refreshToken"))
+      window.location.reload("/");
     setIsLogin(true);
     navigate("/mypage");
   };

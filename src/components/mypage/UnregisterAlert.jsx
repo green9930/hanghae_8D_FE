@@ -5,19 +5,22 @@ import { deleteMyProfile } from "api/mypageApi";
 import { removeCookie } from "api/cookies";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
+import { useMutation } from "react-query";
 
 const UnregisterAlert = ({ handleOpenModal }) => {
   const [isUnregister, setIsUnregister] = useState(false);
 
   const { MainArrow } = icons;
 
-  const handleUnregister = () => {
-    deleteMyProfile();
-    removeCookie("accessToken");
-    removeCookie("refreshToken");
-    setIsUnregister(true);
-    window.location.reload("/");
-  };
+  const { mutate: deleteMutate } = useMutation(deleteMyProfile, {
+    onSuccess: (data) => {
+      removeCookie("accessToken");
+      removeCookie("refreshToken");
+      setIsUnregister(true);
+    },
+  });
+
+  const handleUnregister = () => deleteMutate();
 
   return (
     <StLogoutAlert>
