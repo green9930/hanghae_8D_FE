@@ -171,6 +171,9 @@ const StSelectList = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${colors.grey7};
+  @media screen and (max-width: 350px) {
+    gap: 5px;
+  }
 `;
 
 const StMainBtns = styled.div`
@@ -178,6 +181,9 @@ const StMainBtns = styled.div`
   gap: 4px;
   button {
     font-family: "twayfly", "Noto Sans KR", sans-serif;
+  }
+  @media screen and (max-width: 350px) {
+    gap: 2px;
   }
 `;
 
