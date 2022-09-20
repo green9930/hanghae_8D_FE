@@ -65,9 +65,11 @@ const StMainWrap = styled.div`
   color: ${({ selectedPrice }) =>
     selectedPrice ? `${colors.grey3}` : `${colors.black}`};
   height: 100px;
-  box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   margin: 10px auto;
+  background-color: ${({ selectedPrice }) =>
+    selectedPrice ? `${colors.grey7}` : null};
 `;
 
 const StMainListImg = styled.img`
@@ -96,6 +98,8 @@ const StTitle = styled.p`
 const StSeller = styled.div`
   font-size: 12px;
   letter-spacing: -3%;
+  display: flex;
+  align-items: center;
 
   span {
     color: ${({ rankColor }) => rankColor};

@@ -25,6 +25,7 @@ const StImgBox = styled.div`
   min-width: 120px;
   min-height: 160px;
   border-radius: 10px;
+  filter: drop-shadow(0px 4px 13px rgba(0, 0, 0, 0.25));
 `;
 
 const StTitle = styled.div`
@@ -40,6 +41,7 @@ const StPrice = styled.p`
   font-weight: 700;
   letter-spacing: -0.5px;
   text-align: right;
+  font-family: "Roboto", sans-serif;
 
   span {
     margin-left: 2px;
