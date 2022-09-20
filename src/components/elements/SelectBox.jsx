@@ -32,6 +32,7 @@ const SelectBox = ({ data, size, currentValue, handleOnChangeSelectValue }) => {
         <IconArrow
           width={size === "small" ? "14px" : "20px"}
           height={size === "small" ? "14px" : "20px"}
+          fill={colors.grey2}
         />
       </StArrow>
       <StLabel size={size} currentValue={currentValue}>
@@ -103,7 +104,7 @@ const StLabel = styled.label`
   justify-content: center;
   text-align: center;
   width: 100%;
-  padding-right: 10px;
+  padding-right: 7px;
 
   span {
     text-align: center;
@@ -119,7 +120,7 @@ const StLabel = styled.label`
         css`
           color: ${({ currentValue }) =>
             currentValue === "카테고리 전체"
-              ? `${colors.grey3}`
+              ? `${colors.grey2}`
               : `${colors.black}`};
           font-size: 12px;
           padding-right: 4px;
@@ -152,7 +153,7 @@ const StSelectOptions = styled.ul`
     return (
       size === "small" &&
       css`
-        top: 23px;
+        top: 29px;
         height: 178px;
         width: 120px;
         border: ${({ show }) => (show ? ` 1px solid ${colors.grey3}` : 0)};

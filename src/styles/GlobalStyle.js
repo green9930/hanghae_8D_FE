@@ -4,13 +4,13 @@ import { colors, fontSize } from "styles/theme";
 const GlobalStyle = createGlobalStyle`
   /* tway 폰트 적용 필요한 경우 */
   /* font-family: 'twayfly', 'Noto Sans KR', sans-serif; */
+  /* font-family: 'Roboto', sans-serif; */
   @font-face {
     font-family: 'twayfly';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twayfly.woff') format('woff');
     font-weight: 400;
     font-style: normal;
   }
-
   * {
     box-sizing: border-box;
     font-size: ${fontSize.regular14};
