@@ -9,7 +9,7 @@ import CommentNumAlert from "components/detail/CommentNumAlert";
 import handlePrice from "utils/handlePrice";
 import { postComment } from "api/detailApi";
 import { commentRefState, loginState } from "state/atom";
-import { colors, fontSize } from "styles/theme";
+import { calcRem, colors, fontSize } from "styles/theme";
 import { removeCookie } from "api/cookies";
 import { useNavigate } from "react-router-dom";
 
@@ -101,62 +101,58 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
 
   const handleSubmitText = (e) => {
     e.preventDefault();
+    if (commentText.comment.trim().length === 0) return;
     postMutate(commentText);
   };
 
   return (
-    <>
-      <StCommentFormContainer>
-        {!isMyArticles && (
-          <StPriceForm
-            isPriceActive={isPriceActive}
-            onSubmit={handleSubmitPrice}
+    <StCommentFormContainer>
+      {!isMyArticles && (
+        <StPriceForm isPriceActive={isPriceActive} onSubmit={handleSubmitPrice}>
+          <Input
+            value={commentPrice}
+            name="price"
+            onChangeHandler={handleChange}
+            theme="price"
+            placeholder="가격을 입력해 주세요."
+          />
+          <Button
+            type="submit"
+            variant="text"
+            theme="transparent"
+            isDisabled={!isPriceActive}
           >
-            <Input
-              value={commentPrice}
-              name="price"
-              onChangeHandler={handleChange}
-              theme="price"
-              placeholder="가격을 입력해 주세요."
-            />
-            <Button
-              type="submit"
-              variant="text"
-              theme="transparent"
-              isDisabled={!isPriceActive}
-            >
-              <span>가격 전송</span>
-            </Button>
-          </StPriceForm>
-        )}
-        <StTextForm onSubmit={handleSubmitText}>
-          <StTextInput>
-            <Input
-              value={commentText.comment}
-              name="text"
-              onChangeHandler={handleChange}
-              theme="comment"
-            />
-            <Button
-              type="submit"
-              variant="text"
-              theme="transparent"
-              isDisabled={!isTextActive}
-            >
-              <span>전송</span>
-            </Button>
-          </StTextInput>
-        </StTextForm>
-        {openCommentNumAlert && (
-          <Modal handleOpenModal={handleCommentAlert}>
-            <CommentNumAlert
-              errorData={errorData}
-              handleOpenModal={handleCommentAlert}
-            />
-          </Modal>
-        )}
-      </StCommentFormContainer>
-    </>
+            <span>가격 전송</span>
+          </Button>
+        </StPriceForm>
+      )}
+      <StTextForm onSubmit={handleSubmitText}>
+        <StTextInput>
+          <Input
+            value={commentText.comment}
+            name="text"
+            onChangeHandler={handleChange}
+            theme="comment"
+          />
+          <Button
+            type="submit"
+            variant="text"
+            theme="transparent"
+            isDisabled={!isTextActive}
+          >
+            <span>전송</span>
+          </Button>
+        </StTextInput>
+      </StTextForm>
+      {openCommentNumAlert && (
+        <Modal handleOpenModal={handleCommentAlert}>
+          <CommentNumAlert
+            errorData={errorData}
+            handleOpenModal={handleCommentAlert}
+          />
+        </Modal>
+      )}
+    </StCommentFormContainer>
   );
 };
 
@@ -178,12 +174,22 @@ const StPriceForm = styled.form`
     }
   }
 
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-text-fill-color: ${colors.white};
+  }
+
   button {
     width: 120px;
     height: 40px;
     position: absolute;
     top: 45%;
     right: 25px;
+    @media screen and (max-width: 350px) {
+      right: 15px;
+    }
     transform: translateY(-50%);
 
     span {
@@ -211,6 +217,13 @@ const StTextInput = styled.div`
   input {
     color: ${colors.white};
     padding-right: 50px;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-text-fill-color: ${colors.white};
   }
 
   button {
