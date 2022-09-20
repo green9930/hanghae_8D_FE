@@ -14,6 +14,7 @@ import ImageNumAlert from "components/form/ImageNumAlert";
 import ImageFileAlert from "components/form/ImageFileAlert";
 import { postCheck } from "api/formApi";
 import handlePrice from "utils/handlePrice";
+import { fontSize } from "styles/theme";
 // import heic2any from "heic2any";
 
 const Form = () => {
@@ -380,7 +381,7 @@ const StImageList = styled.div`
   }
 
   p {
-    font-size: 16px;
+    font-size: ${fontSize.regular16};
     letter-spacing: -0.5px;
     color: ${({ validImage }) =>
       validImage ? `${colors.grey3}` : `${colors.red}`};
@@ -423,7 +424,7 @@ const StThirdWrap = styled.div`
   }
 
   p {
-    font-size: 12px;
+    font-size: ${fontSize.small12};
     letter-spacing: -3%;
     color: ${({ validLengthDesc }) =>
       validLengthDesc ? `${colors.grey3}` : `${colors.red}`};
