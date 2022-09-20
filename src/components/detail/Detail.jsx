@@ -8,11 +8,9 @@ import DetailCommentForm from "components/detail/DetailCommentForm";
 import LoadingMessage from "components/etc/LoadingMessage";
 import { getDetailCheck } from "api/detailApi";
 import { detailCheckState } from "state/atom";
-import { useEffect, useMemo, useState } from "react";
 
 const Detail = ({ page }) => {
   const setDetailCheckState = useSetRecoilState(detailCheckState);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const { isRefetching, isLoading, data } = useQuery(
     ["detailCheck", () => getDetailCheck(page)],
@@ -21,31 +19,10 @@ const Detail = ({ page }) => {
       onSuccess: (data) => {
         setDetailCheckState(data.data);
       },
-      onError: (error) => console.log("ERROR!!", error),
+      onError: (error) => console.log("GET DETAILCHECK FAILED", error),
       staleTime: 5000,
     }
   );
-
-  const onScrollHandler = () => {
-    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
-    clientHeight + scrollTop >= scrollHeight && setIsScrolled(true);
-    console.log("SCROLLED");
-    console.log(scrollHeight, scrollTop, clientHeight);
-    console.log(clientHeight + scrollTop >= scrollHeight);
-  };
-
-  useEffect(() => {
-    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
-    console.log("SCROLLED");
-    console.log(scrollHeight, scrollTop, clientHeight);
-  }, []);
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", onScrollHandler);
-  //   return () => {
-  //     window.removeEventListener("scroll", onScrollHandler);
-  //   };
-  // }, [isScrolled]);
 
   if (isRefetching || isLoading) return <LoadingMessage />;
 
@@ -65,7 +42,7 @@ const Detail = ({ page }) => {
   } = data.data;
 
   return (
-    <StDetail>
+    <StDetail isMyArticles={isMyArticles}>
       <DetailCarousel
         width="100%"
         height="230px"
@@ -89,22 +66,14 @@ const Detail = ({ page }) => {
         process={process}
         createdAt={createdAt}
       />
-      <StCommment>
-        <StCommentList>
-          <DetailCommentList
-            process={process}
-            articlesId={page}
-            isMyArticles={isMyArticles}
-          />
-        </StCommentList>
-        {process === "진행중" ? (
-          <DetailCommentForm
-            isMyArticles={isMyArticles}
-            articlesId={page}
-            isScrolled={isScrolled}
-          />
-        ) : null}
-      </StCommment>
+      <DetailCommentList
+        process={process}
+        articlesId={page}
+        isMyArticles={isMyArticles}
+      />
+      {process === "진행중" ? (
+        <DetailCommentForm isMyArticles={isMyArticles} articlesId={page} />
+      ) : null}
     </StDetail>
   );
 };
@@ -112,17 +81,10 @@ const Detail = ({ page }) => {
 const StDetail = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 64px;
-  min-height: 100vh;
-  height: 100%;
-`;
-
-const StCommment = styled.div`
   position: relative;
-`;
-
-const StCommentList = styled.div`
-  min-height: 173px;
+  min-height: 100vh;
+  padding-top: 64px;
+  padding-bottom: 50px;
 `;
 
 export default Detail;
