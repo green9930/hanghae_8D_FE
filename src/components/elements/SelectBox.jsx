@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
-import { colors } from "styles/theme";
+import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 
 const SelectBox = ({ data, size, currentValue, handleOnChangeSelectValue }) => {
@@ -30,8 +30,12 @@ const SelectBox = ({ data, size, currentValue, handleOnChangeSelectValue }) => {
     >
       <StArrow size={size}>
         <IconArrow
-          width={size === "small" ? "14px" : "20px"}
-          height={size === "small" ? "14px" : "20px"}
+          width={
+            size === "small" ? `${fontSize.regular14}` : `${fontSize.large20}`
+          }
+          height={
+            size === "small" ? `${fontSize.regular14}` : `${fontSize.large20}`
+          }
           fill={colors.grey2}
         />
       </StArrow>
@@ -80,7 +84,6 @@ const StSelectBox = styled.div`
         padding: 3px 5px;
         @media screen and (max-width: 350px) {
           width: 100px;
-          font-size: 10px;
         }
       `
     );
@@ -108,7 +111,7 @@ const StLabel = styled.label`
 
   span {
     text-align: center;
-    font-size: 16px;
+    font-size: ${fontSize.regular16};
     letter-spacing: -0.5px;
     color: ${({ currentValue }) =>
       currentValue === "카테고리를 선택해 주세요."
@@ -122,12 +125,9 @@ const StLabel = styled.label`
             currentValue === "카테고리 전체"
               ? `${colors.grey2}`
               : `${colors.black}`};
-          font-size: 12px;
+          font-size: ${fontSize.small12};
           padding-right: 4px;
           font-family: "twayfly", "Noto Sans KR", sans-serif;
-          @media screen and (max-width: 350px) {
-            font-size: 10px;
-          }
         `
       );
     }};
@@ -159,7 +159,6 @@ const StSelectOptions = styled.ul`
         border: ${({ show }) => (show ? ` 1px solid ${colors.grey3}` : 0)};
         @media screen and (max-width: 350px) {
           width: 100px;
-          font-size: 10px;
         }
       `
     );
@@ -168,7 +167,7 @@ const StSelectOptions = styled.ul`
 
 const StOption = styled.li`
   padding: 12px 35px;
-  font-size: 16px;
+  font-size: ${fontSize.regular16};
   text-align: center;
   letter-spacing: -0.5px;
   &:hover {
@@ -179,11 +178,8 @@ const StOption = styled.li`
       size === "small" &&
       css`
         padding: 10px 10px;
-        font-size: 12px;
+        font-size: ${fontSize.small12};
         font-family: "twayfly", "Noto Sans KR", sans-serif;
-        @media screen and (max-width: 350px) {
-          font-size: 10px;
-        }
       `
     );
   }}
