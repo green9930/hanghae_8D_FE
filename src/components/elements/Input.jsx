@@ -90,6 +90,9 @@ const StInput = styled.input`
         border: none;
         border-radius: 30px;
         padding: 12px 60px;
+        @media screen and (max-width: 350px) {
+          padding: 12px 30px;
+        }
         background: ${colors.mainP};
       `;
     }
@@ -99,7 +102,7 @@ const StInput = styled.input`
         height: 40px;
         border: 0.5px solid ${colors.subP};
         border-radius: 20px;
-        padding: 12px 14px;
+        padding: 0 14px;
         background: transparent;
       `;
     }

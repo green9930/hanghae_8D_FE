@@ -20,15 +20,17 @@ export const colors = {
   white: "#FFFFFF",
 };
 
+export const calcRem = (size) => `${size / 14}rem`;
+
 export const fontSize = {
-  small10: "10px",
-  small12: "12px",
-  regular14: "14px",
-  regular16: "16px",
-  regular18: "18px",
-  large22: "22px",
-  large20: "20px",
-  large24: "24px",
-  large28: "28px",
-  large32: "32px",
+  small10: calcRem(10),
+  small12: calcRem(12),
+  regular14: calcRem(14),
+  regular16: calcRem(16),
+  regular18: calcRem(18),
+  large20: calcRem(20),
+  large22: calcRem(22),
+  large24: calcRem(24),
+  large28: calcRem(28),
+  large32: calcRem(32),
 };
