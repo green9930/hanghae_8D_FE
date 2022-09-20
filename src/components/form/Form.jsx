@@ -365,6 +365,9 @@ const StPreview = styled.div`
   input {
     display: none;
   }
+  label {
+    display: flex;
+  }
 `;
 
 const StImageList = styled.div`
