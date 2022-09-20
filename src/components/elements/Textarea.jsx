@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { a11yHidden } from "styles/mixin";
 import { colors } from "styles/theme";
+import { fontSize } from "styles/theme";
 
 const Textarea = ({
   Label,
@@ -44,11 +45,12 @@ const StTextarea = styled.textarea`
   width: 100%;
   height: 120px;
   resize: none;
+  display:block;
   border: 0.5px solid #999999;
   ::placeholder {
     color: ${colors.gray3};
   }
-  font-size: 16px;
+  font-size: ${fontSize.regular16};
 `;
 
 export default Textarea;

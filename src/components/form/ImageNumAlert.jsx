@@ -37,14 +37,14 @@ const StMessage = styled.div`
 
   p {
     text-align: center;
-    font-size: ${fontSize.large22};
+    font-size: ${fontSize.large20};
     line-height: 30px;
     letter-spacing: -5%;
   }
 
   span {
     font-weight: 700;
-    font-size: ${fontSize.large22};
+    font-size: ${fontSize.large20};
     line-height: 30px;
     letter-spacing: -5%;
   }

@@ -3,7 +3,7 @@ import Button from "components/elements/Button";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 
-const ImageAlert = ({ handleOpenModal }) => {
+const ErrorAlert = ({ handleOpenModal }) => {
   const { MainArrow } = icons;
 
   return (
@@ -11,8 +11,7 @@ const ImageAlert = ({ handleOpenModal }) => {
       <StMessage>
         <MainArrow width="40px" height="40px" fill={`${colors.mainP}`} />
         <p>
-          <span>10MB</span> 이하 <br />
-          이미지를 올려주세요!🤓
+           존재하지 않는 게시글입니다.🤓   
         </p>
       </StMessage>
       <Button onClickHandler={handleOpenModal}>닫기</Button>
@@ -37,17 +36,17 @@ const StMessage = styled.div`
 
   p {
     text-align: center;
-    font-size: ${fontSize.large20};
+    font-size: ${fontSize.large22};
     line-height: 30px;
     letter-spacing: -5%;
   }
 
   span {
     font-weight: 700;
-    font-size: ${fontSize.large20};
+    font-size: ${fontSize.large22};
     line-height: 30px;
     letter-spacing: -5%;
   }
 `;
 
-export default ImageAlert;
+export default ErrorAlert;
