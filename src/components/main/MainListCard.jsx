@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import handleRankColor from "utils/handleRankColor";
 import { colors } from "styles/theme";
+import { fontSize } from "styles/theme";
 
 const MainListCard = ({ data }) => {
   const navigate = useNavigate();
@@ -90,13 +91,13 @@ const StFirstLine = styled.div`
 `;
 
 const StTitle = styled.p`
-  font-size: 14px;
+  font-size: ${fontSize.regular14};
   font-weight: 700;
   letter-spacing: -0.5px;
 `;
 
 const StSeller = styled.div`
-  font-size: 12px;
+  font-size: ${fontSize.small12};
   letter-spacing: -3%;
   display: flex;
   align-items: center;
@@ -111,12 +112,12 @@ const StPrice = styled.div`
   text-align: right;
 
   div {
-    font-size: 10px;
+    font-size: ${fontSize.small10};
     letter-spacing: -0.5px;
   }
 
   span {
-    font-size: 20px;
+    font-size: ${fontSize.large20};
     font-weight: 700;
     line-height: 18px;
     padding-right: 2px;
@@ -127,14 +128,14 @@ const StPrice = styled.div`
 const StSelectedPrice = styled.p`
   display: inline-block;
   color: ${colors.grey3};
-  font-size: 14px;
+  font-size: ${fontSize.regular14};
   letter-spacing: -5%;
 `;
 
 const StMainProcess = styled.div`
   width: 50px;
   height: 20px;
-  font-size: 10px;
+  font-size: ${fontSize.small10};
   text-align: center;
   line-height: 20px;
   border-radius: 30px;
