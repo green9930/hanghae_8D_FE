@@ -12,13 +12,13 @@ const DetailCommentList = ({ process, articlesId, isMyArticles }) => {
 
   const [refState, setRefState] = useRecoilState(commentRefState);
 
-  const { isLoading, data: comments } = useQuery(
-    "checkComments",
-    () => getComments(articlesId),
-    {
-      onError: (error) => {},
-    }
-  );
+  const {
+    isRefetching,
+    isLoading,
+    data: comments,
+  } = useQuery("checkComments", () => getComments(articlesId), {
+    onError: (error) => {},
+  });
 
   const scrollToBottom = () => {
     if (commentRef.current) {
@@ -35,7 +35,7 @@ const DetailCommentList = ({ process, articlesId, isMyArticles }) => {
     mountRef.current && refState ? scrollToBottom() : (mountRef.current = true);
   }, [comments]);
 
-  if (isLoading) return null;
+  if ((isRefetching, isLoading)) return null;
 
   return (
     <StCommentList process={process} isMyArticles={isMyArticles}>

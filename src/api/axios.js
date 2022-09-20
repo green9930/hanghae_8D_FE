@@ -46,32 +46,48 @@ tokenInstance.interceptors.response.use(
       const { message, response, config } = error;
       const originalRequest = config;
 
-      if (message === "Network Error" || response.data.errorCode === "400") {
+      // ACCESSTOKEN FAILED : 405
+      // REFRESHTOKEN FAILED : 403
+      if (message === "Network Error" || response.data.errorCode === "405") {
         const refreshToken = getCookie("refreshToken");
         /* GET : NEW ACCESSTOKEN ---------------------------------------------------- */
-        const response = await axios({
-          method: "get",
-          url: `${process.env.REACT_APP_BASE_URL}/auth/user/token`,
-          headers: {
-            "Content-Type": "application/json",
-            refreshToken: refreshToken,
-          },
-        });
-        /* CHANGE ACCESSTOKEN ------------------------------------------------------- */
-        // console.log(
-        //   "NEW ACCESSTOKEN AUTHORIZATION"
-        //   response.headers.authorization
-        // );
-        originalRequest.headers.Authorization = response.headers.authorization;
-        removeCookie("accessToken");
-        setCookie("accessToken", response.headers.authorization);
-        return axios(originalRequest);
+        try {
+          const response = await axios({
+            method: "get",
+            url: `${process.env.REACT_APP_BASE_URL}/auth/user/token`,
+            headers: {
+              "Content-Type": "application/json",
+              refreshToken: refreshToken,
+            },
+          });
+          /* CHANGE ACCESSTOKEN ------------------------------------------------------- */
+          // console.log(
+          //   "NEW ACCESSTOKEN AUTHORIZATION"
+          //   response.headers.authorization
+          // );
+          console.log("REFRESHTOKEN SUCCESSED : 405");
+          originalRequest.headers.Authorization =
+            response.headers.authorization;
+          removeCookie("accessToken");
+          setCookie("accessToken", response.headers.authorization);
+          return axios(originalRequest);
+        } catch (error) {
+          console.log("REFRESHTOKEN FAILED", error.response);
+          removeCookie("accessToken");
+          removeCookie("refreshToken");
+          // window.location.href = "/";
+
+          // if (response.data.errorCode === "403") {
+          //   console.log('REFRESHTOKEN FAILED : 405')
+          // }
+        }
       }
     } catch (error) {
       // console.log("GET NEW ACCESSTOKEN : FAIL", error);
       removeCookie("accessToken");
       removeCookie("refreshToken");
-      window.location.href = "/";
+      console.log(error);
+      // window.location.href = "/";
       return false;
     }
     return Promise.reject(error);

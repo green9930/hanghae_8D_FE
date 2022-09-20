@@ -3,14 +3,14 @@ import Button from "components/elements/Button";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 
-const CommentNumAlert = ({ message, handleOpenModal }) => {
+const CommentNumAlert = ({ errorData, handleOpenModal }) => {
   const { IconOops } = icons;
 
   return (
     <StCommentNumAlert>
       <StMessage>
         <IconOops width="40px" height="40px" fill={`${colors.mainP}`} />
-        <StSelectMessage>{message}🤓</StSelectMessage>
+        <StSelectMessage>{errorData.errorMessage}🤓</StSelectMessage>
       </StMessage>
       <Button onClickHandler={handleOpenModal}>닫기</Button>
     </StCommentNumAlert>

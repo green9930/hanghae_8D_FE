@@ -11,6 +11,7 @@ import { getMainCheck } from "api/mainApi";
 import { getCookie } from "api/cookies";
 import { colors } from "styles/theme";
 import icons from "assets";
+import ErrorMessage from "components/etc/ErrorMessage";
 
 const MainList = () => {
   const { IconPlus, GoBack } = icons;
@@ -92,7 +93,8 @@ const MainList = () => {
     }
   }, [inView]);
 
-  if (status === "loading") return <LoadingMessage />;
+  // if (status === "loading") return <LoadingMessage />;
+  if (status === "loading") return <ErrorMessage />;
 
   return (
     <StMain>

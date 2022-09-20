@@ -25,41 +25,50 @@ const KakaoLogin = () => {
           if (await res.headers.authorization) {
             setCookie("accessToken", res.headers.authorization);
             setCookie("refreshToken", res.headers.refreshtoken);
-            eventSource = new EventSource(
-              `${process.env.REACT_APP_BASE_URL}/api/subscribe`
-            );
-            msetEventSource(eventSource); //구독
-            eventSource.onmessage = (event) => {
-              setData((old) => [...old, event.data]);
-              setValue(event.data);
-            };
-            eventSource.onerror = (event) => {
-              // if (event.target.readyState === EventSource.CLOSED) {
-              //   console.log(
-              //     "eventsource closed (" + event.target.readyState + ")"
-              //   );
-              // }
-              eventSource.close();
-            };
-            setListening(true);
+            //   eventSource = new EventSource(
+            //     `${process.env.REACT_APP_BASE_URL}/api/subscribe`,
+            //     {
+            //       headers: {
+            //         Authorization: res.headers.authorization,
+            //       },
+            //     },
+            //     {
+            //       withCredentials: true,
+            //     }
+            //   );
+            //   msetEventSource(eventSource); //구독
+            //   eventSource.onmessage = (event) => {
+            //     setData((old) => [...old, event.data]);
+            //     setValue(event.data);
+            //   };
+            //   eventSource.onerror = (event) => {
+            //     // if (event.target.readyState === EventSource.CLOSED) {
+            //     //   console.log(
+            //     //     "eventsource closed (" + event.target.readyState + ")"
+            //     //   );
+            //     // }
+            //     eventSource.close();
+            //   };
+            //   setListening(true);
           }
           setIsLogin(true);
-          setTimeout(()=>{
-            navigate("/")
-          },500)
+          setTimeout(() => {
+            navigate("/");
+          }, 500);
         } catch (err) {
           window.alert("LOGIN FAILED!");
-          navigate("/");
+          // navigate("/");
+          console.log(err);
         }
       };
       kakao();
     }
     return () => {
-      eventSource.close();
+      // eventSource.close();
     };
   }, []);
 
-  return <StartPage/>;
+  return <StartPage />;
 };
 
 export default KakaoLogin;

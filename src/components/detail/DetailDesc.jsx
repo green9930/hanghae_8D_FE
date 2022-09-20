@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components";
 import handleRankColor from "utils/handleRankColor";
 import { colors } from "styles/theme";
@@ -15,37 +15,10 @@ const DetailDesc = ({
   userRank,
   process,
   createdAt,
+  descRef,
 }) => {
-  const [showMoreBtn, setShowMoreBtn] = useState(false);
-  const [styledContent, setStyledContent] = useState([]);
-
-  const MAX_LENGTH = 44;
-  const MAX_NEWLINE = 2;
-
-  const contentVali = (content) => {
-    if (!content.includes("\n") && content.length < MAX_LENGTH) return;
-    if (content.includes("\n")) {
-      const newlineNum = content.split("\n")?.length - 1;
-      if (newlineNum >= MAX_NEWLINE) {
-        setShowMoreBtn(true);
-        const splitContent = content.split("\n").slice(0, 2);
-        splitContent[1] = splitContent[1].substr(0, 20);
-        setStyledContent(splitContent);
-      }
-    } else {
-      if (content.length >= MAX_LENGTH) {
-        setShowMoreBtn(true);
-        setStyledContent([content.substr(0, MAX_LENGTH)]);
-      }
-    }
-  };
-
-  useEffect(() => {
-    contentVali(content);
-  }, [content]);
-
   return (
-    <StDetailDesc>
+    <StDetailDesc ref={descRef}>
       <StSubInfo>
         <span>카테고리&gt;{category}</span>
         <span>
@@ -65,42 +38,14 @@ const DetailDesc = ({
           <span>{process === "채택 성공" ? selectedPrice : price}</span> 원
         </StPriceText>
       </StPrice>
-      {content.length < MAX_LENGTH && styledContent.length < MAX_NEWLINE ? (
-        <StDesc isShow={false}>{content}</StDesc>
-      ) : (
-        <StDesc isShow={!showMoreBtn}>
-          {showMoreBtn ? (
-            <>
-              {styledContent.map((val, idx) => (
-                <React.Fragment key={`${val}-${idx}`}>
-                  {styledContent.length === 1 ? (
-                    `${styledContent}⋯`
-                  ) : (
-                    <>
-                      {idx === 1 && styledContent[1].length === 20
-                        ? `${val}⋯`
-                        : val}
-                      <br />
-                    </>
-                  )}
-                </React.Fragment>
-              ))}
-              <button onClick={() => setShowMoreBtn(false)}>
-                <span>더 보기</span>
-              </button>
-            </>
-          ) : (
-            <>
-              {content.split("\n").map((val, idx) => (
-                <React.Fragment key={`${val}-${idx}`}>
-                  {val}
-                  <br />
-                </React.Fragment>
-              ))}
-            </>
-          )}
-        </StDesc>
-      )}
+      <StDesc>
+        {content.split("\n").map((val, idx) => (
+          <React.Fragment key={`${val}-${idx}`}>
+            {val}
+            <br />
+          </React.Fragment>
+        ))}
+      </StDesc>
     </StDetailDesc>
   );
 };
@@ -156,31 +101,11 @@ const StSelectedMessage = styled.span`
 `;
 
 const StDesc = styled.p`
-  height: ${({ isShow }) => (isShow ? "100%" : "40px")};
+  height: 100%;
   margin-top: 14px;
   position: relative;
   color: ${colors.grey1};
   word-break: break-all;
-
-  button {
-    display: ${({ isShow }) => (isShow ? "none" : "flex")};
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    padding: 0;
-    border: none;
-    outline: none;
-    background: transparent;
-    align-items: center;
-    justify-content: center;
-
-    span {
-      color: ${colors.grey1};
-      font-size: 14px;
-      font-weight: 500;
-      text-decoration: underline;
-    }
-  }
 `;
 
 export default DetailDesc;

@@ -8,20 +8,46 @@ import DetailCommentForm from "components/detail/DetailCommentForm";
 import LoadingMessage from "components/etc/LoadingMessage";
 import { getDetailCheck } from "api/detailApi";
 import { detailCheckState } from "state/atom";
+import { useEffect, useMemo, useState } from "react";
 
 const Detail = ({ page }) => {
   const setDetailCheckState = useSetRecoilState(detailCheckState);
-  const { isLoading, data } = useQuery(
-    "detailCheck",
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const { isRefetching, isLoading, data } = useQuery(
+    ["detailCheck", () => getDetailCheck(page)],
     () => getDetailCheck(page),
     {
       onSuccess: (data) => {
         setDetailCheckState(data.data);
       },
+      onError: (error) => console.log("ERROR!!", error),
+      staleTime: 5000,
     }
   );
 
-  if (isLoading) return <LoadingMessage />;
+  const onScrollHandler = () => {
+    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+    clientHeight + scrollTop >= scrollHeight && setIsScrolled(true);
+    console.log("SCROLLED");
+    console.log(scrollHeight, scrollTop, clientHeight);
+    console.log(clientHeight + scrollTop >= scrollHeight);
+  };
+
+  useEffect(() => {
+    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+    console.log("SCROLLED");
+    console.log(scrollHeight, scrollTop, clientHeight);
+  }, []);
+
+  // useEffect(() => {
+  //   window.addEventListener("scroll", onScrollHandler);
+  //   return () => {
+  //     window.removeEventListener("scroll", onScrollHandler);
+  //   };
+  // }, [isScrolled]);
+
+  if (isRefetching || isLoading) return <LoadingMessage />;
 
   const {
     nickName,
@@ -72,7 +98,11 @@ const Detail = ({ page }) => {
           />
         </StCommentList>
         {process === "진행중" ? (
-          <DetailCommentForm isMyArticles={isMyArticles} articlesId={page} />
+          <DetailCommentForm
+            isMyArticles={isMyArticles}
+            articlesId={page}
+            isScrolled={isScrolled}
+          />
         ) : null}
       </StCommment>
     </StDetail>
@@ -92,7 +122,7 @@ const StCommment = styled.div`
 `;
 
 const StCommentList = styled.div`
-  min-height: calc(100vh - 495px);
+  min-height: 173px;
 `;
 
 export default Detail;

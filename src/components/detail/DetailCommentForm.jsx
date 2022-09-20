@@ -8,10 +8,12 @@ import Input from "components/elements/Input";
 import CommentNumAlert from "components/detail/CommentNumAlert";
 import handlePrice from "utils/handlePrice";
 import { postComment } from "api/detailApi";
-import { commentRefState } from "state/atom";
+import { commentRefState, loginState } from "state/atom";
 import { colors, fontSize } from "styles/theme";
+import { removeCookie } from "api/cookies";
+import { useNavigate } from "react-router-dom";
 
-const DetailCommentForm = ({ isMyArticles, articlesId }) => {
+const DetailCommentForm = ({ isMyArticles, articlesId, isScrolled }) => {
   const [commentPrice, setCommentPrice] = useState("");
   const [realCommentPrice, setRealCommentPrice] = useState({
     articlesId: articlesId,
@@ -26,10 +28,15 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   const [isPriceActive, setIsPriceActive] = useState(false);
   const [isTextActive, setIsTextActive] = useState(false);
   const [openCommentNumAlert, setOpenCommentNumAlert] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorData, setErrorData] = useState({
+    errorCode: "",
+    errorMessage: "",
+  });
 
+  const setIsLogin = useSetRecoilState(loginState);
   const setCommentRefState = useSetRecoilState(commentRefState);
 
+  const navigate = useNavigate();
   const MAX_LENGTH_TEXT = 80;
 
   const queryClient = useQueryClient();
@@ -45,7 +52,11 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
       setCommentRefState(true);
     },
     onError: ({ response }) => {
-      setErrorMessage(response.data.errorMessage);
+      console.log(response);
+      setErrorData({
+        errorCode: response.data.errorCode,
+        errorMessage: response.data.errorMessage,
+      });
       setOpenCommentNumAlert(true);
       setCommentPrice("");
       setCommentText({ ...commentText, comment: "" });
@@ -70,6 +81,16 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
       target.length ? setIsTextActive(true) : setIsTextActive(false);
       setCommentText({ ...commentText, comment: target });
     }
+  };
+
+  const handleCommentAlert = () => {
+    if (errorData.errorCode === "405") {
+      setIsLogin(false);
+      removeCookie("accessToken");
+      removeCookie("refreshToken");
+      navigate("/login");
+    }
+    setOpenCommentNumAlert(false);
   };
 
   const handleSubmitPrice = (e) => {
@@ -108,7 +129,7 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
             </Button>
           </StPriceForm>
         )}
-        <StTextForm onSubmit={handleSubmitText}>
+        <StTextForm onSubmit={handleSubmitText} isScrolled={isScrolled}>
           <StTextInput>
             <Input
               value={commentText.comment}
@@ -127,10 +148,10 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
           </StTextInput>
         </StTextForm>
         {openCommentNumAlert && (
-          <Modal handleOpenModal={() => setOpenCommentNumAlert(false)}>
+          <Modal handleOpenModal={handleCommentAlert}>
             <CommentNumAlert
-              message={errorMessage}
-              handleOpenModal={() => setOpenCommentNumAlert(false)}
+              errorData={errorData}
+              handleOpenModal={handleCommentAlert}
             />
           </Modal>
         )}
@@ -148,6 +169,7 @@ const StPriceForm = styled.form`
   bottom: 50px;
   width: 100%;
   padding: 5px 20px;
+  z-index: 111;
 
   input {
     color: ${colors.white};
@@ -176,7 +198,8 @@ const StPriceForm = styled.form`
 `;
 
 const StTextForm = styled.form`
-  position: relative;
+  position: ${({ isScrolled }) => (isScrolled ? "relative" : "fixed")};
+  bottom: ${({ isScrolled }) => (isScrolled ? "" : "0px")};
   background: ${colors.grey1};
   width: 100%;
   padding: 5px 20px;

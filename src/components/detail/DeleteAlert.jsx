@@ -4,9 +4,11 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Button from "components/elements/Button";
 import { deleteComment, deleteDetailCheck } from "api/detailApi";
-import { commentRefState } from "state/atom";
+import { commentRefState, loginState } from "state/atom";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
+import { useState } from "react";
+import { removeCookie } from "api/cookies";
 
 const DeleteAlert = ({
   isArticle,
@@ -14,6 +16,11 @@ const DeleteAlert = ({
   articlesId,
   handleOpenModal,
 }) => {
+  const [deleteData, setDeleteData] = useState({
+    deleteMessage: "정말 삭제하시겠어요?",
+    isError: false,
+  });
+  const setIsLogin = useSetRecoilState(loginState);
   const setCommentRefState = useSetRecoilState(commentRefState);
   const navigate = useNavigate();
 
@@ -25,7 +32,7 @@ const DeleteAlert = ({
     onSuccess: (data) => {
       queryClient.invalidateQueries("detailCheck");
       handleOpenModal();
-      navigate(-1);
+      navigate("/");
     },
   });
 
@@ -35,26 +42,48 @@ const DeleteAlert = ({
       queryClient.invalidateQueries("checkComments");
       handleOpenModal();
     },
+    onError: ({ response }) => {
+      console.log("DELETE COMMENT ERROR", response);
+      setDeleteData({
+        isError: true,
+        deleteMessage: response.data.errorMessage,
+      });
+    },
   });
 
   const handleDelete = () => {
     isArticle
       ? detailDeleteMutate(articlesId)
       : commentDeleteMutate(commentsId);
-    handleOpenModal();
+    // handleOpenModal();
+  };
+
+  const handleCloseModal = () => {
+    setIsLogin(false);
+    removeCookie("accessToken");
+    removeCookie("refreshToken");
+    navigate("/login");
   };
 
   return (
     <StDeleteAlert>
-      <StMessage>
+      <StMessage isError={deleteData.isError}>
         <IconTrash width="40px" height="40px" fill={`${colors.mainP}`} />
-        <span>정말 삭제하시겠어요?</span>
+        <span>{deleteData.deleteMessage}</span>
       </StMessage>
       <StButton>
-        <Button theme="grey" onClickHandler={handleDelete}>
-          삭제하기
-        </Button>
-        <Button onClickHandler={handleOpenModal}>아니오</Button>
+        {deleteData.isError ? (
+          <>
+            <Button onClickHandler={handleCloseModal}>닫기</Button>
+          </>
+        ) : (
+          <>
+            <Button theme="grey" onClickHandler={handleDelete}>
+              삭제하기
+            </Button>
+            <Button onClickHandler={handleOpenModal}>아니오</Button>
+          </>
+        )}
       </StButton>
     </StDeleteAlert>
   );
@@ -78,7 +107,8 @@ const StMessage = styled.div`
   span {
     display: inline-block;
     text-align: center;
-    font-size: ${fontSize.large24};
+    font-size: ${({ isError }) =>
+      isError ? `${fontSize.regular18}` : `${fontSize.large22}`};
   }
 `;
 
