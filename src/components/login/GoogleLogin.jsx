@@ -4,6 +4,7 @@ import { setCookie } from "api/cookies";
 import { instance } from "api/axios";
 import { useSetRecoilState } from "recoil";
 import { loginState } from "state/atom";
+import StartPage from "components/etc/StartPage";
 
 const GoogleLogin = () => {
   const setIsLogin = useSetRecoilState(loginState);
@@ -43,7 +44,9 @@ const GoogleLogin = () => {
             setListening(true);
           }
           setIsLogin(true);
-          navigate("/");
+          setTimeout(()=>{
+            navigate("/")
+          },500)
         } catch (err) {
           window.alert("LOGIN FAILED");
           navigate("/");
@@ -56,7 +59,7 @@ const GoogleLogin = () => {
     };
   }, []);
 
-  return null;
+  return <StartPage/>;
 };
 
 export default GoogleLogin;
