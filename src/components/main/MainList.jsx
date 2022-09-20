@@ -11,7 +11,7 @@ import { getMainCheck } from "api/mainApi";
 import { getCookie } from "api/cookies";
 import { colors } from "styles/theme";
 import icons from "assets";
-import ErrorMessage from "components/etc/ErrorMessage";
+import { fontSize } from "styles/theme";
 
 const MainList = () => {
   const { IconPlus, GoBack } = icons;
@@ -93,8 +93,7 @@ const MainList = () => {
     }
   }, [inView]);
 
-  // if (status === "loading") return <LoadingMessage />;
-  if (status === "loading") return <ErrorMessage />;
+  if (status === "loading") return null;
 
   return (
     <StMain>
@@ -143,9 +142,10 @@ const MainList = () => {
             })}
           </div>
         ))}
-        <div ref={ref} style={{ border: "1px solid white" }}>
+        <StNext ref={ref} style={{ border: "1px solid white" }}>
           {isFetchingNextPage && <div>로딩 중</div>}
-        </div>
+          {!isFetchingNextPage && <div>목록의 마지막입니다.</div>}
+        </StNext>
         <StGoBack
           onClick={onClickScroll}
           style={{ display: scrollPosition < 500 ? "none" : "inline" }}
@@ -245,6 +245,17 @@ const StIcon = styled.div`
   border-radius: 100px;
   width: 50px;
   height: 50px;
+`;
+const StNext = styled.div`
+  display: flex;
+  text-align: center;
+  div {
+    color: ${colors.subP};
+    font-size: ${fontSize.regular18};
+    width: 100%;
+    margin: 36px 0px;
+    font-family: "twayfly", "Noto Sans KR", sans-serif;
+  }
 `;
 
 export default MainList;

@@ -4,9 +4,10 @@ import MainCarouselCard from "components/main/MainCarouselCard";
 import { getRandomCards } from "api/mainApi";
 import { colors } from "styles/theme";
 import icons from "assets";
+import { fontSize } from "styles/theme";
 
 const MainCarousel = () => {
-  const {MainArrow } = icons;
+  const { MainArrow } = icons;
 
   /* -------------------------------- 데이터 Read -------------------------------- */
   const checkRandomLists = useQuery("randomList", getRandomCards, {
@@ -45,14 +46,14 @@ const StMainRandomTitle = styled.div`
   font-family: "twayfly", "Noto Sans KR", sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 20px;
+  font-size: ${fontSize.large20};
 `;
 
 const StMainTitleSpan = styled.span`
   margin-left: 6px;
   color: ${colors.mainO};
   font-family: "twayfly", "Noto Sans KR", sans-serif;
-  font-size: 20px;
+  font-size: ${fontSize.large20};
   font-style: normal;
   font-weight: 400;
 `;

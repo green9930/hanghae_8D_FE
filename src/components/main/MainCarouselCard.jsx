@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "styles/theme";
+import { fontSize } from "styles/theme";
 
 const MainCarouselCard = ({ data }) => {
   const { articlesId, title, price, image } = data;
@@ -30,14 +31,14 @@ const StImgBox = styled.div`
 
 const StTitle = styled.div`
   padding-left: 10px;
-  font-size: 16px;
+  font-size: ${fontSize.regular16};
   font-weight: 700;
   letter-spacing: -0.5px;
 `;
 
 const StPrice = styled.p`
   padding-right: 12px;
-  font-size: 16px;
+  font-size: ${fontSize.regular16};
   font-weight: 700;
   letter-spacing: -0.5px;
   text-align: right;
@@ -45,7 +46,7 @@ const StPrice = styled.p`
 
   span {
     margin-left: 2px;
-    font-size: 10px;
+    font-size: ${fontSize.small10};
     font-weight: 400;
     letter-spacing: -0.5px;
   }
