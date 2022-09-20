@@ -13,7 +13,7 @@ import { colors, fontSize } from "styles/theme";
 import { removeCookie } from "api/cookies";
 import { useNavigate } from "react-router-dom";
 
-const DetailCommentForm = ({ isMyArticles, articlesId, isScrolled }) => {
+const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   const [commentPrice, setCommentPrice] = useState("");
   const [realCommentPrice, setRealCommentPrice] = useState({
     articlesId: articlesId,
@@ -52,7 +52,7 @@ const DetailCommentForm = ({ isMyArticles, articlesId, isScrolled }) => {
       setCommentRefState(true);
     },
     onError: ({ response }) => {
-      console.log(response);
+      console.log("POST COMMENT FAILED", response);
       setErrorData({
         errorCode: response.data.errorCode,
         errorMessage: response.data.errorMessage,
@@ -129,7 +129,7 @@ const DetailCommentForm = ({ isMyArticles, articlesId, isScrolled }) => {
             </Button>
           </StPriceForm>
         )}
-        <StTextForm onSubmit={handleSubmitText} isScrolled={isScrolled}>
+        <StTextForm onSubmit={handleSubmitText}>
           <StTextInput>
             <Input
               value={commentText.comment}
@@ -198,8 +198,8 @@ const StPriceForm = styled.form`
 `;
 
 const StTextForm = styled.form`
-  position: ${({ isScrolled }) => (isScrolled ? "relative" : "fixed")};
-  bottom: ${({ isScrolled }) => (isScrolled ? "" : "0px")};
+  position: absolute;
+  bottom: 0;
   background: ${colors.grey1};
   width: 100%;
   padding: 5px 20px;
