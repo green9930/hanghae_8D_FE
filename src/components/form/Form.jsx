@@ -15,7 +15,7 @@ import ImageFileAlert from "components/form/ImageFileAlert";
 import { postCheck } from "api/formApi";
 import handlePrice from "utils/handlePrice";
 import { fontSize } from "styles/theme";
-// import heic2any from "heic2any";
+import imageCompression from "browser-image-compression";
 
 const Form = () => {
   const [openImageAlert, setOpenImageAlert] = useState(false);
@@ -27,6 +27,7 @@ const Form = () => {
   const [price, setPrice] = useState("");
   const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
+
   const [files, setFiles] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
 
@@ -73,67 +74,45 @@ const Form = () => {
     }
   };
 
-  /* ---------------------------------- 사진 미리보기 ------------------------------- */
-  const handleAddImages = (e) => {
+  /* ------------------------------ 사진 미리보기 & 리사이징 ---------------------------- */
+  const handleAddImages = async (e) => {
     if (files.length + e.target.files.length > 5) {
       return setOpenImageNumberAlert(true);
     }
-
     for (let i = 0; i < e.target.files.length; i++) {
+      let file = e.target.files[i];
+      console.log(e.target.files[i]);
       if (
         !VALID_IMAGE_TYPE.includes(
-          e.target.files[i].name
-            .split(".")
-            [e.target.files[i].name.split(".").length - 1].toLowerCase()
+          file.name.split(".")[file.name.split(".").length - 1].toLowerCase()
         )
       )
         return setOpenImageFileAlert(true);
-      if (e.target.files[i].size > 10000000) return setOpenImageAlert(true);
-      const reader = new FileReader();
-      reader.readAsDataURL(e.target.files[i]);
-      reader.onload = () => {
-        const previewImgUrl = reader.result;
-        setPreviewImg((previewImg) => [...previewImg, previewImgUrl]);
+      if (file.size > 10000000) return setOpenImageAlert(true);
+
+      const options = {
+        maxSizeMB: 10,
+        maxWidthOrHeight: 3000,
+        useWebWorker: true,
       };
+      try {
+        const compressedFile = await imageCompression(file, options);
+        console.log(compressedFile);
+        setFiles((files) => [...files, compressedFile]);
+
+        const reader = new FileReader();
+        reader.readAsDataURL(compressedFile);
+        reader.onload = () => {
+          const previewImgUrl = reader.result;
+          setPreviewImg((previewImg) => [...previewImg, previewImgUrl]);
+        };
+      } catch (error) {
+        alert("이미지를 불러올 수 없습니다");
+      }
     }
 
     files.length >= 0 ? setValidImage(true) : setValidImage(false);
-    setFiles([...files, ...e.target.files]);
   };
-
-  // const element = e.target;
-  // const blob = element.files[0];
-
-  //   if (element.files && blob) {
-  //     const heicReader = new FileReader();
-  //     if (
-  //       blob.name.split(".")[1] === "heic" ||
-  //       blob.name.split(".")[1] === "HEIC"
-  //     ) {
-  //       let file;
-  //       (async () => {
-  //         const jpgFile = await heic2any({
-  //           blob,
-  //           toType: "image/jpeg",
-  //           quality: 0.5,
-  //         });
-  //         file = new File([jpgFile], blob.name.split(".")[0] + ".jpg", {
-  //           type: "image/jpeg",
-  //           lastModified: new Date().getTime(),
-  //         });
-  //         heicReader.readAsDataURL(file);
-  //         setFiles(file);
-  //         console.log(e.target.files[0]);
-  //         console.log(e.target.files[0]);
-  //         reader.onloadend = () => {
-  //           const previewImgUrl = reader.result;
-  //           setPreviewImg([previewImgUrl]);
-  //         };
-  //       })();
-  //     } else return;
-  //     console.log(files);
-  //     console.log(previewImg);
-  //   }
 
   const handleDeleteImage = (id) => {
     setPreviewImg(previewImg.filter((_, index) => index !== id));
@@ -199,13 +178,14 @@ const Form = () => {
     <StFormContainer>
       <StFirstWrap>
         <StPreview>
-          <label htmlFor="input-file" onChange={handleAddImages}>
+          <label htmlFor="input-file">
             <IconPlus />
             <input
               type="file"
               id="input-file"
-              multiple
               accept=".png, .jpg, .jpeg"
+              onChange={handleAddImages}
+              multiple
             />
           </label>
           <StImageList validImage={validImage}>
