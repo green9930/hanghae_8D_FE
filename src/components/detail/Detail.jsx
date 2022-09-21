@@ -20,7 +20,6 @@ const Detail = ({ page }) => {
         setDetailCheckState(data.data);
       },
       onError: (error) => console.log("GET DETAILCHECK FAILED", error),
-      staleTime: 5000,
     }
   );
 
