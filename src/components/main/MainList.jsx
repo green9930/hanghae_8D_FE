@@ -169,7 +169,7 @@ const StSelectList = styled.div`
   top: 64px;
   display: flex;
   height: 55px;
-  gap: 13px;
+  gap: 5px;
   justify-content: center;
   align-items: center;
   background-color: ${colors.grey7};
