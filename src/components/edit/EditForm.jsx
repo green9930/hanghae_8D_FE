@@ -40,7 +40,7 @@ const EditForm = () => {
   const [isValidPrice, setIsValidPrice] = useState(true);
   const [isValidContent, setIsValidContent] = useState(true);
 
-  const MAX_IMG_SIZE = 20000000;
+  const MAX_IMG_SIZE = 10000000;
   const MAX_TITLE_LENGTH = 30;
   const MAX_CONTENT_LENGTH = 400;
   const VALID_IMAGE_TYPE = ["png", "jpg", "jpeg"];
