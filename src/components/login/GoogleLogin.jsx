@@ -9,13 +9,13 @@ import StartPage from "components/etc/StartPage";
 const GoogleLogin = () => {
   const setIsLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
-  const [listening, setListening] = useState(false);
-  const [data, setData] = useState([]);
-  const [value, setValue] = useState(null);
-  const [meventSource, msetEventSource] = useState(null);
+  // const [listening, setListening] = useState(false);
+  // const [data, setData] = useState([]);
+  // const [value, setValue] = useState(null);
+  // const [meventSource, msetEventSource] = useState(null);
 
   let code = new URL(window.location.href).searchParams.get("code");
-  let eventSource;
+  // let eventSource;
 
   useEffect(() => {
     if (code) {
@@ -25,28 +25,28 @@ const GoogleLogin = () => {
           if (await res.headers.authorization) {
             setCookie("accessToken", res.headers.authorization);
             setCookie("refreshToken", res.headers.refreshtoken);
-            eventSource = new EventSource(
-              `${process.env.REACT_APP_BASE_URL}/api/subscribe`
-            );
-            msetEventSource(eventSource); //구독
-            eventSource.onmessage = (event) => {
-              setData((old) => [...old, event.data]);
-              setValue(event.data);
-            };
-            eventSource.onerror = (event) => {
-              // if (event.target.readyState === EventSource.CLOSED) {
-              //   console.log(
-              //     "eventsource closed (" + event.target.readyState + ")"
-              //   );
-              // }
-              eventSource.close();
-            };
-            setListening(true);
+            // eventSource = new EventSource(
+            //   `${process.env.REACT_APP_BASE_URL}/api/subscribe`
+            // );
+            // msetEventSource(eventSource); //구독
+            // eventSource.onmessage = (event) => {
+            //   setData((old) => [...old, event.data]);
+            //   setValue(event.data);
+            // };
+            // eventSource.onerror = (event) => {
+            //   // if (event.target.readyState === EventSource.CLOSED) {
+            //   //   console.log(
+            //   //     "eventsource closed (" + event.target.readyState + ")"
+            //   //   );
+            //   // }
+            //   eventSource.close();
+            // };
+            // setListening(true);
           }
           setIsLogin(true);
-          setTimeout(()=>{
-            navigate("/")
-          },500)
+          setTimeout(() => {
+            navigate("/");
+          }, 500);
         } catch (err) {
           window.alert("LOGIN FAILED");
           navigate("/");
@@ -54,12 +54,12 @@ const GoogleLogin = () => {
       };
       google();
     }
-    return () => {
-      eventSource.close();
-    };
+    // return () => {
+    //   eventSource.close();
+    // };
   }, []);
 
-  return <StartPage/>;
+  return <StartPage />;
 };
 
 export default GoogleLogin;
