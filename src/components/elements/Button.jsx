@@ -77,11 +77,11 @@ const StButton = styled.button`
     if (variant === "text") {
       if (size === "small_round") {
         return css`
-          width: 72px;
+          width: 78px;
           height: 30px;
           border-radius: 30px;
           text-align: center;
-          font-size: ${fontSize.regular14};
+          font-size: ${fontSize.small12};
           letter-spacing: -0.03em;
           @media screen and (max-width: 350px) {
             width: 53px;
