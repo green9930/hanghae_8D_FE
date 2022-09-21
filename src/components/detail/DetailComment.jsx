@@ -84,11 +84,11 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
               {isMyArticles && !isSelected && process === "진행중" ? (
                 isMyComment ? null : (
                   <Button variant="image" onClickHandler={handleSelectComment}>
-                    <BSalectWhite />
+                    <BSalectWhite width="30px" height="30px" />
                   </Button>
                 )
               ) : null}
-              {isSelected ? <BSalectPurple /> : null}
+              {isSelected ? <BSalectPurple width="30px" height="30px" /> : null}
               {isMyComment && !isSelected ? (
                 <Button variant="image" onClickHandler={handleDeleteComment}>
                   <IconTrash fill={`${colors.grey1}`} />
@@ -173,7 +173,8 @@ const StText = styled.p`
 const StTextBtnContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  width: 30px;
 `;
 
 const StPriceContainer = styled.div`
