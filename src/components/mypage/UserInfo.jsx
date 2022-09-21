@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
@@ -7,16 +7,33 @@ import MyList from "components/mypage/MyList";
 import AlarmList from "components/mypage/AlarmList";
 import RankModal from "components/mypage/RankModal";
 import MyPageFooter from "components/mypage/MyPageFooter";
+import NickNameAlert from "components/mypage/NickNameAlert";
 import Button from "components/elements/Button";
-import { getMyNotification, getMyProfile } from "api/mypageApi";
-import { alarmListState, myListState, myPageTitleState } from "state/atom";
+import Input from "components/elements/Input";
+import { getMyNotification, getMyProfile, patchMyProfile } from "api/mypageApi";
+import {
+  alarmListState,
+  myListState,
+  myPageTitleState,
+  nickNameState,
+} from "state/atom";
 import handleRankColor from "utils/handleRankColor";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 
+const MAX_NICKNAME_LENGTH = 6;
+const MIN_NICKNAME_LENGTH = 1;
+
 const UserInfo = () => {
   const [isOpenRankModal, setIsOpenRankModal] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [nickNameVali, setNickNameVali] = useState({
+    message: "",
+    isValid: true,
+  });
+  const [openNickNameAlert, setOpenickNameAlert] = useState(false);
 
+  const [isEdit, setIsEdit] = useRecoilState(nickNameState);
   const setTitleState = useSetRecoilState(myPageTitleState);
   const [isOpenMyList, setIsOpenMyList] = useRecoilState(myListState);
   const [isOpenAlarmList, setIsOpenAlarmList] = useRecoilState(alarmListState);
@@ -48,6 +65,26 @@ const UserInfo = () => {
     }
   );
 
+  const queryClient = useQueryClient();
+  const { isLoading: nickNameLoading, mutate: patchMutate } = useMutation(
+    patchMyProfile,
+    {
+      onSuccess: ({ data }) => {
+        setIsEdit(false);
+        queryClient.invalidateQueries("myprofile");
+        setNickNameVali({ message: data.data, isValid: true });
+        setOpenickNameAlert(true);
+      },
+      onError: ({ response }) => {
+        setNickNameVali({
+          message: response.data.errorMessage,
+          isValid: false,
+        });
+        setOpenickNameAlert(true);
+      },
+    }
+  );
+
   const { isLoading: alertNotiLoading, data: alertNotiData } = useQuery(
     "alertNoti",
     getMyNotification,
@@ -59,12 +96,14 @@ const UserInfo = () => {
 
   if (myProfileLoading) return null;
 
-  const { articleCount, nickName, userEmail, userRank, userPoint } =
+  const { articleCount, userName, nickName, userEmail, userRank, userPoint } =
     myProfileData.data.data;
 
   if (alertNotiLoading) return null;
+  if (nickNameLoading) return null;
 
   const handleShowMyList = () => {
+    setIsEdit(false);
     setIsOpenMyList(true);
     setIsOpenAlarmList(false);
     setIsOpenRankModal(false);
@@ -72,24 +111,107 @@ const UserInfo = () => {
   };
 
   const handleShowAlarmList = () => {
+    setIsEdit(false);
     setIsOpenAlarmList(true);
     setIsOpenMyList(false);
     setIsOpenRankModal(false);
     setTitleState("알림");
   };
 
-  const handleShowRankModal = () => setIsOpenRankModal(!isOpenRankModal);
+  const handleShowRankModal = () => {
+    setIsEdit(false);
+    setIsOpenRankModal(!isOpenRankModal);
+  };
+
+  const handleEditor = () => {
+    setIsEdit(true);
+    setNewName(nickName);
+  };
+
+  const handleChangeNickName = (e) => {
+    const { value } = e.target;
+    if (value.trim().length > MAX_NICKNAME_LENGTH) return;
+    setNewName(value.replace(" ", ""));
+    setNickNameVali({
+      message: "",
+      isValid: true,
+    });
+  };
+
+  const handleSubmitNickName = () => {
+    const regExp = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
+    if (
+      newName.length > MAX_NICKNAME_LENGTH ||
+      newName.length < MIN_NICKNAME_LENGTH
+    ) {
+      setNickNameVali({
+        message: "닉네임은 1글자 이상, 6글자 이하로 작성해 주세요.",
+        isValid: false,
+      });
+      setOpenickNameAlert(true);
+    } else if (!regExp.test(newName)) {
+      setNickNameVali({
+        message: "닉네임은 한글, 영어, 숫자만 입력할 수 있습니다.",
+        isValid: false,
+      });
+      setOpenickNameAlert(true);
+    } else {
+      setNickNameVali({
+        message: "",
+        isValid: true,
+      });
+      patchMutate({ nickName: newName });
+    }
+  };
+
+  const handleNickNameAlert = () => {
+    setOpenickNameAlert(false);
+    setNickNameVali({
+      ...nickNameVali,
+      isValid: true,
+    });
+  };
 
   return (
     <UserInfoContainer>
       <StUserInfo isOpenMyList={isOpenMyList} isOpenAlarmList={isOpenAlarmList}>
-        <StName>{nickName}</StName>
+        {isEdit ? (
+          <StNickNameInput isDisabled={nickNameVali.isValid}>
+            <Input value={newName} onChangeHandler={handleChangeNickName} />
+            <Button
+              theme="transparent"
+              isDisabled={!nickNameVali.isValid}
+              onClickHandler={handleSubmitNickName}
+            >
+              적용
+            </Button>
+          </StNickNameInput>
+        ) : (
+          <StNameContainer>
+            <StName>
+              {userName} / {nickName}
+            </StName>
+            {isOpenMyList || isOpenAlarmList ? null : (
+              <Button theme="transparent" onClickHandler={handleEditor}>
+                수정
+              </Button>
+            )}
+          </StNameContainer>
+        )}
+        {openNickNameAlert && (
+          <Modal handleOpenModal={handleNickNameAlert}>
+            <NickNameAlert
+              message={nickNameVali.message}
+              handleOpenModal={handleNickNameAlert}
+            />
+          </Modal>
+        )}
         <StUserEmail>{userEmail}</StUserEmail>
         <StUserRankContainer>
           <StUserRank rankcolor={handleRankColor(userRank)}>
             {fullUserRank(userRank)}
           </StUserRank>
-          <StUserPoint>{userPoint}</StUserPoint>
+          <StUserPoint>{userPoint}P</StUserPoint>
         </StUserRankContainer>
       </StUserInfo>
       {isOpenMyList && <MyList />}
@@ -153,6 +275,52 @@ const StUserInfo = styled.div`
     isOpenMyList || isOpenAlarmList ? "20px 0" : "50px 0"};
   transition: padding 0.8s;
   -webkit-transition: padding 0.8s;
+`;
+
+const StNickNameInput = styled.div`
+  position: relative;
+
+  input {
+    width: 210px;
+    height: 40px;
+    padding-right: 50px;
+    border-radius: 5px;
+    border: ${({ isDisabled }) =>
+      isDisabled ? `0.5px solid ${colors.grey3}` : `0.5px solid ${colors.red}`};
+    color: ${colors.grey1};
+    text-align: right;
+    font-family: "twayfly", "Noto Sans KR", sans-serif;
+    font-size: ${fontSize.large20};
+  }
+
+  button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 40px;
+    color: ${({ isDisabled }) =>
+      isDisabled ? `${colors.mainP}` : `${colors.grey3}`};
+    font-family: "twayfly", "Noto Sans KR", sans-serif;
+    font-size: ${fontSize.regular14};
+  }
+`;
+
+const StNameContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+
+  button {
+    position: absolute;
+    right: -50px;
+    width: 50px;
+    height: 24px;
+    color: ${colors.subP};
+    font-family: "twayfly", "Noto Sans KR", sans-serif;
+    font-size: ${fontSize.regular14};
+  }
 `;
 
 const StName = styled.span`

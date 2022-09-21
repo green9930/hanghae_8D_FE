@@ -10,6 +10,11 @@ export const detailCheckState = atom({
   default: {},
 });
 
+export const nickNameState = atom({
+  key: "nickNameState",
+  default: false,
+});
+
 export const myListState = atom({
   key: "myListState",
   default: false,
