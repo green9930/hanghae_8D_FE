@@ -88,6 +88,8 @@ const StPrice = styled.div`
 
 const StPriceText = styled.span`
   span {
+    display: inline-block;
+    margin-left: 8px;
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 700;
