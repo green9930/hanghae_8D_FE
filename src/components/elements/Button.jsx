@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { a11yHidden } from "styles/mixin";
-import { colors } from "styles/theme";
+import { colors, fontSize } from "styles/theme";
 
 /* variant ------------------------------------------------------------------ */
 // image : 아이콘 버튼
@@ -81,7 +81,7 @@ const StButton = styled.button`
           height: 30px;
           border-radius: 30px;
           text-align: center;
-          font-size: 12px;
+          font-size: ${fontSize.regular14};
           letter-spacing: -0.03em;
           @media screen and (max-width: 350px) {
             width: 53px;
@@ -95,7 +95,7 @@ const StButton = styled.button`
           height: 50px;
           border-radius: 50px;
           text-align: center;
-          font-size: 18px;
+          font-size: ${fontSize.regular18};
         `;
       }
       if (size === "large") {
@@ -103,7 +103,7 @@ const StButton = styled.button`
           width: 100%;
           height: 50px;
           text-align: center;
-          font-size: 18px;
+          font-size: ${fontSize.regular18};
         `;
       }
     }

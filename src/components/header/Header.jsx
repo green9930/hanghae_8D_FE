@@ -2,7 +2,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Button from "components/elements/Button";
-import { alarmListState, myListState, myPageTitleState } from "state/atom";
+import {
+  alarmListState,
+  myListState,
+  myPageTitleState,
+  nickNameState,
+} from "state/atom";
 import { getCookie } from "api/cookies";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
@@ -11,12 +16,14 @@ const Header = ({ title }) => {
   const setMyListState = useSetRecoilState(myListState);
   const setAlarmListState = useSetRecoilState(alarmListState);
   const setTitleState = useSetRecoilState(myPageTitleState);
+  const setNickNameState = useSetRecoilState(nickNameState);
 
   const navigate = useNavigate();
   const location = useLocation();
   const { HeaderLogo, MyPageLogo } = icons;
 
   const clickNavigator = () => {
+    setNickNameState(false);
     setMyListState(false);
     setAlarmListState(false);
     setTitleState("MY");

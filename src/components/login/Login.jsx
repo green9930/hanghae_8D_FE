@@ -47,6 +47,9 @@ const StLogin = styled.div`
   position: relative;
   top: 64px;
   padding: 0 35px;
+  @media screen and (max-width: 350px) {
+    padding: 0 15px;
+  }
 `;
 const StLoginMessage = styled.div`
   margin: 70px 7px 60px 7px;
