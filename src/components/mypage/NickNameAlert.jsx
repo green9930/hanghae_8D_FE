@@ -5,7 +5,7 @@ import icons from "assets";
 
 const NickNameAlert = ({ message, handleOpenModal }) => {
   const { MainArrow } = icons;
-  const messageArr = message.split(".").filter((val) => val);
+  const messageArr = message.split("\n ").filter((val) => val);
 
   return (
     <StLogoutAlert>
