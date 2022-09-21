@@ -21,7 +21,7 @@ import handleRankColor from "utils/handleRankColor";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 
-const MAX_NICKNAME_LENGTH = 6;
+const MAX_NICKNAME_LENGTH = 7;
 const MIN_NICKNAME_LENGTH = 1;
 
 const UserInfo = () => {
@@ -76,6 +76,7 @@ const UserInfo = () => {
         setOpenickNameAlert(true);
       },
       onError: ({ response }) => {
+        console.log(response.data.errorMessage);
         setNickNameVali({
           message: response.data.errorMessage,
           isValid: false,
@@ -145,13 +146,13 @@ const UserInfo = () => {
       newName.length < MIN_NICKNAME_LENGTH
     ) {
       setNickNameVali({
-        message: "닉네임은 1글자 이상, 6글자 이하로 작성해 주세요.",
+        message: "닉네임은 1~6글자로\n 작성해 주세요.",
         isValid: false,
       });
       setOpenickNameAlert(true);
     } else if (!regExp.test(newName)) {
       setNickNameVali({
-        message: "닉네임은 한글, 영어, 숫자만 입력할 수 있습니다.",
+        message: "닉네임은 한글, 영어, 숫자만\n 입력 가능합니다.",
         isValid: false,
       });
       setOpenickNameAlert(true);
@@ -283,7 +284,7 @@ const StNickNameInput = styled.div`
   input {
     width: 210px;
     height: 40px;
-    padding-right: 50px;
+    padding-right: 56px;
     border-radius: 5px;
     border: ${({ isDisabled }) =>
       isDisabled ? `0.5px solid ${colors.grey3}` : `0.5px solid ${colors.red}`};
@@ -299,6 +300,7 @@ const StNickNameInput = styled.div`
     right: 0;
     width: 50px;
     height: 40px;
+    padding: 0;
     color: ${({ isDisabled }) =>
       isDisabled ? `${colors.mainP}` : `${colors.grey3}`};
     font-family: "twayfly", "Noto Sans KR", sans-serif;
@@ -313,10 +315,14 @@ const StNameContainer = styled.div`
   position: relative;
 
   button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    right: -50px;
-    width: 50px;
+    right: -56px;
+    width: 56px;
     height: 24px;
+    text-align: center;
     color: ${colors.subP};
     font-family: "twayfly", "Noto Sans KR", sans-serif;
     font-size: ${fontSize.regular14};
@@ -337,9 +343,14 @@ const StUserEmail = styled.span`
 
 const StUserRankContainer = styled.div`
   display: flex;
+  height: 30px;
 `;
 
 const StUserRank = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 128px;
   background: ${({ rankcolor }) => rankcolor};
   padding: 6px 28px;
   border-radius: 30px 0 0 30px;
@@ -350,8 +361,11 @@ const StUserRank = styled.div`
 `;
 
 const StUserPoint = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 82px;
   background: ${colors.subO};
-  padding: 6px 20px;
   border-radius: 0 30px 30px 0;
   color: ${colors.mainP};
   font-family: "Roboto", "Noto Sans KR", sans-serif;
@@ -364,6 +378,9 @@ const StActivities = styled.div`
   align-items: center;
   justify-content: center;
   gap: 50px;
+  @media screen and (max-width: 350px) {
+    gap: 26px;
+  }
   padding: 60px 0 70px 0;
 `;
 
