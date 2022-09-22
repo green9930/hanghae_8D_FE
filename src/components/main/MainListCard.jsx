@@ -81,7 +81,7 @@ const StMainListImg = styled.img`
 const StMainDesc = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
   justify-content: center;
 `;
 
