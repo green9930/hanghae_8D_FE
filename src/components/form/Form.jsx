@@ -142,7 +142,9 @@ const Form = () => {
     onSuccess: () => {
       navigate("/");
     },
-    onError: (err) => {},
+    onError: (err) => {
+      alert(err.response.data.errorMessage);
+    },
   });
 
   const onSubmitHandler = async () => {
