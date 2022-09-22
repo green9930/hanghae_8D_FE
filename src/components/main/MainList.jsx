@@ -6,7 +6,6 @@ import styled from "styled-components";
 import Button from "components/elements/Button";
 import SelectBox from "components/elements/SelectBox";
 import MainListCard from "components/main/MainListCard";
-import LoadingMessage from "components/etc/LoadingMessage";
 import { getMainCheck } from "api/mainApi";
 import { getCookie } from "api/cookies";
 import { colors } from "styles/theme";
@@ -65,9 +64,15 @@ const MainList = () => {
   const updateScroll = () => {
     setScrollPosition(window.scrollY);
   };
-
+  console.log(scrollPosition);
   useEffect(() => {
-    window.addEventListener("scroll", updateScroll);
+    const timer = setInterval(() => {
+      window.addEventListener("scroll", updateScroll);
+    }, 3000); //이벤트가 발생된 후 해당 타이머는 초기화를 시켜주어 이벤트의 중복을 통한 성능 지연을 방지
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("scroll", updateScroll); //clean up
+    };
   }, [scrollPosition]);
 
   /* -------------------------------- 데이터 read -------------------------------- */
