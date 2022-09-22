@@ -22,10 +22,12 @@ export default StartPage;
 const StStart = styled.div`
   background-color: ${colors.mainP};
   height: 100vh;
+  padding-top: 50%;
   svg {
     width: 199px;
     height: 199px;
-    margin: 30% 88px 30px;
+    display: block;
+    margin: auto;
   }
   p {
     font-size: 32px;
@@ -34,6 +36,7 @@ const StStart = styled.div`
     font-family: "twayfly", "Noto Sans KR", sans-serif;
     color: ${colors.white};
     text-align: center;
+    margin-top: 30px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     span {
       color: ${colors.mainO};
