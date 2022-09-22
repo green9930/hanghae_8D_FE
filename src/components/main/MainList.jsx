@@ -68,7 +68,7 @@ const MainList = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       window.addEventListener("scroll", updateScroll);
-    }, 3000); //이벤트가 발생된 후 해당 타이머는 초기화를 시켜주어 이벤트의 중복을 통한 성능 지연을 방지
+    }, 300); //이벤트가 발생된 후 해당 타이머는 초기화를 시켜주어 이벤트의 중복을 통한 성능 지연을 방지
     return () => {
       clearInterval(timer);
       window.removeEventListener("scroll", updateScroll); //clean up
@@ -104,7 +104,7 @@ const MainList = () => {
     <StMain>
       <StSelectList>
         <SelectBox
-          size={"small"}
+          size="small"
           data={datas}
           currentValue={currentValue}
           handleOnChangeSelectValue={handleOnChangeSelectValue}
@@ -112,27 +112,27 @@ const MainList = () => {
         <StMainBtns>
           <StAllBtn active={active} name="all">
             <Button
-              children={"전체 보기"}
-              size={"small_round"}
-              theme={"p_outline"}
+              children="전체 보기"
+              size="small_round"
+              theme="p_outline"
               name="all"
               onClickHandler={() => handleActiveStatus("all")}
             />
           </StAllBtn>
           <StProcessBtn active={active} name="process">
             <Button
-              children={"진행중"}
-              size={"small_round"}
-              theme={"p_outline"}
+              children="진행중"
+              size="small_round"
+              theme="p_outline"
               name="process"
               onClickHandler={() => handleActiveStatus("process")}
             />
           </StProcessBtn>
           <StDoneBtn active={active} name="done">
             <Button
-              children={"완료"}
-              size={"small_round"}
-              theme={"p_outline"}
+              children="완료"
+              size="small_round"
+              theme="p_outline"
               name="done"
               onClickHandler={() => handleActiveStatus("done")}
             />
@@ -147,14 +147,11 @@ const MainList = () => {
             })}
           </div>
         ))}
-        <StNext ref={ref} style={{ border: "1px solid white" }}>
+        <StNext ref={ref}>
           {isFetchingNextPage && <div>로딩 중</div>}
           {!isFetchingNextPage && <div>목록의 마지막입니다.</div>}
         </StNext>
-        <StGoBack
-          onClick={onClickScroll}
-          style={{ display: scrollPosition < 500 ? "none" : "inline" }}
-        >
+        <StGoBack onClick={onClickScroll} scrollPosition={scrollPosition}>
           <GoBack />
         </StGoBack>
         <StIcon onClick={onClickHandler}>
@@ -237,9 +234,9 @@ const StGoBack = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   width: 50px;
   height: 50px;
-  .active {
-    display: none;
-  }
+  display: ${({ scrollPosition }) => {
+    return scrollPosition > 500 ? true : "none";
+  }};
 `;
 
 const StIcon = styled.div`
