@@ -19,7 +19,10 @@ const Detail = ({ page }) => {
       onSuccess: (data) => {
         setDetailCheckState(data.data);
       },
-      onError: (error) => console.log("GET DETAILCHECK FAILED", error),
+      onError: (error) => {
+        window.alert(error.response.data.errorMessage);
+        window.location.replace("/");
+      },
     }
   );
 
