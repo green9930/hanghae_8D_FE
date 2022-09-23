@@ -34,7 +34,7 @@ const StMyListCard = styled.div`
   justify-content: space-between;
   gap: 8px;
   height: 70px;
-  padding: 15px 0;
+  padding: 15px 35px;
 
   img {
     width: 40px;
@@ -47,6 +47,7 @@ const StMainInfo = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  background: ${colors.grey8};
   color: ${({ process }) =>
     process === "진행중" ? `${colors.black}` : `${colors.grey2}`};
 
