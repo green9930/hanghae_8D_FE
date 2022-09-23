@@ -62,7 +62,7 @@ const StMainRandomImg = styled.div`
   display: flex;
   gap: 10px;
   overflow: scroll;
-  padding: 15px 10px 35px 10px;
+  padding: 15px 20px 35px 20px;
 
   ::-webkit-scrollbar {
     display: none;
