@@ -3,8 +3,19 @@ import styled from "styled-components";
 import Header from "components/header/Header";
 import { colors } from "styles/theme";
 import bg from "assets/bg.png";
+import { useEffect } from "react";
 
 const MobileLayout = ({ title, children }) => {
+  const setScreenSize = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  };
+
+  useEffect(() => {
+    setScreenSize();
+    window.addEventListener("resize", setScreenSize);
+    return () => window.removeEventListener("resize", setScreenSize);
+  });
   return (
     <>
       <BrowserView>
@@ -39,35 +50,40 @@ const StBackground = styled.div`
   height: 100vh;
   position: relative;
   overflow-y: scroll;
+  display: flex;
+  justify-content: space-around;
 `;
 
 const StBackgroundImg = styled.div`
-  width: 514px;
-  position: absolute;
+  width: 26vw;
+  /* position: absolute;
   bottom: 0;
-  left: 14.5%;
+  left: 14.5%; */
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    @media screen and (max-width: 950px) {
+      display: none;
+    }
   }
 `;
 
 const StBrowserLayout = styled.div`
-  width: 520px;
+  width: 500px;
   height: 100%;
-  position: relative;
+  /* position: relative; */
+  /* left: 56%; */
   overflow-y: scroll;
-  left: 56%;
   background: ${colors.white};
 `;
 
 const StBrowserHeader = styled.div`
-  width: 520px;
+  width: 500px;
   position: fixed;
-  top: 0;
-  left: 56%;
+  /* top: 0;
+  left: 56%; */
   z-index: 100;
 `;
 
