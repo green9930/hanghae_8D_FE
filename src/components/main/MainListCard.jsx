@@ -22,7 +22,9 @@ const MainListCard = ({ data }) => {
   return (
     <StMainContainer>
       <StMainWrap selectedPrice={selectedPrice} onClick={onClickDetail}>
-        <StMainListImg src={image} alt="이미지" />
+        <StImage>
+          <StMainListImg src={image} alt="이미지" />
+        </StImage>
         <StMainDesc>
           <StFirstLine>
             <StTitle selectedPrice={selectedPrice}>
@@ -72,8 +74,12 @@ const StMainWrap = styled.div`
   background-color: ${({ selectedPrice }) =>
     selectedPrice ? `${colors.grey7}` : null};
 `;
-
+const StImage = styled.div`
+  min-width: 70px;
+  min-height: 70px;
+`;
 const StMainListImg = styled.img`
+  object-fit: cover;
   width: 70px;
   height: 70px;
 `;

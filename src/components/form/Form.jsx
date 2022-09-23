@@ -16,6 +16,7 @@ import { postCheck } from "api/formApi";
 import handlePrice from "utils/handlePrice";
 import { fontSize } from "styles/theme";
 import imageCompression from "browser-image-compression";
+import LoadingMessage from "components/etc/LoadingMessage";
 
 const Form = () => {
   const [openImageAlert, setOpenImageAlert] = useState(false);
@@ -138,7 +139,7 @@ const Form = () => {
   };
 
   /* -------------------------------- 데이터 Post -------------------------------- */
-  const { mutate: addCheck } = useMutation(postCheck, {
+  const { mutate: addCheck, isLoading } = useMutation(postCheck, {
     onSuccess: () => {
       navigate("/");
     },
@@ -146,6 +147,7 @@ const Form = () => {
       alert(err.response.data.errorMessage);
     },
   });
+  console.log(isLoading);
 
   const onSubmitHandler = async () => {
     let formData = new FormData();
@@ -263,6 +265,7 @@ const Form = () => {
             children={"등록하기"}
             theme={checkVali ? "purple" : "disabled"}
             onClickHandler={checkVali ? onSubmitHandler : clickCheckHandler}
+            isDisabled={isLoading ? true : false}
           />
         </StButton>
       </StThirdWrap>
