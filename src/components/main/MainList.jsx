@@ -26,11 +26,14 @@ const MainList = () => {
     });
   };
   /* --------------------------------- 카테고리 선택 -------------------------------- */
-  const [active, setActive] = useState("all");
-  const [currentValue, setCurrentValue] = useState("카테고리 전체");
+  const [active, setActive] = useState({
+    cate: "카테고리 전체",
+    pro: "all",
+  });
+  // const [currentValue, setCurrentValue] = useState("카테고리 전체");
   const [currentCategory, setCurrentCategory] = useState("all");
 
-  let payload = { category: currentCategory, process: active };
+  let payload = { category: currentCategory, process: active.pro };
 
   const datas = [
     { key: 1, value: "전체", category: "all" },
@@ -45,19 +48,21 @@ const MainList = () => {
   ];
 
   const handleOnChangeSelectValue = (e) => {
-    setCurrentValue(e.target.getAttribute("value"));
+    setActive({ cate: e.target.getAttribute("value"), pro: active.pro });
     setCurrentCategory(e.target.classList[2]);
-    payload = { category: e.target.classList[2], process: active };
-    remove();
-    refetch();
+    payload = { category: e.target.classList[2], process: active.pro };
   };
+  console.log(active);
 
   const handleActiveStatus = (name) => {
-    setActive(name);
+    setActive({ pro: name, cate: active.cate });
     payload = { category: currentCategory, process: name };
+  };
+
+  useEffect(() => {
     remove();
     refetch();
-  };
+  }, [active.cate, active.pro]);
 
   /* ------------------------------- goToTop 버튼 ------------------------------- */
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -106,11 +111,11 @@ const MainList = () => {
         <SelectBox
           size="small"
           data={datas}
-          currentValue={currentValue}
+          currentValue={active.cate}
           handleOnChangeSelectValue={handleOnChangeSelectValue}
         />
         <StMainBtns>
-          <StAllBtn active={active} name="all">
+          <StAllBtn active={active.pro} name="all">
             <Button
               children="전체 보기"
               size="small_round"
@@ -119,7 +124,7 @@ const MainList = () => {
               onClickHandler={() => handleActiveStatus("all")}
             />
           </StAllBtn>
-          <StProcessBtn active={active} name="process">
+          <StProcessBtn active={active.pro} name="process">
             <Button
               children="진행중"
               size="small_round"
@@ -128,7 +133,7 @@ const MainList = () => {
               onClickHandler={() => handleActiveStatus("process")}
             />
           </StProcessBtn>
-          <StDoneBtn active={active} name="done">
+          <StDoneBtn active={active.pro} name="done">
             <Button
               children="완료"
               size="small_round"
@@ -172,7 +177,8 @@ const StSelectList = styled.div`
   display: flex;
   height: 55px;
   gap: 5px;
-  justify-content: center;
+  justify-content: space-between;
+  padding-left: 1%;
   align-items: center;
   background-color: ${colors.grey7};
   @media screen and (max-width: 350px) {
@@ -182,6 +188,7 @@ const StSelectList = styled.div`
 
 const StMainBtns = styled.div`
   display: flex;
+  padding-right: 1%;
   gap: 4px;
   button {
     font-family: "twayfly", "Noto Sans KR", sans-serif;
