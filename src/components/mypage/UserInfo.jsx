@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import { BrowserView, MobileView } from "react-device-detect";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
 import MyList from "components/mypage/MyList";
@@ -252,7 +253,16 @@ const UserInfo = () => {
               <RankModal handleOpenModal={handleShowRankModal} />
             </Modal>
           )}
-          <MyPageFooter />
+          <MobileView>
+            <StUserInfoFooter>
+              <MyPageFooter />
+            </StUserInfoFooter>
+          </MobileView>
+          <BrowserView>
+            <StBrowserUserInfoFooter>
+              <MyPageFooter />
+            </StBrowserUserInfoFooter>
+          </BrowserView>
         </>
       )}
     </UserInfoContainer>
@@ -272,6 +282,8 @@ const StUserInfo = styled.div`
   align-items: center;
   gap: 10px;
   background: ${colors.mainP};
+  height: ${({ isOpenMyList, isOpenAlarmList }) =>
+    isOpenMyList || isOpenAlarmList ? "140px" : "200px"};
   padding: ${({ isOpenMyList, isOpenAlarmList }) =>
     isOpenMyList || isOpenAlarmList ? "20px 0" : "50px 0"};
   transition: padding 0.8s;
@@ -382,6 +394,8 @@ const StActivities = styled.div`
     gap: 26px;
   }
   padding: 60px 0 70px 0;
+  background-color: ${colors.white};
+  height: 230px;
 `;
 
 const StBtn = styled.div`
@@ -405,6 +419,34 @@ const StText = styled.div`
   padding-top: 10px;
   white-space: nowrap;
   color: ${colors.grey1};
+`;
+
+const StUserInfoFooter = styled.div`
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 30px 30px;
+  grid-row-gap: 10px;
+  background: ${colors.grey7};
+  padding-top: 30px;
+  position: fixed;
+  width: 100%;
+  height: calc(100vh - 494px);
+  bottom: 0;
+`;
+
+const StBrowserUserInfoFooter = styled.div`
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 30px 30px;
+  grid-row-gap: 10px;
+  background: ${colors.grey7};
+  padding-top: 30px;
+  position: fixed;
+  width: 414px;
+  height: calc(100vh - 494px);
+  bottom: 0;
 `;
 
 export default UserInfo;
