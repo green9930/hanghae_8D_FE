@@ -7,9 +7,9 @@ import Modal from "components/layout/Modal";
 import LogoutAlert from "components/mypage/LogoutAlert";
 import UnregisterAlert from "components/mypage/UnregisterAlert";
 import { loginState } from "state/atom";
+import { getCookie } from "api/cookies";
 import { colors } from "styles/theme";
 import icons from "assets";
-import { getCookie } from "api/cookies";
 
 const MyPageFooter = () => {
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
@@ -31,13 +31,13 @@ const MyPageFooter = () => {
   const handleUnregisterAlert = () => {
     setOpenUnregisterAlert(false);
     if (!getCookie("accessToken") && !getCookie("refreshToken"))
-      window.location.reload("/");
+      window.location.replace("/");
     setIsLogin(true);
     navigate("/mypage");
   };
 
   return (
-    <UserInfoFooter>
+    <>
       <StFooterBtn>
         <Button variant="image">
           <SendMessage />
@@ -69,25 +69,18 @@ const MyPageFooter = () => {
           <UnregisterAlert handleOpenModal={handleUnregisterAlert} />
         </Modal>
       )}
-    </UserInfoFooter>
+    </>
   );
 };
 
-const UserInfoFooter = styled.div`
-  flex-grow: 1;
-  display: grid;
-  grid-template-columns: 50% 50%;
-  background: ${colors.grey7};
-  padding-top: 30px;
-`;
-
 const StFooterBtn = styled.div`
+  height: 30px;
+  padding-left: 35px;
+
   button {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
-    margin-left: 35px;
 
     span {
       color: ${colors.grey1};

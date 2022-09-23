@@ -69,7 +69,11 @@ const MyList = () => {
 };
 
 const StMyList = styled.div`
-  padding: 15px 35px;
+  background: ${colors.white};
+
+  li {
+    background: ${colors.white};
+  }
 `;
 
 const StMainBtns = styled.div`
@@ -77,6 +81,8 @@ const StMainBtns = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 4px;
+  background: ${colors.grey7};
+  padding: 15px 35px;
 
   button {
     display: flex;
