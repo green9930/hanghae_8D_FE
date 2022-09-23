@@ -67,6 +67,10 @@ const EditForm = () => {
     () => getDetailCheck(id),
     {
       onSuccess: (data) => {
+        if (!data.data.isMyArticles) {
+          window.alert("수정 권한이 없는 게시글입니다.");
+          window.location.replace("/");
+        }
         const { category } = selectboxData.find(
           (val) => val.value === data.data.category
         );
@@ -103,6 +107,7 @@ const EditForm = () => {
   if (isLoading) return <LoadingMessage />;
 
   if (isSuccess) {
+    if (!data.data.isMyArticles) return window.location.replace("/");
     const { createdAt, images } = data?.data;
 
     /* 이미지 편집 ------------------------------------------------------------------- */
