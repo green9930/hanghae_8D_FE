@@ -34,15 +34,16 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
       queryClient.invalidateQueries("detailCheck");
       queryClient.invalidateQueries("checkComments");
     },
+    onError: ({ response }) => window.alert(response.data.errorMessage),
   });
 
   const handleSelectComment = () => {
     selectMutate({ articlesId: articlesId, commentsId: commentsId });
-    setOpenSelectAlert(true);
+    setOpenSelectAlert(false);
   };
 
   const handleDeleteComment = () => setOpenDeleteAlert(true);
-  const handleSelectAlert = () => setOpenSelectAlert(false);
+  const handleSelectAlert = () => setOpenSelectAlert(true);
   const handleDeleteAlert = () => setOpenDeleteAlert(false);
 
   return (
@@ -83,7 +84,7 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
             <StBtnContainer>
               {isMyArticles && !isSelected && process === "진행중" ? (
                 isMyComment ? null : (
-                  <Button variant="image" onClickHandler={handleSelectComment}>
+                  <Button variant="image" onClickHandler={handleSelectAlert}>
                     <BSalectWhite width="30px" height="30px" />
                   </Button>
                 )
@@ -99,10 +100,10 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
         </StPriceComment>
       )}
       {openSelectAlert && (
-        <Modal handleOpenModal={handleSelectAlert}>
+        <Modal handleOpenModal={handleSelectComment}>
           <SelectAlert
             nickName={nickName}
-            handleOpenModal={handleSelectAlert}
+            handleOpenModal={handleSelectComment}
           />
         </Modal>
       )}
