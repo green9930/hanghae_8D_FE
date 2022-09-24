@@ -11,7 +11,12 @@ import MyPageFooter from "components/mypage/MyPageFooter";
 import NickNameAlert from "components/mypage/NickNameAlert";
 import Button from "components/elements/Button";
 import Input from "components/elements/Input";
-import { getMyNotification, getMyProfile, patchMyProfile } from "api/mypageApi";
+import {
+  getMyNotification,
+  getMyProfile,
+  patchAcceptEmail,
+  patchMyProfile,
+} from "api/mypageApi";
 import {
   alarmListState,
   myListState,
@@ -66,6 +71,7 @@ const UserInfo = () => {
     }
   );
 
+  /* 닉네임 수정 ------------------------------------------------------------------- */
   const queryClient = useQueryClient();
   const { isLoading: nickNameLoading, mutate: patchMutate } = useMutation(
     patchMyProfile,
@@ -87,6 +93,11 @@ const UserInfo = () => {
     }
   );
 
+  /* 이메일 수신 동의 ---------------------------------------------------------------- */
+  const { mutate: patchAcceptEmailMutate } = useMutation(patchAcceptEmail, {
+    onSuccess: (data) => queryClient.invalidateQueries("myprofile"),
+  });
+
   const { isLoading: alertNotiLoading, data: alertNotiData } = useQuery(
     "alertNoti",
     getMyNotification,
@@ -98,12 +109,20 @@ const UserInfo = () => {
 
   if (myProfileLoading) return null;
 
-  const { articleCount, userName, nickName, userEmail, userRank, userPoint } =
-    myProfileData.data.data;
+  const {
+    articleCount,
+    userName,
+    nickName,
+    userEmail,
+    userRank,
+    userPoint,
+    isAccepted,
+  } = myProfileData.data.data;
 
   if (alertNotiLoading) return null;
   if (nickNameLoading) return null;
 
+  /* 작성 게시글 목록 ---------------------------------------------------------------- */
   const handleShowMyList = () => {
     setIsEdit(false);
     setIsOpenMyList(true);
@@ -112,6 +131,7 @@ const UserInfo = () => {
     setTitleState(`내가 쓴 게시글(${articleCount})`);
   };
 
+  /* 알람 목록 -------------------------------------------------------------------- */
   const handleShowAlarmList = () => {
     setIsEdit(false);
     setIsOpenAlarmList(true);
@@ -120,11 +140,13 @@ const UserInfo = () => {
     setTitleState("알림");
   };
 
+  /* 포인트 정보 ------------------------------------------------------------------- */
   const handleShowRankModal = () => {
     setIsEdit(false);
     setIsOpenRankModal(!isOpenRankModal);
   };
 
+  /* 닉네임 수정 ------------------------------------------------------------------- */
   const handleEditor = () => {
     setIsEdit(true);
     setNewName(nickName);
@@ -221,32 +243,61 @@ const UserInfo = () => {
       {!isOpenMyList && !isOpenAlarmList && (
         <>
           <StActivities>
-            <StBtn>
-              <Button variant="image" onClickHandler={handleShowMyList}>
-                <List />
-                <StText>
-                  <span>내가 쓴 게시글</span>
-                  <span>{articleCount}개</span>
-                </StText>
-              </Button>
-            </StBtn>
-            <StBtn>
-              <Button variant="image" onClickHandler={handleShowAlarmList}>
-                <Alarm />
-                <StText>
-                  <span>알림</span>
-                  <span>{alertNotiData.data.count}개</span>
-                </StText>
-              </Button>
-            </StBtn>
-            <StBtn>
-              <Button variant="image" onClickHandler={handleShowRankModal}>
-                <RankList />
-                <StText>
-                  <span>등급표</span>
-                </StText>
-              </Button>
-            </StBtn>
+            <StActList>
+              <StBtn>
+                <Button variant="image" onClickHandler={handleShowMyList}>
+                  <List />
+                  <StText>
+                    <span>내가 쓴 게시글</span>
+                    <span>{articleCount}개</span>
+                  </StText>
+                </Button>
+              </StBtn>
+              <StBtn>
+                <Button variant="image" onClickHandler={handleShowAlarmList}>
+                  <Alarm />
+                  <StText>
+                    <span>알림</span>
+                    <span>{alertNotiData.data.count}개</span>
+                  </StText>
+                </Button>
+              </StBtn>
+              <StBtn>
+                <Button variant="image" onClickHandler={handleShowRankModal}>
+                  <RankList />
+                  <StText>
+                    <span>등급표</span>
+                  </StText>
+                </Button>
+              </StBtn>
+            </StActList>
+            <StEmail>
+              <StEmailMessage>이메일 수신 동의</StEmailMessage>
+              <StEmailButton>
+                <StAllowBtn>
+                  <Button
+                    theme={isAccepted ? "p_filled" : "p_outline"}
+                    onClickHandler={() =>
+                      !isAccepted &&
+                      patchAcceptEmailMutate({ isAccepted: true })
+                    }
+                  >
+                    수신 동의
+                  </Button>
+                </StAllowBtn>
+                <StDeclineBtn>
+                  <Button
+                    theme={isAccepted ? "p_outline" : "p_filled"}
+                    onClickHandler={() =>
+                      isAccepted &&
+                      patchAcceptEmailMutate({ isAccepted: false })
+                    }
+                  >
+                    수신 거부
+                  </Button>
+                </StDeclineBtn>
+              </StEmailButton>
+            </StEmail>
           </StActivities>
           {isOpenRankModal && (
             <Modal height="354px" handleOpenModal={handleShowRankModal}>
@@ -283,7 +334,7 @@ const StUserInfo = styled.div`
   gap: 10px;
   background: ${colors.mainP};
   height: ${({ isOpenMyList, isOpenAlarmList }) =>
-    isOpenMyList || isOpenAlarmList ? "140px" : "200px"};
+    isOpenMyList || isOpenAlarmList ? "140px" : "192px"};
   padding: ${({ isOpenMyList, isOpenAlarmList }) =>
     isOpenMyList || isOpenAlarmList ? "20px 0" : "50px 0"};
   transition: padding 0.8s;
@@ -386,16 +437,21 @@ const StUserPoint = styled.div`
 `;
 
 const StActivities = styled.div`
+  background-color: ${colors.white};
+  height: 274px;
+  padding: 60px 0 30px 0;
+`;
+
+const StActList = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  background-color: ${colors.white};
+  padding: 0 35px;
   gap: 50px;
   @media screen and (max-width: 350px) {
     gap: 26px;
   }
-  padding: 60px 0 70px 0;
-  background-color: ${colors.white};
-  height: 230px;
 `;
 
 const StBtn = styled.div`
@@ -412,13 +468,57 @@ const StText = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  position: absolute;
-  bottom: -40px;
   width: 100%;
   height: 40px;
+  position: absolute;
+  bottom: -40px;
   padding-top: 10px;
   white-space: nowrap;
   color: ${colors.grey1};
+`;
+
+const StEmail = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px 35px 0 35px;
+`;
+
+const StEmailMessage = styled.span`
+  color: ${colors.grey1};
+  font-size: ${fontSize.regular14};
+`;
+
+const StEmailButton = styled.div`
+  display: flex;
+
+  button {
+    height: 30px;
+    font-family: "twayfly", "Noto Sans KR", sans-serif;
+    font-size: ${fontSize.small12};
+  }
+`;
+
+const StAllowBtn = styled.div`
+  width: 100px;
+  @media screen and (max-width: 350px) {
+    width: 76px;
+  }
+
+  button {
+    border-radius: 30px 0 0 30px;
+  }
+`;
+
+const StDeclineBtn = styled.div`
+  width: 100px;
+  @media screen and (max-width: 350px) {
+    width: 76px;
+  }
+
+  button {
+    border-radius: 0 30px 30px 0;
+  }
 `;
 
 const StUserInfoFooter = styled.div`
@@ -431,7 +531,7 @@ const StUserInfoFooter = styled.div`
   padding-top: 30px;
   position: fixed;
   width: 100%;
-  height: calc(100vh - 494px);
+  height: calc(100vh - 530px);
   bottom: 0;
 `;
 
@@ -448,7 +548,7 @@ const StBrowserUserInfoFooter = styled.div`
   height: calc(100vh - 494px);
   bottom: 0;
   @media (min-width: 950px) {
-    width: 32rem;
+    width: 500px;
   }
 `;
 
