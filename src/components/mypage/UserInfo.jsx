@@ -444,9 +444,12 @@ const StBrowserUserInfoFooter = styled.div`
   background: ${colors.grey7};
   padding-top: 30px;
   position: fixed;
-  width: 414px;
+  width: 100%;
   height: calc(100vh - 494px);
   bottom: 0;
+  @media (min-width: 950px) {
+    width: 32rem;
+  }
 `;
 
 export default UserInfo;
