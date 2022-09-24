@@ -276,6 +276,7 @@ const Form = () => {
 const StFormContainer = styled.div`
   position: relative;
   top: 64px;
+  height: calc(100vh - 64px);
 `;
 
 const StFirstWrap = styled.div`
@@ -419,12 +420,11 @@ const StThirdWrap = styled.div`
 `;
 
 const StButton = styled.div`
-  position: fixed;
-  bottom: 30px;
+  position: absolute;
   left: 0;
   padding: 0 30px;
   width: 100%;
-
+  bottom: 0;
   button {
     border-radius: 50px;
   }
