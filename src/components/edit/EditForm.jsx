@@ -17,6 +17,7 @@ import handlePrice from "utils/handlePrice";
 import { colors } from "styles/theme";
 import { a11yHidden } from "styles/mixin";
 import icons from "assets";
+import { isMobile } from "react-device-detect";
 
 const EditForm = () => {
   const [files, setFiles] = useState([]);
@@ -333,9 +334,11 @@ const EditForm = () => {
               취소
             </Button>
           </StCancelBtn>
-          <Button size="large_round" type="submit">
-            전송하기
-          </Button>
+          <StSendBtn isMobile={isMobile}>
+            <Button size="large_round" type="submit">
+              전송하기
+            </Button>
+          </StSendBtn>
         </StButton>
       </StEditForm>
     );
@@ -493,5 +496,10 @@ const StButton = styled.div`
 const StCancelBtn = styled.div`
   min-width: 100px;
 `;
-
+const StSendBtn = styled.div`
+  width: ${({ isMobile }) => (isMobile ? "100%" : "320px")};
+  @media screen and (max-width: 950px) {
+    width: 100%;
+  }
+`;
 export default EditForm;
