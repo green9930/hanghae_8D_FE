@@ -12,6 +12,7 @@ import { commentRefState, loginState } from "state/atom";
 import { calcRem, colors, fontSize } from "styles/theme";
 import { removeCookie } from "api/cookies";
 import { useNavigate } from "react-router-dom";
+import { isMobile } from "react-device-detect";
 
 const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   const [commentPrice, setCommentPrice] = useState("");
@@ -108,7 +109,11 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   return (
     <StCommentFormContainer>
       {!isMyArticles && (
-        <StPriceForm isPriceActive={isPriceActive} onSubmit={handleSubmitPrice}>
+        <StPriceForm
+          isPriceActive={isPriceActive}
+          onSubmit={handleSubmitPrice}
+          isMobile={isMobile}
+        >
           <Input
             value={commentPrice}
             name="price"
@@ -163,9 +168,12 @@ const StCommentFormContainer = styled.div`
 const StPriceForm = styled.form`
   position: fixed;
   bottom: 50px;
-  width: 100%;
   padding: 5px 20px;
   z-index: 111;
+  width: ${({ isMobile }) => (isMobile ? "100%" : "450px")};
+  @media screen and (max-width: 950px) {
+    width: 100%;
+  }
 
   input {
     color: ${colors.white};
