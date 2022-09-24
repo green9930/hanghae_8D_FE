@@ -170,7 +170,7 @@ const StPriceForm = styled.form`
   bottom: 50px;
   padding: 5px 20px;
   z-index: 111;
-  width: ${({ isMobile }) => (isMobile ? "100%" : "450px")};
+  width: ${({ isMobile }) => (isMobile ? "100%" : "500px")};
   @media screen and (max-width: 950px) {
     width: 100%;
   }

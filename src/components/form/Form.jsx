@@ -16,7 +16,7 @@ import { postCheck } from "api/formApi";
 import handlePrice from "utils/handlePrice";
 import { fontSize } from "styles/theme";
 import imageCompression from "browser-image-compression";
-import LoadingMessage from "components/etc/LoadingMessage";
+import { isMobile } from "react-device-detect";
 
 const Form = () => {
   const [openImageAlert, setOpenImageAlert] = useState(false);
@@ -260,7 +260,7 @@ const Form = () => {
       <StThirdWrap validLengthDesc={validLengthDesc} validDesc={validDesc}>
         <Textarea onChangeHandler={handleChange} value={desc} name="desc" />
         <p>*15글자 이상 입력해 주세요.</p>
-        <StButton>
+        <StButton isMobile={isMobile}>
           <Button
             children={"등록하기"}
             theme={checkVali ? "purple" : "disabled"}
@@ -274,6 +274,7 @@ const Form = () => {
 };
 
 const StFormContainer = styled.div`
+  width: 100%;
   position: relative;
   top: 64px;
   height: calc(100vh - 64px);
@@ -403,7 +404,7 @@ const StBtn = styled.button`
 
 const StThirdWrap = styled.div`
   padding: 20px 35px 0 35px;
-
+  width: 100%;
   textarea {
     ::placeholder {
       color: ${({ validDesc }) =>
@@ -425,11 +426,16 @@ const StThirdWrap = styled.div`
 `;
 
 const StButton = styled.div`
-  position: absolute;
-  left: 0;
-  padding: 0 30px;
-  width: 100%;
-  bottom: 0;
+  position: fixed;
+  bottom: 30px;
+  width: ${({ isMobile }) => (isMobile ? "100%" : "430px")};
+  left: ${({ isMobile }) => (isMobile ? 0 : null)};
+  padding: ${({ isMobile }) => (isMobile ? "0px 30px" : null)};
+  @media screen and (max-width: 950px) {
+    width: 100%;
+    left: 0;
+    padding: 0px 30px;
+  }
   button {
     border-radius: 50px;
   }

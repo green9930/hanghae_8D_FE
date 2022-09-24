@@ -232,11 +232,13 @@ const StDoneBtn = styled.div`
   }
 `;
 
-const StMainContainer = styled.div``;
+const StMainContainer = styled.div`
+  /* position: relative; */
+`;
 
 const StGoBack = styled.div`
   position: fixed;
-  bottom: 13%;
+  bottom: 75px;
   right: 8%;
   border-radius: 100px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -249,15 +251,21 @@ const StGoBack = styled.div`
 
 const StIcon = styled.div`
   position: fixed;
-  bottom: 4%;
+  bottom: 20px;
   /* right: 8%;  */
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 100px;
   width: 50px;
   height: 50px;
-  right: ${({ isMobile }) => (isMobile ? "8%" : "12%")};
-  @media screen and (max-width: 950px) {
-    right: 8%;
+  right: ${({ isMobile }) => (isMobile ? "8%" : "13%")};
+  /* @media screen and (max-width: 950px) {
+    right: 5%;
+  } */
+  @media screen and (min-width: 1800px) {
+    right: 16%;
+  }
+  @media screen and (min-width: 3000px) {
+    right: 21%;
   }
 `;
 const StNext = styled.div`
