@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setCookie } from "api/cookies";
+import { getCookie, setCookie } from "api/cookies";
 import { instance } from "api/axios";
 import { useSetRecoilState } from "recoil";
-import { loginState } from "state/atom";
+import Modal from "components/layout/Modal";
+import EmailAlert from "components/login/EmailAlert";
 import StartPage from "components/etc/StartPage";
+import { getMyProfile } from "api/mypageApi";
+import { loginState } from "state/atom";
 
 const GoogleLogin = () => {
+  const [email, setEmail] = useState("");
+  /* EMAIL수신동의 ---------------------------------------------------------------- */
+  const [showEmailAlert, setShowEmailAlert] = useState(false);
   const setIsLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
-  // const [listening, setListening] = useState(false);
-  // const [data, setData] = useState([]);
-  // const [value, setValue] = useState(null);
-  // const [meventSource, msetEventSource] = useState(null);
 
   let code = new URL(window.location.href).searchParams.get("code");
-  // let eventSource;
 
   useEffect(() => {
     if (code) {
@@ -25,41 +26,47 @@ const GoogleLogin = () => {
           if (await res.headers.authorization) {
             setCookie("accessToken", res.headers.authorization);
             setCookie("refreshToken", res.headers.refreshtoken);
-            // eventSource = new EventSource(
-            //   `${process.env.REACT_APP_BASE_URL}/api/subscribe`
-            // );
-            // msetEventSource(eventSource); //구독
-            // eventSource.onmessage = (event) => {
-            //   setData((old) => [...old, event.data]);
-            //   setValue(event.data);
-            // };
-            // eventSource.onerror = (event) => {
-            //   // if (event.target.readyState === EventSource.CLOSED) {
-            //   //   console.log(
-            //   //     "eventsource closed (" + event.target.readyState + ")"
-            //   //   );
-            //   // }
-            //   eventSource.close();
-            // };
-            // setListening(true);
+            setIsLogin(true);
+
+            const { data } = await getMyProfile();
+            setEmail(data.data.userEmail);
+            if (data.data.isAccepted) {
+              return setTimeout(() => navigate("/"), 500);
+            } else {
+              getCookie("emailAlertCookie_google") === data.data.userEmail
+                ? setTimeout(() => navigate("/"), 500)
+                : setShowEmailAlert(true);
+            }
           }
-          setIsLogin(true);
-          setTimeout(() => {
-            navigate("/");
-          }, 500);
         } catch (err) {
-          window.alert("LOGIN FAILED");
-          navigate("/");
+          window.alert("LOGIN FAILED!");
+          window.location.replace("/");
+          console.log(err);
         }
       };
       google();
     }
-    // return () => {
-    //   eventSource.close();
-    // };
   }, []);
 
-  return <StartPage />;
+  const handleEmailAlert = () => {
+    setShowEmailAlert(false);
+    navigate("/");
+  };
+
+  return (
+    <div>
+      <StartPage />
+      {showEmailAlert ? (
+        <Modal handleOpenModal={handleEmailAlert} height="216px">
+          <EmailAlert
+            handleOpenModal={handleEmailAlert}
+            social="google"
+            email={email}
+          />
+        </Modal>
+      ) : null}
+    </div>
+  );
 };
 
 export default GoogleLogin;
