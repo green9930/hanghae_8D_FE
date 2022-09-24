@@ -17,6 +17,7 @@ export const tokenInstance = axios.create({
     "Content-Type": "application/json",
     accept: "application/json",
   },
+  withCredentials: true,
 });
 
 /* REQUEST INTERCEPTORS ----------------------------------------------------- */
@@ -37,6 +38,7 @@ tokenInstance.interceptors.request.use(
 tokenInstance.interceptors.response.use(
   (response) => {
     // 응답 데이터가 있는 작업 수행 : STATUS CODE 2XX
+    console.log("INSTANCE RESPONSE", response);
     return response;
   },
   async (error) => {
@@ -75,20 +77,25 @@ tokenInstance.interceptors.response.use(
           console.log("REFRESHTOKEN FAILED", error.response);
           removeCookie("accessToken");
           removeCookie("refreshToken");
-          // window.location.href = "/";
-
-          // if (response.data.errorCode === "403") {
-          //   console.log('REFRESHTOKEN FAILED : 405')
-          // }
+          window.location.href = "/";
         }
+      } else if (response.data.errorCode === "403") {
+        console.log("RESPONSE INTERCEPTORS : FAILED 403");
+        removeCookie("accessToken");
+        removeCookie("refreshToken");
+        window.location.href = "/";
       }
     } catch (error) {
       console.log("GET NEW ACCESSTOKEN : FAIL", error);
       removeCookie("accessToken");
       removeCookie("refreshToken");
-      // window.location.href = "/";
+      window.location.href = "/";
       return false;
     }
+    console.log("INTERCEPTOR ERROR : ?????");
+    // removeCookie("accessToken");
+    // removeCookie("refreshToken");
+    // window.location.href = "/";
     return Promise.reject(error);
   }
 );
