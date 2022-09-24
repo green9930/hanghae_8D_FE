@@ -1,12 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getCookie, setCookie } from "api/cookies";
 import { instance } from "api/axios";
-import { setCookie } from "api/cookies";
 import { useSetRecoilState } from "recoil";
-import { loginState } from "state/atom";
+import Modal from "components/layout/Modal";
+import EmailAlert from "components/login/EmailAlert";
 import StartPage from "components/etc/StartPage";
+import { getMyProfile } from "api/mypageApi";
+import { loginState } from "state/atom";
 
 const NaverLogin = () => {
+  const [email, setEmail] = useState("");
+  /* EMAIL수신동의 ---------------------------------------------------------------- */
+  const [showEmailAlert, setShowEmailAlert] = useState(false);
   const setIsLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
 
@@ -20,22 +26,47 @@ const NaverLogin = () => {
           if (await res.headers.authorization) {
             setCookie("accessToken", res.headers.authorization);
             setCookie("refreshToken", res.headers.refreshtoken);
+            setIsLogin(true);
+
+            const { data } = await getMyProfile();
+            setEmail(data.data.userEmail);
+            if (data.data.isAccepted) {
+              return setTimeout(() => navigate("/"), 500);
+            } else {
+              getCookie("emailAlertCookie_naver") === data.data.userEmail
+                ? setTimeout(() => navigate("/"), 500)
+                : setShowEmailAlert(true);
+            }
           }
-          window.alert("LOGIN SUCCESS!");
-          setIsLogin(true);
-          setTimeout(()=>{
-            navigate("/")
-          },500)
         } catch (err) {
           window.alert("LOGIN FAILED!");
-          navigate("/");
+          window.location.replace("/");
+          console.log(err);
         }
       };
       naver();
     }
   }, []);
 
-  return <StartPage/>;
+  const handleEmailAlert = () => {
+    setShowEmailAlert(false);
+    navigate("/");
+  };
+
+  return (
+    <div>
+      <StartPage />
+      {showEmailAlert ? (
+        <Modal handleOpenModal={handleEmailAlert} height="216px">
+          <EmailAlert
+            handleOpenModal={handleEmailAlert}
+            social="naver"
+            email={email}
+          />
+        </Modal>
+      ) : null}
+    </div>
+  );
 };
 
 export default NaverLogin;

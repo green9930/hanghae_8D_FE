@@ -2,9 +2,10 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-export const setCookie = (name, value, expire) => {
+export const setCookie = (name, value) => {
   cookies.set(name, value, {
     path: "/",
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   });
 };
 
