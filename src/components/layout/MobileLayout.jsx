@@ -71,7 +71,7 @@ const StBackgroundImg = styled.div`
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
     @media screen and (max-width: 950px) {
       display: none;
     }
@@ -87,17 +87,7 @@ const StBrowserLayout = styled.div`
   background: ${colors.white};
   min-width: 360px;
   @media (min-width: 950px) {
-    width: 32rem;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  ::-webkit-scrollbar {
-    display: none;
+    width: 500px;
   }
 `;
 
@@ -108,7 +98,7 @@ const StBrowserHeader = styled.div`
   left: 56%; */
   z-index: 100;
   @media (min-width: 950px) {
-    width: 32rem;
+    width: 500px;
   }
 `;
 
