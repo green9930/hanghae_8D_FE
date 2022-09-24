@@ -387,7 +387,12 @@ const StPreview = styled.div`
 `;
 
 const StImages = styled.div`
-  overflow: scroll;
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StImagesList = styled.div`

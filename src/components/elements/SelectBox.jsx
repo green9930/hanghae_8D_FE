@@ -140,7 +140,7 @@ const StSelectOptions = styled.ul`
   top: 100%;
   left: 50%;
   transform: translate(-50%, 0%);
-  overflow: scroll;
+  overflow-y: scroll;
   width: 100%;
   height: 200px;
   max-height: ${({ show }) => (show ? "none" : "0")};
@@ -163,6 +163,12 @@ const StSelectOptions = styled.ul`
       `
     );
   }};
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StOption = styled.li`

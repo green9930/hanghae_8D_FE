@@ -54,6 +54,12 @@ const StBackground = styled.div`
     display: flex;
     justify-content: space-around;
   }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StBackgroundImg = styled.div`
@@ -82,6 +88,16 @@ const StBrowserLayout = styled.div`
   min-width: 360px;
   @media (min-width: 950px) {
     width: 32rem;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none;
   }
 `;
 
