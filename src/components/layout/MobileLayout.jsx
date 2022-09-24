@@ -50,12 +50,14 @@ const StBackground = styled.div`
   height: 100vh;
   position: relative;
   overflow-y: scroll;
-  display: flex;
-  justify-content: space-around;
+  @media screen and (min-width: 950px) {
+    display: flex;
+    justify-content: space-around;
+  }
 `;
 
 const StBackgroundImg = styled.div`
-  width: 26vw;
+  width: 380px;
   /* position: absolute;
   bottom: 0;
   left: 14.5%; */
@@ -71,20 +73,27 @@ const StBackgroundImg = styled.div`
 `;
 
 const StBrowserLayout = styled.div`
-  width: 500px;
+  width: 100%;
   height: 100%;
   /* position: relative; */
   /* left: 56%; */
   overflow-y: scroll;
   background: ${colors.white};
+  min-width: 360px;
+  @media (min-width: 950px) {
+    width: 32rem;
+  }
 `;
 
 const StBrowserHeader = styled.div`
-  width: 500px;
+  width: 100%;
   position: fixed;
   /* top: 0;
   left: 56%; */
   z-index: 100;
+  @media (min-width: 950px) {
+    width: 32rem;
+  }
 `;
 
 const StMobileLayout = styled.div`
