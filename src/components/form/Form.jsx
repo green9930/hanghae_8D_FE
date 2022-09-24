@@ -359,7 +359,12 @@ const StPreview = styled.div`
 
 const StImageList = styled.div`
   padding-left: 10px;
-  overflow: scroll;
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   div {
     display: flex;
