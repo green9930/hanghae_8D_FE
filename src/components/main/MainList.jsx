@@ -11,6 +11,7 @@ import { getCookie } from "api/cookies";
 import { colors } from "styles/theme";
 import icons from "assets";
 import { fontSize } from "styles/theme";
+import { isMobile } from "react-device-detect";
 
 const MainList = () => {
   const { IconPlus, GoBack } = icons;
@@ -159,7 +160,7 @@ const MainList = () => {
         <StGoBack onClick={onClickScroll} scrollPosition={scrollPosition}>
           <GoBack />
         </StGoBack>
-        <StIcon onClick={onClickHandler}>
+        <StIcon onClick={onClickHandler} isMobile={isMobile}>
           <IconPlus />
         </StIcon>
       </StMainContainer>
@@ -249,11 +250,15 @@ const StGoBack = styled.div`
 const StIcon = styled.div`
   position: fixed;
   bottom: 4%;
-  right: 8%;
+  /* right: 8%;  */
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 100px;
   width: 50px;
   height: 50px;
+  right: ${({ isMobile }) => (isMobile ? "8%" : "12%")};
+  @media screen and (max-width: 950px) {
+    right: 8%;
+  }
 `;
 const StNext = styled.div`
   display: flex;
