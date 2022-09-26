@@ -144,6 +144,7 @@ const StMenu = styled.div`
   top: 8px;
   right: 18px;
   z-index: 11;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
 
   button {
     height: 30px;
