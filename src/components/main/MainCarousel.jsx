@@ -6,8 +6,23 @@ import { colors } from "styles/theme";
 import icons from "assets";
 import { fontSize } from "styles/theme";
 import { isMobile } from "react-device-detect";
+import Slider from "react-slick";
 
 const MainCarousel = () => {
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 100,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    arrows: false,
+    initialSlide: 0,
+    centerMode: true, //중앙에 슬라이드가 보여지는 모드 -default:false
+    centerPadding: "30px",
+    variableWidth: true,
+    autoplay: true,
+    autoplaySpeed: 1000,
+  };
   const { MainArrow } = icons;
 
   /* -------------------------------- 데이터 Read -------------------------------- */
@@ -24,11 +39,21 @@ const MainCarousel = () => {
         <MainArrow fill={colors.mainO} />
         <StMainTitleSpan>책첵</StMainTitleSpan> 진행 중 체크
       </StMainRandomTitle>
-      <StMainRandomImg isMobile={isMobile}>
-        {checkRandomLists.data.data.data?.map((data) => (
-          <MainCarouselCard key={data.articlesId} data={data} />
-        ))}
-      </StMainRandomImg>
+      {isMobile ? (
+        <StMainRandomImg isMobile={isMobile}>
+          {checkRandomLists.data.data.data?.map((data) => (
+            <MainCarouselCard key={data.articlesId} data={data} />
+          ))}
+        </StMainRandomImg>
+      ) : (
+        <StSlider>
+          <Slider {...settings}>
+            {checkRandomLists.data.data.data?.map((data) => (
+              <MainCarouselCard key={data.articlesId} data={data} />
+            ))}
+          </Slider>
+        </StSlider>
+      )}
     </StMainRandomContainer>
   );
 };
@@ -66,7 +91,13 @@ const StMainRandomImg = styled.div`
   padding: 15px 20px 35px 20px;
 
   ::-webkit-scrollbar {
-    display: ${({ isMobile }) => (isMobile ? "none" : null)};
+    display: none;
+  }
+`;
+const StSlider = styled.div`
+  padding: 15px 0px 35px 0px;
+  .slick-slide {
+    padding-right: 10px;
   }
 `;
 
