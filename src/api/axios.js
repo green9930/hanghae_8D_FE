@@ -50,6 +50,7 @@ tokenInstance.interceptors.response.use(
 
       // ACCESSTOKEN FAILED : 405
       // REFRESHTOKEN FAILED : 403
+      /* GET ACCESSTOKEN FAILED --------------------------------------------------- */
       if (message === "Network Error" || response.data.errorCode === "405") {
         const refreshToken = getCookie("refreshToken");
         /* GET : NEW ACCESSTOKEN ---------------------------------------------------- */
@@ -74,11 +75,13 @@ tokenInstance.interceptors.response.use(
           setCookie("accessToken", response.headers.authorization);
           return axios(originalRequest);
         } catch (error) {
+          /* CHANGE ACCESSTOKEN FAILED ------------------------------------------------ */
           console.log("REFRESHTOKEN FAILED", error.response);
           removeCookie("accessToken");
           removeCookie("refreshToken");
           window.location.href = "/";
         }
+        /* GET REFRESHTOKEN FAILED -------------------------------------------------- */
       } else if (response.data.errorCode === "403") {
         console.log("RESPONSE INTERCEPTORS : FAILED 403");
         removeCookie("accessToken");
@@ -86,16 +89,12 @@ tokenInstance.interceptors.response.use(
         window.location.href = "/";
       }
     } catch (error) {
-      console.log("GET NEW ACCESSTOKEN : FAIL", error);
+      console.log("INTERCEPTOR ERROR : ", error);
       removeCookie("accessToken");
       removeCookie("refreshToken");
       window.location.href = "/";
-      return false;
     }
-    console.log("INTERCEPTOR ERROR : ?????");
-    // removeCookie("accessToken");
-    // removeCookie("refreshToken");
-    // window.location.href = "/";
+    console.log("RESPONSE INTERCEPTOR ERROR : ?????");
     return Promise.reject(error);
   }
 );

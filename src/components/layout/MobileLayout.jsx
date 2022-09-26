@@ -89,6 +89,12 @@ const StBrowserLayout = styled.div`
   @media (min-width: 950px) {
     width: 500px;
   }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StBrowserHeader = styled.div`

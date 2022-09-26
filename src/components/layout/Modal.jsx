@@ -51,7 +51,7 @@ const StModal = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 101;
+  z-index: 110;
 `;
 
 const StModalBody = styled.div`
@@ -62,6 +62,7 @@ const StModalBody = styled.div`
   border-radius: 5px;
   overflow: hidden;
   z-index: 111;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 `;
 
 const StXBtn = styled.div`

@@ -44,7 +44,7 @@ const StMessage = styled.div`
 
   span {
     text-align: center;
-    font-size: ${fontSize.large24};
+    font-size: ${fontSize.large20};
   }
 `;
 

@@ -108,7 +108,7 @@ const StMessage = styled.div`
     display: inline-block;
     text-align: center;
     font-size: ${({ isError }) =>
-      isError ? `${fontSize.regular18}` : `${fontSize.large22}`};
+      isError ? `${fontSize.regular18}` : `${fontSize.large20}`};
   }
 `;
 
