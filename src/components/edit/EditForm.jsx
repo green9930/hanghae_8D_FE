@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import imageCompression from "browser-image-compression";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
 import Button from "components/elements/Button";
@@ -116,7 +117,7 @@ const EditForm = () => {
       if (previewFiles.length + [...e.target.files].length > 5)
         return setOpenImageNumberAlert(true);
 
-      [...e.target.files].map((item) => {
+      [...e.target.files].map(async (item) => {
         if (item.size > MAX_IMG_SIZE) return setOpenImageAlert(true);
         if (
           !VALID_IMAGE_TYPE.includes(
@@ -124,12 +125,29 @@ const EditForm = () => {
           )
         )
           return setOpenImageFileAlert(true);
-        const reader = new FileReader();
-        reader.readAsDataURL(item);
-        reader.onload = () =>
-          setPreviewFiles((previewFiles) => [...previewFiles, reader.result]);
+
+        console.log("IMAGE SIZE", item.size);
+
+        const options = {
+          maxSizeMB: 10,
+          maxWidthOrHeight: 3000,
+          useWebWorker: true,
+        };
+
+        try {
+          const compressedFile = await imageCompression(item, options);
+          console.log("COMPRESSED IMAGE SIZE", compressedFile.size);
+
+          setFiles([...files, compressedFile]);
+          const reader = new FileReader();
+          reader.readAsDataURL(item);
+          reader.onload = () =>
+            setPreviewFiles((previewFiles) => [...previewFiles, reader.result]);
+        } catch (error) {
+          window.alert("이미지를 불러올 수 없습니다.");
+        }
       });
-      setFiles([...files, ...e.target.files]);
+      // setFiles([...files, ...e.target.files]);
     };
 
     const handleDeleteImage = (image, id) => {
@@ -216,8 +234,9 @@ const EditForm = () => {
           articlesId: id,
           data: formData,
         };
-
-        patchMutate(payload);
+        setTimeout(() => {
+          patchMutate(payload);
+        }, 300);
         navigate(`/detail/${id}`);
       }
     };
@@ -365,6 +384,7 @@ const StTime = styled.div`
 `;
 
 const StImage = styled.div`
+  background: ${colors.black};
   width: 100%;
   height: 230px;
 
@@ -372,6 +392,7 @@ const StImage = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 30%;
   }
 `;
 
@@ -381,8 +402,9 @@ const StPreview = styled.div`
   justify-content: flex-start;
   gap: 10px;
   height: 70px;
-  margin-top: -90px;
   padding-left: 35px;
+  bottom: 20px;
+  position: absolute;
 
   .a11y-hidden {
     ${a11yHidden}
@@ -427,7 +449,7 @@ const StPreviewImage = styled.div`
 `;
 
 const StTextContainer = styled.div`
-  padding: 40px 35px 0 35px;
+  padding: 20px 35px 0 35px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -435,6 +457,7 @@ const StTextContainer = styled.div`
 
 const StText = styled.div`
   input {
+    color: ${colors.black};
     ::placeholder {
       color: ${({ isValid }) =>
         isValid ? `${colors.grey3}` : `${colors.red}`};
