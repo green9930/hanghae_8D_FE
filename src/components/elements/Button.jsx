@@ -95,7 +95,7 @@ const StButton = styled.button`
           height: 50px;
           border-radius: 50px;
           text-align: center;
-          font-size: ${fontSize.regular18};
+          font-size: ${fontSize.regular16};
         `;
       }
       if (size === "large") {
@@ -103,7 +103,7 @@ const StButton = styled.button`
           width: 100%;
           height: 50px;
           text-align: center;
-          font-size: ${fontSize.regular18};
+          font-size: ${fontSize.regular16};
         `;
       }
     }
