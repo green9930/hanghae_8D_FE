@@ -347,12 +347,11 @@ const StNickNameInput = styled.div`
   input {
     width: 210px;
     height: 40px;
-    padding-right: 56px;
     border-radius: 5px;
     border: ${({ isDisabled }) =>
       isDisabled ? `0.5px solid ${colors.grey3}` : `0.5px solid ${colors.red}`};
     color: ${colors.grey1};
-    text-align: right;
+    text-align: center;
     font-family: "twayfly", "Noto Sans KR", sans-serif;
     font-size: ${fontSize.large20};
   }
@@ -521,6 +520,7 @@ const StDeclineBtn = styled.div`
   }
 `;
 
+// StUserInfoFooter position fixed일 경우 로그아웃, 회원탈퇴 모달 딤처리 시 헤더 적용 안됨
 const StUserInfoFooter = styled.div`
   flex-grow: 1;
   display: grid;
@@ -529,7 +529,7 @@ const StUserInfoFooter = styled.div`
   grid-row-gap: 10px;
   background: ${colors.grey7};
   padding-top: 30px;
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
   height: calc(100vh - 530px);
   bottom: 0;
@@ -545,7 +545,7 @@ const StBrowserUserInfoFooter = styled.div`
   padding-top: 30px;
   position: fixed;
   width: 100%;
-  height: calc(100vh - 494px);
+  height: calc(100vh - 524px);
   bottom: 0;
   @media (min-width: 950px) {
     width: 500px;
