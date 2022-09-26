@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import imageCompression from "browser-image-compression";
+import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
 import Button from "components/elements/Button";
@@ -18,7 +19,6 @@ import handlePrice from "utils/handlePrice";
 import { colors } from "styles/theme";
 import { a11yHidden } from "styles/mixin";
 import icons from "assets";
-import { isMobile } from "react-device-detect";
 
 const EditForm = () => {
   const [files, setFiles] = useState([]);
@@ -30,7 +30,6 @@ const EditForm = () => {
     price: "",
     content: "",
   });
-  const [previewCategory, setPreviewCategory] = useState("");
   const [previewPrice, setPreviewPrice] = useState("");
   /* IMAGE ALERT -------------------------------------------------------------- */
   const [openImageAlert, setOpenImageAlert] = useState(false);
@@ -52,14 +51,14 @@ const EditForm = () => {
   const { IconPlus, IconX } = icons;
 
   const selectboxData = [
-    { key: 1, value: "디지털/생활가전", category: "digital" },
-    { key: 2, value: "의류/잡화", category: "clothes" },
-    { key: 3, value: "스포츠/레저", category: "sports" },
-    { key: 4, value: "가구/인테리어", category: "interior" },
-    { key: 5, value: "도서/여행/취미", category: "hobby" },
-    { key: 6, value: "반려동물/식물", category: "pet" },
-    { key: 7, value: "식품", category: "food" },
-    { key: 8, value: "기타", category: "etc" },
+    { key: 1, value: "디지털/생활가전" },
+    { key: 2, value: "의류/잡화" },
+    { key: 3, value: "스포츠/레저" },
+    { key: 4, value: "가구/인테리어" },
+    { key: 5, value: "도서/여행/취미" },
+    { key: 6, value: "반려동물/식물" },
+    { key: 7, value: "식품" },
+    { key: 8, value: "기타" },
   ];
 
   const queryClient = useQueryClient();
@@ -73,18 +72,14 @@ const EditForm = () => {
           window.alert("수정 권한이 없는 게시글입니다.");
           window.location.replace("/");
         }
-        const { category } = selectboxData.find(
-          (val) => val.value === data.data.category
-        );
         setEditText({
           ...editText,
-          category: category,
+          category: data.data.category,
           title: data.data.title,
           price: data.data.price.replaceAll(",", ""),
           content: data.data.content,
         });
         setPreviewFiles([...data.data.images]);
-        setPreviewCategory(data.data.category);
         setPreviewPrice(data.data.price);
       },
       staleTime: 50000,
@@ -147,7 +142,6 @@ const EditForm = () => {
           window.alert("이미지를 불러올 수 없습니다.");
         }
       });
-      // setFiles([...files, ...e.target.files]);
     };
 
     const handleDeleteImage = (image, id) => {
@@ -158,13 +152,8 @@ const EditForm = () => {
     };
 
     /* 카테고리 선택 ------------------------------------------------------------------ */
-    const handleChangeSelectbox = (e) => {
-      const { category } = selectboxData.find(
-        (val) => val.value === e.target.innerText
-      );
-      setPreviewCategory(e.target.innerText);
-      setEditText({ ...editText, category: category });
-    };
+    const handleChangeSelectbox = (e) =>
+      setEditText({ ...editText, category: e.target.innerText });
 
     /* 제목, 가격, 내용 편집 ------------------------------------------------------------ */
     const handleChange = (e) => {
@@ -312,7 +301,7 @@ const EditForm = () => {
         <StTextContainer>
           <SelectBox
             data={selectboxData}
-            currentValue={previewCategory}
+            currentValue={editText.category}
             handleOnChangeSelectValue={handleChangeSelectbox}
           />
           <StText isValid={isValidTitle}>
