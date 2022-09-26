@@ -63,15 +63,11 @@ const StBackground = styled.div`
 `;
 
 const StBackgroundImg = styled.div`
-  width: 380px;
-  /* position: absolute;
-  bottom: 0;
-  left: 14.5%; */
+  width: 514px;
 
   img {
     width: 100%;
     height: 100%;
-    /* object-fit: cover; */
     @media screen and (max-width: 950px) {
       display: none;
     }
@@ -81,8 +77,6 @@ const StBackgroundImg = styled.div`
 const StBrowserLayout = styled.div`
   width: 100%;
   height: 100%;
-  /* position: relative; */
-  /* left: 56%; */
   overflow-y: scroll;
   background: ${colors.white};
   min-width: 360px;
