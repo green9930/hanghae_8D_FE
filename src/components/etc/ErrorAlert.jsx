@@ -10,9 +10,7 @@ const ErrorAlert = ({ handleOpenModal }) => {
     <StImageAlert>
       <StMessage>
         <MainArrow width="40px" height="40px" fill={`${colors.mainP}`} />
-        <p>
-           존재하지 않는 게시글입니다.🤓   
-        </p>
+        <p>존재하지 않는 게시글입니다.🤓</p>
       </StMessage>
       <Button onClickHandler={handleOpenModal}>닫기</Button>
     </StImageAlert>
@@ -36,14 +34,14 @@ const StMessage = styled.div`
 
   p {
     text-align: center;
-    font-size: ${fontSize.large22};
+    font-size: ${fontSize.large20};
     line-height: 30px;
     letter-spacing: -5%;
   }
 
   span {
     font-weight: 700;
-    font-size: ${fontSize.large22};
+    font-size: ${fontSize.large20};
     line-height: 30px;
     letter-spacing: -5%;
   }
