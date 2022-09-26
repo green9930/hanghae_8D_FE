@@ -81,7 +81,7 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
             <StPrice isSelected={isSelected}>
               <span>{comment}</span> 원
             </StPrice>
-            <StBtnContainer>
+            <StPriceBtnContainer>
               {isMyArticles && !isSelected && process === "진행중" ? (
                 isMyComment ? null : (
                   <Button variant="image" onClickHandler={handleSelectAlert}>
@@ -95,7 +95,7 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
                   <IconTrash fill={`${colors.grey1}`} />
                 </Button>
               ) : null}
-            </StBtnContainer>
+            </StPriceBtnContainer>
           </StPriceContainer>
         </StPriceComment>
       )}
@@ -138,6 +138,7 @@ const StTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex-grow: 1;
 `;
 
 const StSubInfo = styled.div`
@@ -165,7 +166,6 @@ const StTime = styled.span`
 `;
 
 const StText = styled.p`
-  margin-right: 4px;
   font-size: 12px;
   line-height: 18px;
   word-break: break-all;
@@ -176,30 +176,48 @@ const StTextBtnContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 30px;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+  }
 `;
 
 const StPriceContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 5px;
+  flex-grow: 1;
 `;
 
 const StPrice = styled.span`
-  text-align: center;
+  flex-grow: 1;
+  text-align: right;
   font-size: 10px;
   color: ${({ isSelected }) => (isSelected ? `${colors.mainP}` : "inherit")};
 
   span {
+    text-align: right;
     font-family: "Roboto", "Noto Sans KR", sans-serif;
     font-size: 18px;
     font-weight: 700;
   }
 `;
 
-const StBtnContainer = styled.div`
+const StPriceBtnContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+  }
 `;
 
 export default DetailComment;
