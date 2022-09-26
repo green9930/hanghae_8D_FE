@@ -3,7 +3,7 @@ import styled from "styled-components";
 import icons from "assets";
 import { colors } from "styles/theme";
 
-const StartPage = () => {
+const Start = () => {
   const { HeaderLogo } = icons;
   return (
     <StStart>
@@ -18,8 +18,9 @@ const StartPage = () => {
   );
 };
 
-export default StartPage;
+export default Start;
 const StStart = styled.div`
+  position: relative;
   background-color: ${colors.mainP};
   height: 100vh;
   padding-top: 50%;
@@ -48,7 +49,7 @@ const StStart = styled.div`
   }
 `;
 const StCopyright = styled.span`
-  position: fixed;
+  position: absolute;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
