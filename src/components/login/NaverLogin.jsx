@@ -5,6 +5,7 @@ import { instance } from "api/axios";
 import { useSetRecoilState } from "recoil";
 import Modal from "components/layout/Modal";
 import EmailAlert from "components/login/EmailAlert";
+import RegisterAlert from "components/login/RegisterAlert";
 import StartPage from "pages/StartPage";
 import { getMyProfile } from "api/mypageApi";
 import { loginState } from "state/atom";
@@ -13,6 +14,8 @@ const NaverLogin = () => {
   const [email, setEmail] = useState("");
   /* EMAIL수신동의 ---------------------------------------------------------------- */
   const [showEmailAlert, setShowEmailAlert] = useState(false);
+  const [showRegisterAlert, setShowRegisterAlert] = useState(false);
+  const [registerMessage, setRegisterMessage] = useState("");
   const setIsLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
 
@@ -39,9 +42,8 @@ const NaverLogin = () => {
             }
           }
         } catch (err) {
-          window.alert("LOGIN FAILED!");
-          window.location.replace("/");
-          console.log(err);
+          setRegisterMessage(err.response.data.errorMessage);
+          setShowRegisterAlert(true);
         }
       };
       naver();
@@ -53,6 +55,11 @@ const NaverLogin = () => {
     navigate("/");
   };
 
+  const handleRegisterAlert = () => {
+    setShowRegisterAlert(false);
+    window.location.replace("/login");
+  };
+
   return (
     <div>
       <StartPage />
@@ -62,6 +69,14 @@ const NaverLogin = () => {
             handleOpenModal={handleEmailAlert}
             social="naver"
             email={email}
+          />
+        </Modal>
+      ) : null}
+      {showRegisterAlert ? (
+        <Modal handleOpenModal={handleRegisterAlert} height="216px">
+          <RegisterAlert
+            handleOpenModal={handleRegisterAlert}
+            message={registerMessage}
           />
         </Modal>
       ) : null}
