@@ -21,7 +21,7 @@ const MainCarousel = () => {
     centerPadding: "30px",
     variableWidth: true,
     autoplay: true,
-    autoplaySpeed: 1000,
+    autoplaySpeed: 1300,
   };
   const { MainArrow } = icons;
 
