@@ -24,7 +24,7 @@ const Form = () => {
   const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
   const [title, setTitle] = useState("");
   const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
-  const [currentCategory, setCurrentCategory] = useState("");
+  // const [currentCategory, setCurrentCategory] = useState("");
   const [price, setPrice] = useState("");
   const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
@@ -121,19 +121,19 @@ const Form = () => {
   };
   /* ----------------------------- 카테고리 select-box ---------------------------- */
   const data = [
-    { key: 1, value: "디지털/생활가전", category: "digital" },
-    { key: 2, value: "의류/잡화", category: "clothes" },
-    { key: 3, value: "스포츠/레저", category: "sports" },
-    { key: 4, value: "가구/인테리어", category: "interior" },
-    { key: 5, value: "도서/여행/취미", category: "hobby" },
-    { key: 6, value: "반려동물/식물", category: "pet" },
-    { key: 7, value: "식품", category: "food" },
-    { key: 8, value: "기타", category: "etc" },
+    { key: 1, value: "디지털/생활가전" },
+    { key: 2, value: "의류/잡화" },
+    { key: 3, value: "스포츠/레저" },
+    { key: 4, value: "가구/인테리어" },
+    { key: 5, value: "도서/여행/취미" },
+    { key: 6, value: "반려동물/식물" },
+    { key: 7, value: "식품" },
+    { key: 8, value: "기타" },
   ];
 
   const handleOnChangeSelectValue = (e) => {
     setCurrentValue(e.target.getAttribute("value"));
-    setCurrentCategory(e.target.classList[2]);
+    // setCurrentCategory(e.target.classList[2]);
 
     currentValue ? setValidCategory(true) : setValidCategory(false);
   };
@@ -153,7 +153,7 @@ const Form = () => {
     let formData = new FormData();
     const dataSet = {
       title: title,
-      category: currentCategory,
+      category: currentValue,
       price: realPrice,
       content: desc,
     };
