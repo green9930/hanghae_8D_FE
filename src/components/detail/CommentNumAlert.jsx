@@ -35,7 +35,7 @@ const StMessage = styled.div`
 
 const StSelectMessage = styled.span`
   text-align: center;
-  font-size: ${fontSize.large22};
+  font-size: ${fontSize.large20};
 `;
 
 export default CommentNumAlert;
