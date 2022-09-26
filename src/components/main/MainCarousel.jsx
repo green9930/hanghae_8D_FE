@@ -5,6 +5,7 @@ import { getRandomCards } from "api/mainApi";
 import { colors } from "styles/theme";
 import icons from "assets";
 import { fontSize } from "styles/theme";
+import { isMobile } from "react-device-detect";
 
 const MainCarousel = () => {
   const { MainArrow } = icons;
@@ -23,7 +24,7 @@ const MainCarousel = () => {
         <MainArrow fill={colors.mainO} />
         <StMainTitleSpan>책첵</StMainTitleSpan> 진행 중 체크
       </StMainRandomTitle>
-      <StMainRandomImg>
+      <StMainRandomImg isMobile={isMobile}>
         {checkRandomLists.data.data.data?.map((data) => (
           <MainCarouselCard key={data.articlesId} data={data} />
         ))}
@@ -61,11 +62,11 @@ const StMainTitleSpan = styled.span`
 const StMainRandomImg = styled.div`
   display: flex;
   gap: 10px;
-  overflow: scroll;
+  overflow-x: scroll;
   padding: 15px 20px 35px 20px;
 
   ::-webkit-scrollbar {
-    display: none;
+    display: ${({ isMobile }) => (isMobile ? "none" : null)};
   }
 `;
 

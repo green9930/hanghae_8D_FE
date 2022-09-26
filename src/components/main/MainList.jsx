@@ -179,7 +179,7 @@ const StSelectList = styled.div`
   height: 55px;
   gap: 5px;
   justify-content: space-between;
-  padding-left: 1%;
+  padding-left: 3%;
   align-items: center;
   background-color: ${colors.grey7};
   @media screen and (max-width: 350px) {
@@ -189,7 +189,7 @@ const StSelectList = styled.div`
 
 const StMainBtns = styled.div`
   display: flex;
-  padding-right: 1%;
+  padding-right: 3%;
   gap: 4px;
   button {
     font-family: "twayfly", "Noto Sans KR", sans-serif;
