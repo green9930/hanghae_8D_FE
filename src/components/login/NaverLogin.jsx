@@ -5,7 +5,7 @@ import { instance } from "api/axios";
 import { useSetRecoilState } from "recoil";
 import Modal from "components/layout/Modal";
 import EmailAlert from "components/login/EmailAlert";
-import StartPage from "components/etc/StartPage";
+import StartPage from "pages/StartPage";
 import { getMyProfile } from "api/mypageApi";
 import { loginState } from "state/atom";
 
