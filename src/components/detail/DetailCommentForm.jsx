@@ -9,7 +9,7 @@ import CommentNumAlert from "components/detail/CommentNumAlert";
 import handlePrice from "utils/handlePrice";
 import { postComment } from "api/detailApi";
 import { commentRefState, loginState } from "state/atom";
-import { calcRem, colors, fontSize } from "styles/theme";
+import { colors, fontSize } from "styles/theme";
 import { removeCookie } from "api/cookies";
 import { useNavigate } from "react-router-dom";
 import { isMobile } from "react-device-detect";
@@ -177,6 +177,7 @@ const StPriceForm = styled.form`
 
   input {
     color: ${colors.white};
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
     ::placeholder {
       font-weight: 400 !important;
     }
