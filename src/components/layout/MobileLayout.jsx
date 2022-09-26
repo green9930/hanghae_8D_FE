@@ -63,6 +63,7 @@ const StBackground = styled.div`
 `;
 
 const StBackgroundImg = styled.div`
+  padding-top: 64px;
   width: 514px;
 
   img {
