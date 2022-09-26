@@ -32,7 +32,11 @@ const UnregisterAlert = ({ handleOpenModal }) => {
       ) : (
         <StMessage isUnregister={isUnregister}>
           <StUnregister>회원 탈퇴</StUnregister>
-          <span>정말 탈퇴하시겠어요? 😥</span>
+          <span>
+            탈퇴하면 재가입 할 수 없습니다.
+            <br />
+            정말 탈퇴하시겠어요?😥
+          </span>
         </StMessage>
       )}
       {isUnregister ? (
@@ -63,7 +67,7 @@ const StMessage = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: ${({ isUnregister }) => (isUnregister ? "18px" : "30px")};
+  gap: ${({ isUnregister }) => (isUnregister ? "24px" : "18px")};
   padding-top: ${({ isUnregister }) => (isUnregister ? "10px" : "14px")};
 
   span {
