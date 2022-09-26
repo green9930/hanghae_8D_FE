@@ -12,6 +12,7 @@ import { colors } from "styles/theme";
 import icons from "assets";
 import { fontSize } from "styles/theme";
 import { isMobile } from "react-device-detect";
+import { useRef } from "react";
 
 const MainList = () => {
   const { IconPlus, GoBack } = icons;
@@ -32,54 +33,38 @@ const MainList = () => {
     pro: "all",
   });
   // const [currentValue, setCurrentValue] = useState("카테고리 전체");
-  const [currentCategory, setCurrentCategory] = useState("all");
+  // const [currentCategory, setCurrentCategory] = useState("all");
 
-  let payload = { category: currentCategory, process: active.pro };
+  let payload = { category: active.cate, process: active.pro };
 
   const datas = [
-    { key: 1, value: "전체", category: "all" },
-    { key: 2, value: "디지털/생활가전", category: "digital" },
-    { key: 3, value: "의류/잡화", category: "clothes" },
-    { key: 4, value: "스포츠/레저", category: "sports" },
-    { key: 5, value: "가구/인테리어", category: "interior" },
-    { key: 6, value: "도서/여행/취미", category: "hobby" },
-    { key: 7, value: "반려동물/식물", category: "pet" },
-    { key: 8, value: "식품", category: "food" },
-    { key: 9, value: "기타", category: "etc" },
+    { key: 1, value: "전체" },
+    { key: 2, value: "디지털/생활가전" },
+    { key: 3, value: "의류/잡화" },
+    { key: 4, value: "스포츠/레저" },
+    { key: 5, value: "가구/인테리어" },
+    { key: 6, value: "도서/여행/취미" },
+    { key: 7, value: "반려동물/식물" },
+    { key: 8, value: "식품" },
+    { key: 9, value: "기타" },
   ];
 
   const handleOnChangeSelectValue = (e) => {
     setActive({ cate: e.target.getAttribute("value"), pro: active.pro });
-    setCurrentCategory(e.target.classList[2]);
-    payload = { category: e.target.classList[2], process: active.pro };
+    // setCurrentCategory(e.target.classList[2]);
+    payload = { category: e.target.getAttribute("value"), process: active.pro };
   };
   console.log(active);
 
   const handleActiveStatus = (name) => {
     setActive({ pro: name, cate: active.cate });
-    payload = { category: currentCategory, process: name };
+    payload = { category: active.cate, process: name };
   };
 
   useEffect(() => {
     remove();
     refetch();
   }, [active.cate, active.pro]);
-
-  /* ------------------------------- goToTop 버튼 ------------------------------- */
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const updateScroll = () => {
-    setScrollPosition(window.scrollY);
-  };
-  console.log(scrollPosition);
-  useEffect(() => {
-    const timer = setInterval(() => {
-      window.addEventListener("scroll", updateScroll);
-    }, 300); //이벤트가 발생된 후 해당 타이머는 초기화를 시켜주어 이벤트의 중복을 통한 성능 지연을 방지
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener("scroll", updateScroll); //clean up
-    };
-  }, [scrollPosition]);
 
   /* -------------------------------- 데이터 read -------------------------------- */
   const { ref, inView } = useInView({
@@ -92,6 +77,7 @@ const MainList = () => {
       ({ pageParam = 0 }) => getMainCheck(payload, pageParam),
       {
         refetchOnWindowFocus: false,
+        enabled: false,
         getNextPageParam: (lastPage, allPages) => {
           return lastPage.nextPage;
         },
@@ -103,6 +89,26 @@ const MainList = () => {
       fetchNextPage();
     }
   }, [inView]);
+
+  /* ------------------------------- goToTop 버튼 ------------------------------- */
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const listRef = useRef();
+  const updateScroll = () => {
+    setScrollPosition(window.pageYOffset);
+  };
+
+  console.log(scrollPosition);
+  const element = listRef.current;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      window.addEventListener("scroll", updateScroll);
+    }, 300); //이벤트가 발생된 후 해당 타이머는 초기화를 시켜주어 이벤트의 중복을 통한 성능 지연을 방지
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("scroll", updateScroll); //clean up
+    };
+  }, [scrollPosition]);
 
   if (status === "loading") return null;
 
@@ -157,6 +163,7 @@ const MainList = () => {
           {isFetchingNextPage && <div>로딩 중</div>}
           {!isFetchingNextPage && <div>목록의 마지막입니다.</div>}
         </StNext>
+        <div ref={listRef}></div>
         <StGoBack onClick={onClickScroll} scrollPosition={scrollPosition}>
           <GoBack />
         </StGoBack>
