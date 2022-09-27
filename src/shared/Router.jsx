@@ -45,11 +45,11 @@ const Router = () => {
             withCredentials: true,
           }
         );
-        console.log("EVENTSOURCE RESPONSE", eventSource);
+        // console.log("EVENTSOURCE RESPONSE", eventSource);
         /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
         eventSource.onopen = async (event) => {
           const result = await event;
-          console.log("EVENTSOURCE ONOPEN", result);
+          // console.log("EVENTSOURCE ONOPEN", result);
           // setEventSourceStatus(result.type); //구독
         };
 
@@ -70,8 +70,8 @@ const Router = () => {
         /* EVENTSOURCE ONERROR ------------------------------------------------------ */
         eventSource.onerror = async (event) => {
           const result = await event;
-          console.log("EVENTSOURCE ONERROR", result);
-          console.log(event.error.message); // No activity within 45000 milliseconds.
+          // console.log("EVENTSOURCE ONERROR", result);
+          // console.log(event.error.message); // No activity within 45000 milliseconds.
           event.error.message.includes("No activity within 45000 milliseconds.")
             ? setEventSourceStatus(result.type) //구독
             : eventSource.close();
@@ -79,7 +79,7 @@ const Router = () => {
         };
         setListening(true);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     fetchSse();
@@ -92,7 +92,7 @@ const Router = () => {
         (await getCookie("accessToken")) ? setIsLogin(true) : setIsLogin(false);
         await setIsLoading(true);
       } catch (err) {
-        console.log("GET LOGIN STATE", err);
+        // console.log("GET LOGIN STATE", err);
       }
     };
     fetchLoading();
