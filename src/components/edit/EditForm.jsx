@@ -438,7 +438,7 @@ const StPreviewImage = styled.div`
 `;
 
 const StTextContainer = styled.div`
-  padding: 20px 35px 70px 35px;
+  padding: 20px 35px 100px 35px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -508,6 +508,7 @@ const StButton = styled.div`
 const StCancelBtn = styled.div`
   min-width: 100px;
 `;
+
 const StSendBtn = styled.div`
   width: ${({ isMobile }) => (isMobile ? "100%" : "320px")};
   @media screen and (max-width: 950px) {
