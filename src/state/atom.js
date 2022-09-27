@@ -1,5 +1,7 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
 
+const { persistAtom } = recoilPersist();
 export const loginState = atom({
   key: "loginState",
   default: true,
@@ -33,4 +35,16 @@ export const myPageTitleState = atom({
 export const commentRefState = atom({
   key: "commentRefState",
   default: false,
+});
+
+export const newAlarmsState = atom({
+  key: "newAlarmsState",
+  default: false,
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const newAlarmsLengthState = atom({
+  key: "newAlarmsLengthState",
+  default: 0,
+  effects_UNSTABLE: [persistAtom],
 });
