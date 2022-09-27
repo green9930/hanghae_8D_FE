@@ -8,7 +8,7 @@ import EmailAlert from "components/login/EmailAlert";
 import RegisterAlert from "components/login/RegisterAlert";
 import StartPage from "pages/StartPage";
 import { getMyProfile } from "api/mypageApi";
-import { loginState } from "state/atom";
+import { loginState, newAlarmsState } from "state/atom";
 
 const KakaoLogin = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +17,7 @@ const KakaoLogin = () => {
   const [showRegisterAlert, setShowRegisterAlert] = useState(false);
   const [registerMessage, setRegisterMessage] = useState("");
   const setIsLogin = useSetRecoilState(loginState);
+  const setNewAlarms = useSetRecoilState(newAlarmsState);
   const navigate = useNavigate();
 
   let code = new URL(window.location.href).searchParams.get("code");
@@ -32,6 +33,7 @@ const KakaoLogin = () => {
             setIsLogin(true);
 
             const { data } = await getMyProfile();
+            setNewAlarms(!data.data.alarmStatus);
             setEmail(data.data.userEmail);
             if (data.data.isAccepted) {
               return setTimeout(() => navigate("/"), 500);
