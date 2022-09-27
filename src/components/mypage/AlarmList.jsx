@@ -1,96 +1,38 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
+import { useQuery, useQueryClient } from "react-query";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import AlarmCard from "components/mypage/AlarmCard";
 import { getAlertLists } from "api/alarmApi";
-import { getCookie } from "api/cookies";
-import { alarmListState, loginState } from "state/atom";
+import { alarmListState, newAlarmsLengthState } from "state/atom";
 
 const AlarmList = () => {
-  /* 실시간 알림 수신 TEST ----------------------------------------------------------- */
-  const [listening, setListening] = useState(false);
-  const [alarms, setAlarms] = useState([]);
-  const [value, setValue] = useState(null);
-  const [eventSourceStatus, setEventSourceStatus] = useState(null);
-
   const setAlarmListState = useSetRecoilState(alarmListState);
-  const isLogin = useRecoilValue(loginState);
+  // const setNewAlarms = useSetRecoilState(newAlarmsState);
+  const setNewAlarmsLength = useSetRecoilState(newAlarmsLengthState);
 
-  /* 실시간 알림 수신 TEST DATA READ ------------------------------------------------- */
+  // const queryClient = useQueryClient();
+
   const {
     isSuccess,
     isLoading,
     data: alarmData,
   } = useQuery("alertLists", getAlertLists, {
     refetchOnWindowFocus: false,
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      // 헤더 마이페이지 아이콘 상태 변경
+      // setNewAlarms(false);
+      // 알람 리스트 개수 변경
+      setNewAlarmsLength(0);
+      // queryClient.invalidateQueries("myprofile");
+    },
     onError: () => setAlarmListState(false),
-  });
-
-  /* 실시간 알림 수신 TEST ----------------------------------------------------------- */
-
-  const EventSource = EventSourcePolyfill || NativeEventSource;
-
-  useEffect(() => {
-    let eventSource;
-    const fetchSse = async () => {
-      try {
-        eventSource = new EventSource(
-          `${process.env.REACT_APP_BASE_URL}/api/subscribe`,
-          {
-            headers: {
-              Authorization: getCookie("accessToken"),
-            },
-            withCredentials: true,
-          }
-        );
-        console.log("EVENTSOURCE RESPONSE", eventSource);
-        /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
-        eventSource.onopen = async (event) => {
-          const result = await event;
-          console.log("EVENTSOURCE ONOPEN", result);
-          setEventSourceStatus(result.type); //구독
-        };
-
-        /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
-        eventSource.onmessage = async (event) => {
-          const res = await JSON.parse(event.data);
-          console.log("EVENTSOURCE MESSAGE : ", res);
-          setAlarms((prev) => [...prev, res]);
-          // setValue(res);
-        };
-
-        /* EVENTSOURCE ONERROR ------------------------------------------------------ */
-        eventSource.onerror = async (event) => {
-          const result = await event;
-          console.log("EVENTSOURCE ONERROR", result);
-          console.log(event.error.message); // No activity within 45000 milliseconds.
-          // if (event.target.readyState === EventSource.CLOSED) {
-          //   console.log(
-          //     "eventsource closed (" + event.target.readyState + ")"
-          //   );
-          // }
-          event.error.message.includes("No activity within 45000 milliseconds.")
-            ? setEventSourceStatus(result.type) //구독
-            : eventSource.close();
-        };
-        setListening(true);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchSse();
-    return () => eventSource.close();
   });
 
   if (isLoading) return null;
   if (isSuccess) {
-    console.log("ALARMLIST", [...alarms.reverse(), ...alarmData.data]);
     return (
       <StAlarmList>
-        {[...alarms.reverse(), ...alarmData.data].map((val) => (
+        {alarmData.data.map((val) => (
           <li key={val.notificationId}>
             <AlarmCard alarmItem={val} />
           </li>
@@ -102,6 +44,9 @@ const AlarmList = () => {
 
 const StAlarmList = styled.ul`
   padding: 0 35px;
+  @media screen and (max-width: 350px) {
+    padding: 0 15px;
+  }
 `;
 
 export default AlarmList;

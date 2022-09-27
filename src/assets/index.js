@@ -14,6 +14,7 @@ import { ReactComponent as LogoKakao } from "assets/svg/logo_kakao.svg";
 import { ReactComponent as LogoNaver } from "assets/svg/logo_naver.svg";
 import { ReactComponent as Logout } from "assets/svg/logout.svg";
 import { ReactComponent as MainArrow } from "assets/svg/mainArrow.svg";
+import { ReactComponent as MyPageAlarm } from "assets/svg/myPageAlarm.svg";
 import { ReactComponent as MyPageLogo } from "assets/svg/myPageLogo.svg";
 import { ReactComponent as RankList } from "assets/svg/ranklist.svg";
 import { ReactComponent as RankListWhite } from "assets/svg/ranklist_white.svg";
@@ -40,6 +41,7 @@ const icons = {
   LogoNaver: LogoNaver,
   Logout: Logout,
   MainArrow: MainArrow,
+  MyPageAlarm: MyPageAlarm,
   MyPageLogo: MyPageLogo,
   RankList: RankList,
   RankListWhite: RankListWhite,
