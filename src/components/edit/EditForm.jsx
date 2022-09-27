@@ -438,7 +438,7 @@ const StPreviewImage = styled.div`
 `;
 
 const StTextContainer = styled.div`
-  padding: 20px 35px 0 35px;
+  padding: 20px 35px 70px 35px;
   display: flex;
   flex-direction: column;
   gap: 4px;
