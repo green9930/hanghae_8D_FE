@@ -42,29 +42,32 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
 
   const queryClient = useQueryClient();
 
-  const { mutate: postMutate } = useMutation(postComment, {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("checkComments");
-      setCommentText({ ...commentText, comment: "" });
-      setRealCommentPrice({ ...realCommentPrice, comment: "" });
-      setCommentPrice("");
-      setIsTextActive(false);
-      setIsPriceActive(false);
-      setCommentRefState(true);
-    },
-    onError: ({ response }) => {
-      console.log("POST COMMENT FAILED", response);
-      setErrorData({
-        errorCode: response.data.errorCode,
-        errorMessage: response.data.errorMessage,
-      });
-      setOpenCommentNumAlert(true);
-      setCommentPrice("");
-      setCommentText({ ...commentText, comment: "" });
-      setIsTextActive(false);
-      setIsPriceActive(false);
-    },
-  });
+  const { mutate: postMutate, isLoading: postIsLoading } = useMutation(
+    postComment,
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("checkComments");
+        setCommentText({ ...commentText, comment: "" });
+        setRealCommentPrice({ ...realCommentPrice, comment: "" });
+        setCommentPrice("");
+        setIsTextActive(false);
+        setIsPriceActive(false);
+        setCommentRefState(true);
+      },
+      onError: ({ response }) => {
+        console.log("POST COMMENT FAILED", response);
+        setErrorData({
+          errorCode: response.data.errorCode,
+          errorMessage: response.data.errorMessage,
+        });
+        setOpenCommentNumAlert(true);
+        setCommentPrice("");
+        setCommentText({ ...commentText, comment: "" });
+        setIsTextActive(false);
+        setIsPriceActive(false);
+      },
+    }
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -125,7 +128,7 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
             type="submit"
             variant="text"
             theme="transparent"
-            isDisabled={!isPriceActive}
+            isDisabled={!isPriceActive ? (postIsLoading ? true : false) : false}
           >
             <span>가격 전송</span>
           </Button>
@@ -143,7 +146,7 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
             type="submit"
             variant="text"
             theme="transparent"
-            isDisabled={!isTextActive}
+            isDisabled={!isTextActive ? (postIsLoading ? true : false) : false}
           >
             <span>전송</span>
           </Button>
