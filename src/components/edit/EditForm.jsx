@@ -87,15 +87,16 @@ const EditForm = () => {
     }
   );
 
-  const { mutate: patchMutate } = useMutation(patchDetailCheck, {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("detailCheck");
-    },
-    onError: (error) => {
-      navigate(`/detail/${id}`);
-      window.alert("게시글 수정을 실패했습니다.");
-    },
-  });
+  const { mutate: patchMutate, isLoading: patchDetailCheckLoading } =
+    useMutation(patchDetailCheck, {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("detailCheck");
+      },
+      onError: (error) => {
+        navigate(`/detail/${id}`);
+        window.alert("게시글 수정을 실패했습니다.");
+      },
+    });
 
   useEffect(() => {
     refetch();
@@ -343,7 +344,11 @@ const EditForm = () => {
             </Button>
           </StCancelBtn>
           <StSendBtn isMobile={isMobile}>
-            <Button size="large_round" type="submit">
+            <Button
+              size="large_round"
+              type="submit"
+              isDisabled={patchDetailCheckLoading ? true : false}
+            >
               전송하기
             </Button>
           </StSendBtn>
