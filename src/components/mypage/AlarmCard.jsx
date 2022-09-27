@@ -44,8 +44,8 @@ const AlarmCard = ({ alarmItem }) => {
       {alarmType === "selected" && (
         <StContent>
           <StTitle onClick={onClickNavigate}>
-          {title.length < 10 ? title : title.slice(0, 10) + "⋯"}
-            </StTitle>
+            {title.length < 10 ? title : title.slice(0, 10) + "⋯"}
+          </StTitle>
           <StText>
             에 댓글이 <StMessage type={alarmType}>채택</StMessage>되었습니다.
           </StText>
@@ -96,10 +96,6 @@ const StSubInfo = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
-
-  button {
-    padding-left:8px;
-  }
 `;
 
 const StMessage = styled.span`
