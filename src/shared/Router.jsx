@@ -56,12 +56,12 @@ const Router = () => {
         /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
         eventSource.onmessage = async (event) => {
           // 헤더 마이페이지 아이콘 상태 변경
-          setNewAlarms(true);
+          const res = await event.data;
+          if (!res.includes("EventStream Created.")) setNewAlarms(true);
           // 알람 리스트 개수 변경
           queryClient.invalidateQueries("myprofile");
           queryClient.invalidateQueries("alertNoti");
           queryClient.invalidateQueries("alertLists");
-          // const res = await event.data;
           // const json = JSON.parse(res);
           // console.log("EVENTSOURCE MESSAGE : ", json);
           // setNewAlarm(json);
