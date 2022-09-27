@@ -21,6 +21,8 @@ import {
   alarmListState,
   myListState,
   myPageTitleState,
+  newAlarmsLengthState,
+  newAlarmsState,
   nickNameState,
 } from "state/atom";
 import handleRankColor from "utils/handleRankColor";
@@ -39,8 +41,11 @@ const UserInfo = () => {
   });
   const [openNickNameAlert, setOpenickNameAlert] = useState(false);
 
-  const [isEdit, setIsEdit] = useRecoilState(nickNameState);
   const setTitleState = useSetRecoilState(myPageTitleState);
+  const setNewAlarms = useSetRecoilState(newAlarmsState);
+  const [newAlarmsLength, setNewAlarmsLength] =
+    useRecoilState(newAlarmsLengthState);
+  const [isEdit, setIsEdit] = useRecoilState(nickNameState);
   const [isOpenMyList, setIsOpenMyList] = useRecoilState(myListState);
   const [isOpenAlarmList, setIsOpenAlarmList] = useRecoilState(alarmListState);
 
@@ -66,7 +71,9 @@ const UserInfo = () => {
     "myprofile",
     getMyProfile,
     {
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        setNewAlarms(!data.data.data.alarmStatus);
+      },
       refetchOnWindowFocus: false,
     }
   );
@@ -102,7 +109,9 @@ const UserInfo = () => {
     "alertNoti",
     getMyNotification,
     {
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        setNewAlarmsLength(data.data.count);
+      },
       refetchOnWindowFocus: false,
     }
   );
@@ -212,9 +221,8 @@ const UserInfo = () => {
           </StNickNameInput>
         ) : (
           <StNameContainer>
-            <StName>
-              {userName} / {nickName}
-            </StName>
+            <StName>{userName}</StName>
+            <StNickName>&nbsp;/ {nickName}</StNickName>
             {isOpenMyList || isOpenAlarmList ? null : (
               <Button theme="transparent" onClickHandler={handleEditor}>
                 수정
@@ -258,7 +266,7 @@ const UserInfo = () => {
                   <Alarm />
                   <StText>
                     <span>알림</span>
-                    <span>{alertNotiData.data.count}개</span>
+                    <span>{newAlarmsLength}개</span>
                   </StText>
                 </Button>
               </StBtn>
@@ -392,9 +400,26 @@ const StNameContainer = styled.div`
 `;
 
 const StName = styled.span`
+  max-width: 132px;
   color: ${colors.white};
   font-family: "twayfly", "Noto Sans KR", sans-serif;
   font-size: ${fontSize.large24};
+  @media screen and (max-width: 350px) {
+    font-size: ${fontSize.large20};
+    max-width: 102px;
+  }
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+const StNickName = styled.span`
+  color: ${colors.white};
+  font-family: "twayfly", "Noto Sans KR", sans-serif;
+  font-size: ${fontSize.large24};
+  @media screen and (max-width: 350px) {
+    font-size: ${fontSize.large20};
+  }
 `;
 
 const StUserEmail = styled.span`
