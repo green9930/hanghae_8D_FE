@@ -1,11 +1,14 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useQueryClient } from "react-query";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Button from "components/elements/Button";
 import {
   alarmListState,
+  loginState,
   myListState,
   myPageTitleState,
+  newAlarmsState,
   nickNameState,
 } from "state/atom";
 import { getCookie } from "api/cookies";
@@ -17,16 +20,21 @@ const Header = ({ title }) => {
   const setAlarmListState = useSetRecoilState(alarmListState);
   const setTitleState = useSetRecoilState(myPageTitleState);
   const setNickNameState = useSetRecoilState(nickNameState);
+  const newAlarms = useRecoilValue(newAlarmsState);
+  const isLogin = useRecoilValue(loginState);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { HeaderLogo, MyPageLogo } = icons;
+  const { HeaderLogo, MyPageLogo, MyPageAlarm } = icons;
+
+  const queryClient = useQueryClient();
 
   const clickNavigator = () => {
     setNickNameState(false);
     setMyListState(false);
     setAlarmListState(false);
     setTitleState("MY");
+    queryClient.invalidateQueries("myprofile");
     getCookie("accessToken") ? navigate("/mypage") : navigate("/login");
   };
 
@@ -40,7 +48,11 @@ const Header = ({ title }) => {
       </Button>
       <StHeaderTitle>{title}</StHeaderTitle>
       <Button variant="image" onClickHandler={clickNavigator}>
-        <MyPageLogo />
+        {isLogin && newAlarms ? (
+          <MyPageAlarm />
+        ) : (
+          <MyPageLogo width="20px" height="20px" />
+        )}
       </Button>
     </StHeader>
   );
