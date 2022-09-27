@@ -32,8 +32,6 @@ const MainList = () => {
     cate: "카테고리 전체",
     pro: "all",
   });
-  // const [currentValue, setCurrentValue] = useState("카테고리 전체");
-  // const [currentCategory, setCurrentCategory] = useState("all");
 
   let payload = { category: active.cate, process: active.pro };
 
@@ -51,10 +49,8 @@ const MainList = () => {
 
   const handleOnChangeSelectValue = (e) => {
     setActive({ cate: e.target.getAttribute("value"), pro: active.pro });
-    // setCurrentCategory(e.target.classList[2]);
     payload = { category: e.target.getAttribute("value"), process: active.pro };
   };
-  console.log(active);
 
   const handleActiveStatus = (name) => {
     setActive({ pro: name, cate: active.cate });
@@ -96,9 +92,6 @@ const MainList = () => {
   const updateScroll = () => {
     setScrollPosition(window.pageYOffset);
   };
-
-  console.log(scrollPosition);
-  const element = listRef.current;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -163,7 +156,6 @@ const MainList = () => {
           {isFetchingNextPage && <div>로딩 중</div>}
           {!isFetchingNextPage && <div>목록의 마지막입니다.</div>}
         </StNext>
-        <div ref={listRef}></div>
         <StGoBack onClick={onClickScroll} scrollPosition={scrollPosition}>
           <GoBack />
         </StGoBack>
@@ -239,9 +231,7 @@ const StDoneBtn = styled.div`
   }
 `;
 
-const StMainContainer = styled.div`
-  /* position: relative; */
-`;
+const StMainContainer = styled.div``;
 
 const StGoBack = styled.div`
   position: fixed;
@@ -259,15 +249,12 @@ const StGoBack = styled.div`
 const StIcon = styled.div`
   position: fixed;
   bottom: 20px;
-  /* right: 8%;  */
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 100px;
   width: 50px;
   height: 50px;
   right: ${({ isMobile }) => (isMobile ? "8%" : "13%")};
-  /* @media screen and (max-width: 950px) {
-    right: 5%;
-  } */
+
   @media screen and (min-width: 1800px) {
     right: 16%;
   }

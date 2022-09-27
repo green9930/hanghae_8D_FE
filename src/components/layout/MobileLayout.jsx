@@ -95,8 +95,6 @@ const StBrowserLayout = styled.div`
 const StBrowserHeader = styled.div`
   width: 100%;
   position: fixed;
-  /* top: 0;
-  left: 56%; */
   z-index: 100;
   @media (min-width: 950px) {
     width: 500px;

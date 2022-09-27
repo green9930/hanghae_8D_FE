@@ -24,7 +24,6 @@ const Form = () => {
   const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
   const [title, setTitle] = useState("");
   const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
-  // const [currentCategory, setCurrentCategory] = useState("");
   const [price, setPrice] = useState("");
   const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
@@ -82,7 +81,6 @@ const Form = () => {
     }
     for (let i = 0; i < e.target.files.length; i++) {
       let file = e.target.files[i];
-      console.log(e.target.files[i]);
       if (
         !VALID_IMAGE_TYPE.includes(
           file.name.split(".")[file.name.split(".").length - 1].toLowerCase()
@@ -98,7 +96,6 @@ const Form = () => {
       };
       try {
         const compressedFile = await imageCompression(file, options);
-        console.log(compressedFile);
         setFiles((files) => [...files, compressedFile]);
 
         const reader = new FileReader();
@@ -133,7 +130,6 @@ const Form = () => {
 
   const handleOnChangeSelectValue = (e) => {
     setCurrentValue(e.target.getAttribute("value"));
-    // setCurrentCategory(e.target.classList[2]);
 
     currentValue ? setValidCategory(true) : setValidCategory(false);
   };
@@ -147,7 +143,6 @@ const Form = () => {
       alert(err.response.data.errorMessage);
     },
   });
-  console.log(isLoading);
 
   const onSubmitHandler = async () => {
     let formData = new FormData();
