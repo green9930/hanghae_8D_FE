@@ -43,7 +43,7 @@ const DeleteAlert = ({
       handleOpenModal();
     },
     onError: ({ response }) => {
-      console.log("DELETE COMMENT ERROR", response);
+      // console.log("DELETE COMMENT ERROR", response);
       setDeleteData({
         isError: true,
         deleteMessage: response.data.errorMessage,

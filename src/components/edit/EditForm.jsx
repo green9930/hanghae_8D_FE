@@ -122,8 +122,6 @@ const EditForm = () => {
         )
           return setOpenImageFileAlert(true);
 
-        console.log("IMAGE SIZE", item.size);
-
         const options = {
           maxSizeMB: 10,
           maxWidthOrHeight: 3000,
@@ -132,8 +130,6 @@ const EditForm = () => {
 
         try {
           const compressedFile = await imageCompression(item, options);
-          console.log("COMPRESSED IMAGE SIZE", compressedFile.size);
-
           setFiles([...files, compressedFile]);
           const reader = new FileReader();
           reader.readAsDataURL(item);

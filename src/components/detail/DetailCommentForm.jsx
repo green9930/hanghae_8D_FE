@@ -55,7 +55,6 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
         setCommentRefState(true);
       },
       onError: ({ response }) => {
-        console.log("POST COMMENT FAILED", response);
         setErrorData({
           errorCode: response.data.errorCode,
           errorMessage: response.data.errorMessage,

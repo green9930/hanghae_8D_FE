@@ -90,7 +90,7 @@ const UserInfo = () => {
         setOpenickNameAlert(true);
       },
       onError: ({ response }) => {
-        console.log(response.data.errorMessage);
+        // console.log(response.data.errorMessage);
         setNickNameVali({
           message: response.data.errorMessage,
           isValid: false,
