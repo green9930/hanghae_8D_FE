@@ -39,8 +39,17 @@ const MyPageFooter = () => {
   return (
     <>
       <StFooterBtn>
-        <Button variant="image">
+        <Button
+          variant="image"
+          onClickHandler={() => {
+            window.open(
+              "https://docs.google.com/forms/d/e/1FAIpQLSfuiqkRDr68oyou4Ee8qA9zlF9dI-yYWIG-3QGIHjIZs0j4lQ/viewform?vc=0&c=0&w=1&flr=0",
+              "_blank"
+            );
+          }}
+        >
           <SendMessage />
+
           <span>의견보내기</span>
         </Button>
       </StFooterBtn>
