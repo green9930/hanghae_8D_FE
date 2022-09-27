@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Modal from "components/layout/Modal";
 import Button from "components/elements/Button";
+import ImageModal from "components/detail/ImageModal";
 import DeleteAlert from "components/detail/DeleteAlert";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
@@ -21,6 +22,7 @@ const DetailCarousel = ({
 }) => {
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
+  const [openImageModal, setOpenImageModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -49,7 +51,12 @@ const DetailCarousel = ({
       <Slider {...settings}>
         {children?.map((val) => {
           return (
-            <StImg key={val} width={width} height={height}>
+            <StImg
+              key={val}
+              width={width}
+              height={height}
+              onClick={() => setOpenImageModal(true)}
+            >
               <img alt="upload post" src={val} />
             </StImg>
           );
@@ -84,6 +91,12 @@ const DetailCarousel = ({
             handleOpenModal={() => setOpenDeleteAlert(false)}
           />
         </Modal>
+      )}
+      {openImageModal && (
+        <ImageModal
+          handleOpenModal={() => setOpenImageModal(false)}
+          images={children}
+        />
       )}
     </StCarousel>
   );
