@@ -51,22 +51,23 @@ const StModal = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 11;
+  z-index: 110;
 `;
 
 const StModalBody = styled.div`
   position: absolute;
   width: 305px;
   height: ${({ height }) => height};
-  /* height: 194px; */
   background-color: ${colors.white};
   border-radius: 5px;
   overflow: hidden;
   z-index: 111;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 `;
 
 const StXBtn = styled.div`
   position: absolute;
   top: 20px;
   right: 20px;
+  z-index: 120;
 `;

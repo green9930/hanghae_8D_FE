@@ -3,6 +3,8 @@ import { ReactComponent as BSalectPurple } from "assets/svg/B_salect_purple.svg"
 import { ReactComponent as BSalectWhite } from "assets/svg/B_salect_white.svg";
 import { ReactComponent as HeaderLogo } from "assets/svg/headerLogo.svg";
 import { ReactComponent as IconArrow } from "assets/svg/icon_arrow.svg";
+import { ReactComponent as IconDots } from "assets/svg/icon_dots.svg";
+import { ReactComponent as IconOops } from "assets/svg/icon_oops.svg";
 import { ReactComponent as IconPlus } from "assets/svg/icon_plus.svg";
 import { ReactComponent as IconTrash } from "assets/svg/icon_trash.svg";
 import { ReactComponent as IconX } from "assets/svg/icon_x.svg";
@@ -12,6 +14,7 @@ import { ReactComponent as LogoKakao } from "assets/svg/logo_kakao.svg";
 import { ReactComponent as LogoNaver } from "assets/svg/logo_naver.svg";
 import { ReactComponent as Logout } from "assets/svg/logout.svg";
 import { ReactComponent as MainArrow } from "assets/svg/mainArrow.svg";
+import { ReactComponent as MyPageAlarm } from "assets/svg/myPageAlarm.svg";
 import { ReactComponent as MyPageLogo } from "assets/svg/myPageLogo.svg";
 import { ReactComponent as RankList } from "assets/svg/ranklist.svg";
 import { ReactComponent as RankListWhite } from "assets/svg/ranklist_white.svg";
@@ -19,6 +22,7 @@ import { ReactComponent as SendMessage } from "assets/svg/send_message.svg";
 import { ReactComponent as Unregister } from "assets/svg/unregister.svg";
 import { ReactComponent as Error } from "assets/svg/error.svg";
 import { ReactComponent as ErrorHome } from "assets/svg/errorHome.svg";
+import { ReactComponent as GoBack } from "assets/svg/goBack.svg";
 
 const icons = {
   Alarm: Alarm,
@@ -26,6 +30,8 @@ const icons = {
   BSalectWhite: BSalectWhite,
   HeaderLogo: HeaderLogo,
   IconArrow: IconArrow,
+  IconDots: IconDots,
+  IconOops: IconOops,
   IconPlus: IconPlus,
   IconTrash: IconTrash,
   IconX: IconX,
@@ -35,6 +41,7 @@ const icons = {
   LogoNaver: LogoNaver,
   Logout: Logout,
   MainArrow: MainArrow,
+  MyPageAlarm: MyPageAlarm,
   MyPageLogo: MyPageLogo,
   RankList: RankList,
   RankListWhite: RankListWhite,
@@ -42,6 +49,7 @@ const icons = {
   Unregister: Unregister,
   Error: Error,
   ErrorHome: ErrorHome,
+  GoBack: GoBack,
 };
 
 export default icons;

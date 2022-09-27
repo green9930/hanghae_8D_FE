@@ -4,6 +4,7 @@ import { colors, fontSize } from "styles/theme";
 const GlobalStyle = createGlobalStyle`
   /* tway 폰트 적용 필요한 경우 */
   /* font-family: 'twayfly', 'Noto Sans KR', sans-serif; */
+  /* font-family: 'Roboto', sans-serif; */
   @font-face {
     font-family: 'twayfly';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twayfly.woff') format('woff');
@@ -13,7 +14,10 @@ const GlobalStyle = createGlobalStyle`
 
   * {
     box-sizing: border-box;
-    font-size: ${fontSize.regular14};
+    @media screen and (max-width: 350px) {
+      font-size: 12px;
+    }
+    font-size: 14px;
     font-family: 'Noto Sans KR', sans-serif;
     letter-spacing: -0.5px;
   }
@@ -72,6 +76,16 @@ const GlobalStyle = createGlobalStyle`
       font-size: ${fontSize.regular16};
     }
   }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-transition: background-color 9999s ease-out;
+    -webkit-box-shadow: 0 0 0px 1000px background-color inset !important;
+  } 
+
 
   select {
     height: 40px;

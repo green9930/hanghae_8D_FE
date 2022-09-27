@@ -1,16 +1,29 @@
-import Button from "components/elements/Button";
-import React from "react";
-import MainCarousel from "./MainCarousel";
-import MainList from "./MainList";
-import MainSelectBox from "./MainSelectBox";
+import styled from "styled-components";
+import MainCarousel from "components/main/MainCarousel";
+import MainList from "components/main/MainList";
 
 const Main = () => {
   return (
-    <>
+    <StMainWrap>
       <MainCarousel />
-      <MainSelectBox />
-      <MainList />
-    </>
+      <StMainContainer>
+        <MainList />
+      </StMainContainer>
+    </StMainWrap>
   );
 };
+
+const StMainWrap = styled.div`
+  width: 100%;
+  position: relative;
+  top: 64px;
+  left: 0;
+`;
+
+const StMainContainer = styled.div`
+  position: sticky;
+  top: 64px;
+  left: 0;
+`;
+
 export default Main;

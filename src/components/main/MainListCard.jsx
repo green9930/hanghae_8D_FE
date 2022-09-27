@@ -1,13 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import handleRankColor from "utils/handleRankColor";
 import { colors } from "styles/theme";
-import { useNavigate } from "react-router-dom";
+import { fontSize } from "styles/theme";
 
 const MainListCard = ({ data }) => {
-  const navigate=useNavigate();
-  const onClickDetail=()=>{
-    navigate(`/detail/${articlesId}`)
-  }
+  const navigate = useNavigate();
+  const onClickDetail = () => navigate(`/detail/${articlesId}`);
+
   const {
     articlesId,
     nickName,
@@ -18,16 +18,19 @@ const MainListCard = ({ data }) => {
     selectedPrice,
     userRank,
   } = data;
+
   return (
-    <>
-      <StMainContainer selectedPrice={selectedPrice} onClick={onClickDetail}>
-        <StMainListImg src={image} alt="이미지" />
+    <StMainContainer>
+      <StMainWrap selectedPrice={selectedPrice} onClick={onClickDetail}>
+        <StImage>
+          <StMainListImg src={image} alt="이미지" />
+        </StImage>
         <StMainDesc>
           <StFirstLine>
-          <StTitle selectedPrice={selectedPrice}>
-            {title.length < 9 ? title : title.slice(0, 9) + "⋯"}
-          </StTitle>
-          <StMainProcess process={process}>{process}</StMainProcess>
+            <StTitle selectedPrice={selectedPrice}>
+              {title.length < 13 ? title : title.slice(0, 13) + "⋯"}
+            </StTitle>
+            <StMainProcess process={process}>{process}</StMainProcess>
           </StFirstLine>
           <StSeller
             selectedPrice={selectedPrice}
@@ -49,86 +52,104 @@ const MainListCard = ({ data }) => {
             )}
           </StPrice>
         </StMainDesc>
-    
-      </StMainContainer>
-    </>
+      </StMainWrap>
+    </StMainContainer>
   );
 };
+
 const StMainContainer = styled.div`
+  padding: 0px 20px;
+`;
+
+const StMainWrap = styled.div`
   display: flex;
-  padding: 15px ;
+  padding: 15px;
   gap: 10px;
   color: ${({ selectedPrice }) =>
     selectedPrice ? `${colors.grey3}` : `${colors.black}`};
-  width:335px;
-  height:100px;
-  box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
+  height: 100px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  margin:10px auto;
+  margin: 10px auto;
+  background-color: ${({ selectedPrice }) =>
+    selectedPrice ? `${colors.grey7}` : null};
 `;
-
+const StImage = styled.div`
+  min-width: 70px;
+  min-height: 70px;
+`;
 const StMainListImg = styled.img`
+  object-fit: cover;
   width: 70px;
   height: 70px;
 `;
+
 const StMainDesc = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
   justify-content: center;
 `;
-const StFirstLine=styled.div`
-display:flex;
-justify-content:space-between
 
-`
+const StFirstLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const StTitle = styled.p`
-  font-size: 14px;
+  font-size: ${fontSize.regular14};
   font-weight: 700;
   letter-spacing: -0.5px;
 `;
+
 const StSeller = styled.div`
-  font-size: 12px;
+  font-size: ${fontSize.small12};
   letter-spacing: -3%;
+  display: flex;
+  align-items: center;
+
   span {
-    color: ${({ rankColor }) =>
-       rankColor};
+    color: ${({ rankColor }) => rankColor};
     padding-right: 4px;
   }
 `;
+
 const StPrice = styled.div`
-text-align:right;
+  text-align: right;
+
   div {
-    font-size: 10px;
+    font-size: ${fontSize.small10};
     letter-spacing: -0.5px;
   }
+
   span {
-    font-size: 20px;
+    font-size: ${fontSize.large20};
     font-weight: 700;
     line-height: 18px;
     padding-right: 2px;
-    align-items:right;
+    align-items: right;
   }
 `;
 
 const StSelectedPrice = styled.p`
   display: inline-block;
   color: ${colors.grey3};
-  font-size: 14px;
+  font-size: ${fontSize.regular14};
   letter-spacing: -5%;
 `;
 
 const StMainProcess = styled.div`
   width: 50px;
   height: 20px;
-  font-size: 10px;
+  font-size: ${fontSize.small10};
   text-align: center;
   line-height: 20px;
   border-radius: 30px;
   background-color: ${({ process }) =>
-    process === "진행중" ? `${colors.red}` :`${colors.subP}` };
-  color: ${({ process }) => (process === "진행중" ? `${colors.white}`  : `${colors.mainP}` )};
-  font-family: 'twayfly', 'Noto Sans KR', sans-serif
+    process === "진행중" ? `${colors.red}` : `${colors.subP}`};
+  color: ${({ process }) =>
+    process === "진행중" ? `${colors.white}` : `${colors.mainP}`};
+  font-family: "twayfly", "Noto Sans KR", sans-serif;
 `;
 
 export default MainListCard;

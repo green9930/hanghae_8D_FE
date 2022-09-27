@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
+import { colors, fontSize } from "styles/theme";
 import icons from "assets";
-import { colors} from "styles/theme";
 
-const SelectBox = ({ data, size,currentValue,handleOnChangeSelectValue }) => {
-  const { IconArrow } = icons;
+const SelectBox = ({ data, size, currentValue, handleOnChangeSelectValue }) => {
   const [showOptions, setShowOptions] = useState(false);
-
   const modalRef = useRef();
+
+  const { IconArrow } = icons;
 
   useEffect(() => {
     document.addEventListener("mousedown", clickModalOutside);
-
     return () => {
       document.removeEventListener("mousedown", clickModalOutside);
     };
@@ -31,8 +30,13 @@ const SelectBox = ({ data, size,currentValue,handleOnChangeSelectValue }) => {
     >
       <StArrow size={size}>
         <IconArrow
-          width={size === "small" ? "14px" : "20px"}
-          height={size === "small" ? "14px" : "20px"}
+          width={
+            size === "small" ? `${fontSize.regular14}` : `${fontSize.large20}`
+          }
+          height={
+            size === "small" ? `${fontSize.regular14}` : `${fontSize.large20}`
+          }
+          fill={colors.grey2}
         />
       </StArrow>
       <StLabel size={size} currentValue={currentValue}>
@@ -69,23 +73,25 @@ const StSelectBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  ${({size}) => {
+  ${({ size }) => {
     return (
       size === "small" &&
       css`
-        height: 24px;
+        height: 30px;
         border-radius: 30px;
         width: 120px;
         border: 1px solid ${colors.grey3};
         padding: 3px 5px;
-    
+        @media screen and (max-width: 350px) {
+          width: 100px;
+        }
       `
     );
   }}
 `;
 const StArrow = styled.div`
   padding-left: 10px;
-  ${({size}) => {
+  ${({ size }) => {
     return (
       size === "small" &&
       css`
@@ -101,22 +107,27 @@ const StLabel = styled.label`
   justify-content: center;
   text-align: center;
   width: 100%;
-  padding-right: 10px;
+  padding-right: 7px;
+
   span {
-    font-size: 16px;
-    letter-spacing: -0.5px;
     text-align: center;
-    color: ${({currentValue}) =>
-      currentValue === "카테고리를 선택해 주세요." ? `${colors.grey3}`: `${colors.black}`};
-    ${({size}) => {
+    font-size: ${fontSize.regular16};
+    letter-spacing: -0.5px;
+    color: ${({ currentValue }) =>
+      currentValue === "카테고리를 선택해 주세요."
+        ? `${colors.grey3}`
+        : `${colors.black}`};
+    ${({ size }) => {
       return (
         size === "small" &&
         css`
-          color: ${({currentValue}) =>
-            currentValue === "카테고리 전체" ? `${colors.grey3}`: `${colors.black}`};
-          font-size: 12px;
+          color: ${({ currentValue }) =>
+            currentValue === "카테고리 전체"
+              ? `${colors.grey2}`
+              : `${colors.black}`};
+          font-size: ${fontSize.small12};
           padding-right: 4px;
-          font-family: 'twayfly', 'Noto Sans KR', sans-serif
+          font-family: "twayfly", "Noto Sans KR", sans-serif;
         `
       );
     }};
@@ -129,43 +140,52 @@ const StSelectOptions = styled.ul`
   top: 100%;
   left: 50%;
   transform: translate(-50%, 0%);
+  overflow-y: scroll;
   width: 100%;
-  overflow: scroll;
-  height: 190px;
-  max-height: ${({show}) => (show ? "none" : "0")};
+  height: 200px;
+  max-height: ${({ show }) => (show ? "none" : "0")};
   padding: 0;
-  border-radius: 8px;
-  background-color:  ${colors.white};
+  background-color: ${colors.white};
   color: ${colors.grey1};
-  border: ${({show}) => (show ? `0.5px solid ${colors.grey3}` : 0)};
-  ${({size}) => {
+  border: ${({ show }) => (show ? `0.5px solid ${colors.grey3}` : 0)};
+  border-radius: 8px;
+  ${({ size }) => {
     return (
       size === "small" &&
       css`
-        top: 23px;
-        height: 100px;
+        top: 29px;
+        height: 178px;
         width: 120px;
-        border: ${({show}) => (show ? ` 1px solid ${colors.grey3}` : 0)};
+        border: ${({ show }) => (show ? ` 1px solid ${colors.grey3}` : 0)};
+        @media screen and (max-width: 350px) {
+          width: 100px;
+        }
       `
     );
   }};
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StOption = styled.li`
   padding: 12px 35px;
-  font-size: 16px;
+  font-size: ${fontSize.regular16};
   text-align: center;
   letter-spacing: -0.5px;
   &:hover {
     font-weight: 600;
   }
-  ${({size}) => {
+  ${({ size }) => {
     return (
       size === "small" &&
       css`
-        padding: 6px 10px;
-        font-size: 12px;
-        font-family: 'twayfly', 'Noto Sans KR', sans-serif;
+        padding: 10px 10px;
+        font-size: ${fontSize.small12};
+        font-family: "twayfly", "Noto Sans KR", sans-serif;
       `
     );
   }}

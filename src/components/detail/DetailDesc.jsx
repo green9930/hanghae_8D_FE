@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components";
-import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
+import { colors } from "styles/theme";
 
 const DetailDesc = ({
   nickName,
@@ -10,18 +10,15 @@ const DetailDesc = ({
   content,
   category,
   price,
+  selectedPrice,
   isMyArticles,
   userRank,
   process,
   createdAt,
+  descRef,
 }) => {
-  const [isShow, setIsShow] = useState(false);
-
-  const MAX_LENGTH = 44;
-  const styledPrice = content.substr(0, MAX_LENGTH);
-
   return (
-    <StDetailDesc>
+    <StDetailDesc ref={descRef}>
       <StSubInfo>
         <span>카테고리&gt;{category}</span>
         <span>
@@ -37,19 +34,18 @@ const DetailDesc = ({
           <StSelectedMessage>채택 완료</StSelectedMessage>
         )}
         <StPriceText>
-          채택가 <span>{price}</span> 원
+          {process === "채택 성공" ? "채택가" : null}
+          <span>{process === "채택 성공" ? selectedPrice : price}</span> 원
         </StPriceText>
       </StPrice>
-      {content.length < MAX_LENGTH ? (
-        <StDesc isShow={false}>{content}</StDesc>
-      ) : (
-        <StDesc isShow={isShow}>
-          {isShow ? `${content}` : `${styledPrice}⋯`}
-          <button onClick={() => setIsShow(true)}>
-            <span>더 보기</span>
-          </button>
-        </StDesc>
-      )}
+      <StDesc>
+        {content.split("\n").map((val, idx) => (
+          <React.Fragment key={`${val}-${idx}`}>
+            {val}
+            <br />
+          </React.Fragment>
+        ))}
+      </StDesc>
     </StDetailDesc>
   );
 };
@@ -59,6 +55,7 @@ const StDetailDesc = styled.div`
   width: 100%;
   padding: 10px 35px;
   overflow: visible;
+  min-height: 150px;
 
   h2 {
     margin: 2px 0;
@@ -91,6 +88,8 @@ const StPrice = styled.div`
 
 const StPriceText = styled.span`
   span {
+    display: inline-block;
+    margin-left: 8px;
     font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 700;
@@ -104,30 +103,11 @@ const StSelectedMessage = styled.span`
 `;
 
 const StDesc = styled.p`
-  height: ${({ isShow }) => (isShow ? "100%" : "40px")};
+  height: 100%;
   margin-top: 14px;
   position: relative;
   color: ${colors.grey1};
-
-  button {
-    display: ${({ isShow }) => (isShow ? "none" : "flex")};
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    padding: 0;
-    border: none;
-    outline: none;
-    background: transparent;
-    align-items: center;
-    justify-content: center;
-
-    span {
-      color: ${colors.grey1};
-      font-size: 14px;
-      font-weight: 500;
-      text-decoration: underline;
-    }
-  }
+  word-break: break-all;
 `;
 
 export default DetailDesc;

@@ -1,83 +1,52 @@
+import { useQuery, useQueryClient } from "react-query";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import AlarmCard from "components/mypage/AlarmCard";
+import { getAlertLists } from "api/alarmApi";
+import { alarmListState, newAlarmsLengthState } from "state/atom";
 
 const AlarmList = () => {
-  const alarmList = [
-    {
-      alarmId: 1,
-      title: "게시글 제목 타이틀",
-      createdAt: "1분전",
-      type: "comment",
-    },
-    {
-      alarmId: 2,
-      title: "게시글 제목 타이틀",
-      createdAt: "12분전",
-      type: "content",
-    },
-    {
-      alarmId: 3,
-      title: "게시글 제목 타이틀",
-      createdAt: "30분전",
-      type: "comment",
-    },
-    {
-      alarmId: 4,
-      title: "게시글 제목 타이틀",
-      createdAt: "35분전",
-      type: "comment",
-    },
-    {
-      alarmId: 5,
-      title: "게시글 제목 타이틀",
-      createdAt: "48분전",
-      type: "content",
-    },
-    {
-      alarmId: 6,
-      title: "게시글 제목 타이틀",
-      createdAt: "1시간전",
-      type: "comment",
-    },
-    {
-      alarmId: 7,
-      title: "게시글 제목 타이틀",
-      createdAt: "1시간 20분전",
-      type: "comment",
-    },
-    {
-      alarmId: 8,
-      title: "게시글 제목 타이틀",
-      createdAt: "2시간 1분전",
-      type: "comment",
-    },
-    {
-      alarmId: 9,
-      title: "게시글 제목 타이틀",
-      createdAt: "4시간 18분전",
-      type: "content",
-    },
-    {
-      alarmId: 10,
-      title: "게시글 제목 타이틀",
-      createdAt: "5시간전",
-      type: "content",
-    },
-  ];
+  const setAlarmListState = useSetRecoilState(alarmListState);
+  // const setNewAlarms = useSetRecoilState(newAlarmsState);
+  const setNewAlarmsLength = useSetRecoilState(newAlarmsLengthState);
 
-  return (
-    <StAlarmList>
-      {alarmList.map((val) => (
-        <li key={val.alarmId}>
-          <AlarmCard alarmItem={val} />
-        </li>
-      ))}
-    </StAlarmList>
-  );
+  // const queryClient = useQueryClient();
+
+  const {
+    isSuccess,
+    isLoading,
+    data: alarmData,
+  } = useQuery("alertLists", getAlertLists, {
+    refetchOnWindowFocus: false,
+    onSuccess: (data) => {
+      // 헤더 마이페이지 아이콘 상태 변경
+      // setNewAlarms(false);
+      // 알람 리스트 개수 변경
+      setNewAlarmsLength(0);
+      // queryClient.invalidateQueries("myprofile");
+    },
+    onError: () => setAlarmListState(false),
+  });
+
+  if (isLoading) return null;
+  if (isSuccess) {
+    return (
+      <StAlarmList>
+        {alarmData.data.map((val) => (
+          <li key={val.notificationId}>
+            <AlarmCard alarmItem={val} />
+          </li>
+        ))}
+      </StAlarmList>
+    );
+  }
 };
 
 const StAlarmList = styled.ul`
   padding: 0 35px;
+  @media screen and (max-width: 350px) {
+    padding: 0 15px;
+  }
 `;
 
 export default AlarmList;

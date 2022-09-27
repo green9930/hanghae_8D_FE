@@ -17,20 +17,19 @@ export const tokenInstance = axios.create({
     "Content-Type": "application/json",
     accept: "application/json",
   },
+  withCredentials: true,
 });
 
 /* REQUEST INTERCEPTORS ----------------------------------------------------- */
 tokenInstance.interceptors.request.use(
+  // 요청이 전달되기 전에 작업 수행
   (config) => {
-    // 요청이 전달되기 전에 작업 수행
-    // console.log("REQUEST INTERCEPTORS : SUCCESS");
     const accessToken = getCookie("accessToken");
     config.headers.Authorization = `${accessToken}`;
     return config;
   },
   (error) => {
     // 요청 오류가 있는 작업 수행
-    console.log("REQUEST INTERCEPTORS : FAILED", error);
     return Promise.reject(error);
   }
 );
@@ -39,121 +38,63 @@ tokenInstance.interceptors.request.use(
 tokenInstance.interceptors.response.use(
   (response) => {
     // 응답 데이터가 있는 작업 수행 : STATUS CODE 2XX
-    // console.log("RESPONSE INTERCEPTORS : SUCCESS");
+    // console.log("INSTANCE RESPONSE", response);
     return response;
   },
   async (error) => {
     // 응답 오류가 있는 작업 수행 : STATUS CODE WITHOUT 2XX
-    console.log("RESPONSE INTERCEPTORS : FAILED", error);
+    // console.log("RESPONSE INTERCEPTORS : FAILED", error);
     try {
       const { message, response, config } = error;
       const originalRequest = config;
 
-      // ERROR CODE 수정 필요
-      if (message === "Network Error" || response.data.errorCode === "400") {
+      // ACCESSTOKEN FAILED : 405
+      // REFRESHTOKEN FAILED : 403
+      /* GET ACCESSTOKEN FAILED --------------------------------------------------- */
+      if (message === "Network Error" || response.data.errorCode === "405") {
         const refreshToken = getCookie("refreshToken");
-        console.log("REFRESHTOKEN", refreshToken);
         /* GET : NEW ACCESSTOKEN ---------------------------------------------------- */
-        const response = await axios({
-          method: "get",
-          url: `${process.env.REACT_APP_BASE_URL}/auth/user/token`,
-          headers: {
-            "Content-Type": "application/json",
-            refreshToken: refreshToken,
-          },
-        });
-        console.log("GET NEW ACCESSTOKEN : SUCCESS", response);
-        /* CHANGE ACCESSTOKEN ------------------------------------------------------- */
-        console.log(
-          "NEW ACCESSTOKEN AUTHORIZATION",
-          response.headers.authorization
-        );
-        originalRequest.headers.Authorization = response.headers.authorization;
+        try {
+          const response = await axios({
+            method: "get",
+            url: `${process.env.REACT_APP_BASE_URL}/auth/user/token`,
+            headers: {
+              "Content-Type": "application/json",
+              refreshToken: refreshToken,
+            },
+          });
+          /* CHANGE ACCESSTOKEN ------------------------------------------------------- */
+          // console.log(
+          //   "NEW ACCESSTOKEN AUTHORIZATION",
+          //   response.headers.authorization
+          // );
+          // console.log("REFRESHTOKEN SUCCESSED : 405");
+          originalRequest.headers.Authorization =
+            response.headers.authorization;
+          removeCookie("accessToken");
+          setCookie("accessToken", response.headers.authorization);
+          return axios(originalRequest);
+        } catch (error) {
+          /* CHANGE ACCESSTOKEN FAILED ------------------------------------------------ */
+          // console.log("REFRESHTOKEN FAILED", error.response);
+          removeCookie("accessToken");
+          removeCookie("refreshToken");
+          window.location.href = "/";
+        }
+        /* GET REFRESHTOKEN FAILED -------------------------------------------------- */
+      } else if (response.data.errorCode === "403") {
+        // console.log("RESPONSE INTERCEPTORS : FAILED 403");
         removeCookie("accessToken");
-        setCookie("accessToken", response.headers.authorization);
-        return axios(originalRequest);
+        removeCookie("refreshToken");
+        window.location.href = "/";
       }
     } catch (error) {
-      console.log("GET NEW ACCESSTOKEN : FAIL", error);
-      // removeCookie("accessToken");
-      // removeCookie("refreshToken");
-      // window.location.href = "/";
-      return false;
+      // console.log("INTERCEPTOR ERROR : ", error);
+      removeCookie("accessToken");
+      removeCookie("refreshToken");
+      window.location.href = "/";
     }
-    return Promise.reject(error);
-  }
-);
-
-/* IMAGE INSTANCE WITH TOKEN ------------------------------------------------------ */
-export const tokenImageInstance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
-  headers: {
-    "Content-Type": "multipart/form-data",
-    responseType: "blob",
-  },
-});
-
-/*IMAGE REQUEST INTERCEPTORS ----------------------------------------------------- */
-tokenImageInstance.interceptors.request.use(
-  (config) => {
-    // 요청이 전달되기 전에 작업 수행
-    console.log("REQUEST INTERCEPTORS : SUCCESS");
-    const accessToken = getCookie("accessToken");
-    config.headers.Authorization = `${accessToken}`;
-    return config;
-  },
-  (error) => {
-    // 요청 오류가 있는 작업 수행
-    console.log("REQUEST INTERCEPTORS : FAILED", error);
-    return Promise.reject(error);
-  }
-);
-
-/*IMAGE RESPONSE INTERCEPTORS ---------------------------------------------------- */
-tokenImageInstance.interceptors.response.use(
-  (response) => {
-    // 응답 데이터가 있는 작업 수행 : STATUS CODE 2XX
-    console.log("RESPONSE INTERCEPTORS : SUCCESS");
-    return response;
-  },
-  async (error) => {
-    // 응답 오류가 있는 작업 수행 : STATUS CODE WITHOUT 2XX
-    console.log("RESPONSE INTERCEPTORS : FAILED", error);
-    try {
-      const { message, response, config } = error;
-      const originalRequest = config;
-
-      // ERROR CODE 수정 필요
-      if (message === "Network Error" || response.data.errorCode === "400") {
-        const refreshToken = getCookie("refreshToken");
-        console.log("REFRESHTOKEN", refreshToken);
-        /* GET : NEW ACCESSTOKEN ---------------------------------------------------- */
-        const response = await axios({
-          method: "get",
-          url: `${process.env.REACT_APP_BASE_URL}/auth/user/token`,
-          headers: {
-            "Content-Type": "application/json",
-            refreshToken: refreshToken,
-          },
-        });
-        console.log("GET NEW ACCESSTOKEN : SUCCESS", response);
-        /* CHANGE ACCESSTOKEN ------------------------------------------------------- */
-        console.log(
-          "NEW ACCESSTOKEN AUTHORIZATION",
-          response.headers.authorization
-        );
-        originalRequest.headers.Authorization = response.headers.authorization;
-        removeCookie("accessToken");
-        setCookie("accessToken", response.headers.authorization);
-        return axios(originalRequest);
-      }
-    } catch (error) {
-      console.log("GET NEW ACCESSTOKEN : FAIL", error);
-      // removeCookie("accessToken");
-      // removeCookie("refreshToken");
-      // window.location.href = "/";
-      return false;
-    }
+    // console.log("RESPONSE INTERCEPTOR ERROR : ?????");
     return Promise.reject(error);
   }
 );

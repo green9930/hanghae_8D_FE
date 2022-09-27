@@ -7,22 +7,23 @@ import { useState } from "react";
 import icons from "assets";
 import { colors } from "styles/theme";
 import { useNavigate } from "react-router-dom";
-import Modal from "components/layout/Modal";
-import ImageAlert from "./ImageAlert";
-import ImageNumAlert from "./ImageNumAlert";
 import { useMutation } from "react-query";
+import Modal from "components/layout/Modal";
+import ImageAlert from "components/form/ImageAlert";
+import ImageNumAlert from "components/form/ImageNumAlert";
+import ImageFileAlert from "components/form/ImageFileAlert";
 import { postCheck } from "api/formApi";
+import handlePrice from "utils/handlePrice";
+import { fontSize } from "styles/theme";
+import imageCompression from "browser-image-compression";
+import { isMobile } from "react-device-detect";
 
 const Form = () => {
-  const navigate = useNavigate();
-
   const [openImageAlert, setOpenImageAlert] = useState(false);
   const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
-
-  const { IconPlus,IconX } = icons;
+  const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
   const [title, setTitle] = useState("");
   const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
-  const [currentCategory,setCurrentCategory]=useState("");
   const [price, setPrice] = useState("");
   const [realPrice, setRealPrice] = useState("");
   const [desc, setDesc] = useState("");
@@ -30,14 +31,17 @@ const Form = () => {
   const [files, setFiles] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
 
+  const VALID_IMAGE_TYPE = ["png", "jpg", "jpeg"];
   /* ---------------------------------- 유효성검사 --------------------------------- */
-
   const [validTitle, setValidTitle] = useState(true);
   const [validImage, setValidImage] = useState(true);
   const [validCategory, setValidCategory] = useState(true);
   const [validPrice, setValidPrice] = useState(true);
   const [validLengthDesc, setValidLengthDesc] = useState(true);
   const [validDesc, setValidDesc] = useState(true);
+
+  const navigate = useNavigate();
+  const { IconPlus, IconX } = icons;
 
   const checkVali =
     title.trim().length > 0 &&
@@ -46,125 +50,115 @@ const Form = () => {
     price.trim().length > 0 &&
     files.length > 0;
 
-  const priceVali = (text) => {
-    const regExp = /^[0-9\s+]*$/g;
-    return regExp.test(text);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     let target = "";
     if (name === "title") {
       target = value.substr(0, 30);
-      console.log("타이틀!!!!", target.trim().length);
       setTitle(target);
-      target.length > 0 ? setValidTitle(true) : setValidTitle(false);
+      target.length >= 0 ? setValidTitle(true) : setValidTitle(false);
     }
 
     if (name === "price") {
-      target = value.replaceAll(",", "").substr(0, 8);
-      if (priceVali(target)) {
-        setRealPrice(target);
-        priceVali(target) &&
-          setPrice(target.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-        console.log("Price", price.trim().length);
-        target.length > 0 ? setValidPrice(true) : setValidPrice(false);
-      }
+      const { realPrice, previewPrice } = handlePrice(value.replace(" ", ""));
+      value.length >= 0 ? setValidPrice(true) : setValidPrice(false);
+      setRealPrice(realPrice);
+      setPrice(previewPrice);
     }
+
     if (name === "desc") {
       target = value.substr(0, 400);
       setDesc(target);
-      console.log("desc", desc.trim().length);
-      target.length > 0 ? setValidDesc(true) : setValidDesc(false);
-      target.length > 15 ? setValidLengthDesc(true) : setValidLengthDesc(false);
+      target.length >= 0 ? setValidDesc(true) : setValidDesc(false);
+      target.length >= 0 ? setValidLengthDesc(true) : setValidLengthDesc(false);
     }
   };
 
-  /* ---------------------------------- 사진 미리보기 ------------------------------- */
-  const handleAddImages = (e) => {
-    setFiles([...files, ...e.target.files]);
-
-    console.log("file", files.length);
-    console.log("New file", e.target.files.length);
-
+  /* ------------------------------ 사진 미리보기 & 리사이징 ---------------------------- */
+  const handleAddImages = async (e) => {
     if (files.length + e.target.files.length > 5) {
-      setFiles(files.slice(0, 5));
+      return setOpenImageNumberAlert(true);
     }
-    console.log(files.length);
-    if (files.length + e.target.files.length <= 5) {
-      for (let i = 0; i < e.target.files.length; i++) {
-        if (e.target.files[i].size < 20000000) {
-          const reader = new FileReader();
-          reader.readAsDataURL(e.target.files[i]);
-          reader.onload = () => {
-            const previewImgUrl = reader.result;
-            setPreviewImg((previewImg) => [...previewImg, previewImgUrl]);
-          };
-        } else {
-          setOpenImageAlert(true);
-        }
+    for (let i = 0; i < e.target.files.length; i++) {
+      let file = e.target.files[i];
+      if (
+        !VALID_IMAGE_TYPE.includes(
+          file.name.split(".")[file.name.split(".").length - 1].toLowerCase()
+        )
+      )
+        return setOpenImageFileAlert(true);
+      if (file.size > 10000000) return setOpenImageAlert(true);
+
+      const options = {
+        maxSizeMB: 10,
+        maxWidthOrHeight: 3000,
+        useWebWorker: true,
+      };
+      try {
+        const compressedFile = await imageCompression(file, options);
+        setFiles((files) => [...files, compressedFile]);
+
+        const reader = new FileReader();
+        reader.readAsDataURL(compressedFile);
+        reader.onload = () => {
+          const previewImgUrl = reader.result;
+          setPreviewImg((previewImg) => [...previewImg, previewImgUrl]);
+        };
+      } catch (error) {
+        alert("이미지를 불러올 수 없습니다");
       }
-    } else {
-      setOpenImageNumberAlert(true);
     }
 
-    files.length > 0 ? setValidImage(true) : setValidImage(false);
+    files.length >= 0 ? setValidImage(true) : setValidImage(false);
   };
 
   const handleDeleteImage = (id) => {
     setPreviewImg(previewImg.filter((_, index) => index !== id));
     setFiles(files.filter((_, index) => index !== id));
   };
-
   /* ----------------------------- 카테고리 select-box ---------------------------- */
-
   const data = [
-    { key: 1, value: "디지털/생활가전", category: "digital" },
-    { key: 2, value: "의류/잡화", category: "clothes" },
-    { key: 3, value: "스포츠/레저", category: "sports" },
-    { key: 4, value: "가구/인테리어", category: "interior" },
-    { key: 5, value: "도서/여행/취미", category: "hobby" },
-    { key: 6, value: "반려동물/식물", category: "pet" },
-    { key: 7, value: "식품", category: "food" },
-    { key: 8, value: "기타", category: "etc" },
+    { key: 1, value: "디지털/생활가전" },
+    { key: 2, value: "의류/잡화" },
+    { key: 3, value: "스포츠/레저" },
+    { key: 4, value: "가구/인테리어" },
+    { key: 5, value: "도서/여행/취미" },
+    { key: 6, value: "반려동물/식물" },
+    { key: 7, value: "식품" },
+    { key: 8, value: "기타" },
   ];
 
   const handleOnChangeSelectValue = (e) => {
     setCurrentValue(e.target.getAttribute("value"));
-    setCurrentCategory(e.target.classList[2]);
-    
+
     currentValue ? setValidCategory(true) : setValidCategory(false);
   };
-  
 
-   //데이터 Post
-   const { mutate: addCheck } = useMutation(postCheck, {
+  /* -------------------------------- 데이터 Post -------------------------------- */
+  const { mutate: addCheck, isLoading } = useMutation(postCheck, {
     onSuccess: () => {
-      console.log("성공!")
-      navigate("/")
+      navigate("/");
     },
-    onError:(err)=>{
-      console.log(err)
-    }
+    onError: (err) => {
+      alert(err.response.data.errorMessage);
+    },
   });
-  
-
 
   const onSubmitHandler = async () => {
-    console.log("올려!!");
     let formData = new FormData();
-    const dataSet={
-      title:title,
-      category:currentCategory,
-      price:realPrice,
-      content:desc
-    }
-    files.map((file) => formData.append("multipartFile", file))
-    formData.append("articlesDto", new Blob([JSON.stringify(dataSet)], { type: "application/json" }));
-    addCheck(formData)
-    
+    const dataSet = {
+      title: title,
+      category: currentValue,
+      price: realPrice,
+      content: desc,
+    };
+    files.map((file) => formData.append("multipartFile", file));
+    formData.append(
+      "articlesDto",
+      new Blob([JSON.stringify(dataSet)], { type: "application/json" })
+    );
+    addCheck(formData);
   };
-
 
   const clickCheckHandler = () => {
     title.trim().length === 0 ? setValidTitle(false) : setValidTitle(true);
@@ -183,9 +177,15 @@ const Form = () => {
     <StFormContainer>
       <StFirstWrap>
         <StPreview>
-          <label htmlFor="input-file" onChange={handleAddImages}>
+          <label htmlFor="input-file">
             <IconPlus />
-            <input type="file" id="input-file" multiple />
+            <input
+              type="file"
+              id="input-file"
+              accept=".png, .jpg, .jpeg"
+              onChange={handleAddImages}
+              multiple
+            />
           </label>
           <StImageList validImage={validImage}>
             {files.length === 0 ? (
@@ -215,6 +215,13 @@ const Form = () => {
               />
             </Modal>
           )}
+          {openImageFileAlert && (
+            <Modal handleOpenModal={() => setOpenImageFileAlert(false)}>
+              <ImageFileAlert
+                handleOpenModal={() => setOpenImageFileAlert(false)}
+              />
+            </Modal>
+          )}
         </StPreview>
         <StSecondWrap>
           <StTitleInput validTitle={validTitle}>
@@ -241,18 +248,20 @@ const Form = () => {
               value={price}
               name="price"
             />
+            {price?.trim().length ? <span>원</span> : null}
           </StPriceInput>
         </StSecondWrap>
       </StFirstWrap>
       <StThirdWrap validLengthDesc={validLengthDesc} validDesc={validDesc}>
         <Textarea onChangeHandler={handleChange} value={desc} name="desc" />
         <p>*15글자 이상 입력해 주세요.</p>
-        <StButton>
+        <StButton isMobile={isMobile}>
           <Button
-              children={"등록하기"}
-              theme={checkVali ? "purple" : "disabled"}
-              onClickHandler={checkVali ?onSubmitHandler:clickCheckHandler}
-            />
+            children={"등록하기"}
+            theme={checkVali ? "purple" : "disabled"}
+            onClickHandler={checkVali ? onSubmitHandler : clickCheckHandler}
+            isDisabled={isLoading ? true : false}
+          />
         </StButton>
       </StThirdWrap>
     </StFormContainer>
@@ -260,7 +269,10 @@ const Form = () => {
 };
 
 const StFormContainer = styled.div`
-  /* padding: 0 35px; */
+  width: 100%;
+  position: relative;
+  top: 64px;
+  height: calc(100vh - 64px);
 `;
 
 const StFirstWrap = styled.div`
@@ -283,6 +295,7 @@ const StTitleInput = styled.div`
         return validTitle ? `${colors.grey3}` : `${colors.red}`;
       }};
     }
+
     border-color: ${({ validTitle }) =>
       validTitle ? `${colors.grey3}` : `${colors.red}`};
   }
@@ -297,6 +310,7 @@ const StSelectBox = styled.div`
     border-color: ${({ validCategory }) =>
       validCategory ? `${colors.grey3}` : `${colors.red}`};
   }
+
   svg {
     fill: ${({ validCategory }) =>
       validCategory ? `${colors.grey3}` : `${colors.red}`};
@@ -304,6 +318,8 @@ const StSelectBox = styled.div`
 `;
 
 const StPriceInput = styled.div`
+  position: relative;
+
   input {
     ::placeholder {
       color: ${({ validPrice }) =>
@@ -311,6 +327,14 @@ const StPriceInput = styled.div`
     }
     border-color: ${({ validPrice }) =>
       validPrice ? `${colors.grey3}` : `${colors.red}`};
+  }
+
+  span {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    color: ${colors.grey3};
   }
 `;
 
@@ -320,32 +344,47 @@ const StPreview = styled.div`
   justify-content: left;
   height: 70px;
   align-items: center;
+
   input {
     display: none;
   }
+  label {
+    display: flex;
+  }
 `;
+
 const StImageList = styled.div`
   padding-left: 10px;
-  overflow: scroll;
+  overflow-x: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   div {
     display: flex;
     gap: 4px;
   }
+
   p {
-    font-size: 16px;
+    font-size: ${fontSize.regular16};
     letter-spacing: -0.5px;
     color: ${({ validImage }) =>
       validImage ? `${colors.grey3}` : `${colors.red}`};
   }
 `;
+
 const StImage = styled.div`
   position: relative;
 `;
+
 const StImg = styled.img`
   width: 70px;
   height: 70px;
   object-fit: cover;
 `;
+
 const StBtn = styled.button`
   position: absolute;
   right: 0;
@@ -357,9 +396,10 @@ const StBtn = styled.button`
   background-color: ${colors.black};
   opacity: 0.3;
 `;
+
 const StThirdWrap = styled.div`
   padding: 20px 35px 0 35px;
-
+  width: 100%;
   textarea {
     ::placeholder {
       color: ${({ validDesc }) =>
@@ -369,8 +409,9 @@ const StThirdWrap = styled.div`
       ${({ validLengthDesc }) =>
         validLengthDesc ? `${colors.grey3}` : `${colors.red}`};
   }
+
   p {
-    font-size: 12px;
+    font-size: ${fontSize.small12};
     letter-spacing: -3%;
     color: ${({ validLengthDesc }) =>
       validLengthDesc ? `${colors.grey3}` : `${colors.red}`};
@@ -378,13 +419,18 @@ const StThirdWrap = styled.div`
     text-align: right;
   }
 `;
+
 const StButton = styled.div`
   position: fixed;
   bottom: 30px;
-  left: 0;
-  padding: 0 30px;
-  width: 100%;
-
+  width: ${({ isMobile }) => (isMobile ? "100%" : "430px")};
+  left: ${({ isMobile }) => (isMobile ? 0 : null)};
+  padding: ${({ isMobile }) => (isMobile ? "0px 30px" : null)};
+  @media screen and (max-width: 950px) {
+    width: 100%;
+    left: 0;
+    padding: 0px 30px;
+  }
   button {
     border-radius: 50px;
   }

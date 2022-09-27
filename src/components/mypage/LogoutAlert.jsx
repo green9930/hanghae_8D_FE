@@ -1,20 +1,18 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import Button from "components/elements/Button";
+import { removeCookie } from "api/cookies";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
-import { useEffect } from "react";
-import { removeCookie } from "api/cookies";
 
 const LogoutAlert = ({ handleOpenModal }) => {
   const { MainArrow } = icons;
 
   useEffect(() => {
-    const removeUser = async () => {
-      await removeCookie("accessToken");
-      await removeCookie("refreshToken");
-      console.log("LOGOUT");
+    const removeUser = () => {
+      removeCookie("accessToken");
+      removeCookie("refreshToken");
     };
-
     removeUser();
   }, []);
 
@@ -46,7 +44,7 @@ const StMessage = styled.div`
 
   span {
     text-align: center;
-    font-size: ${fontSize.large24};
+    font-size: ${fontSize.large20};
   }
 `;
 

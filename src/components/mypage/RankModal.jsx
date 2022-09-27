@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Button from "components/elements/Button";
-import { colors, fontSize } from "styles/theme";
+import { colors } from "styles/theme";
 import icons from "assets";
 import handleRankColor from "utils/handleRankColor";
 
@@ -33,8 +33,8 @@ const RankModal = ({ handleOpenModal }) => {
             <StInfoText>댓글 채택 하기</StInfoText>
           </StRankContainer>
           <StRankContainer type="info">
-            <StInfoPoint>+1P</StInfoPoint>
-            <StInfoPoint>+10P</StInfoPoint>
+            <span>+1P</span>
+            <span>+10P</span>
           </StRankContainer>
         </StRankInfoContainer>
         <StRankInfoContainer>
@@ -43,8 +43,8 @@ const RankModal = ({ handleOpenModal }) => {
             <StInfoText>댓글 채택 받기</StInfoText>
           </StRankContainer>
           <StRankContainer type="info">
-            <StInfoPoint>+2P</StInfoPoint>
-            <StInfoPoint>+50P</StInfoPoint>
+            <span>+2P</span>
+            <span>+50P</span>
           </StRankContainer>
         </StRankInfoContainer>
       </StRankInfo>
@@ -57,9 +57,8 @@ const StRankModal = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  padding-top: 10px;
   height: 100%;
+  padding-top: 10px;
 `;
 
 const StRankContent = styled.div`
@@ -75,9 +74,9 @@ const StRankContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: ${({ type }) => type === "rank" && "4px"};
   font-family: "Roboto", "Noto Sans KR", sans-serif;
   font-weight: 700;
-  gap: ${({ type }) => type === "rank" && "4px"};
 `;
 
 const StRankName = styled.span`
@@ -93,9 +92,9 @@ const StRankInfo = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
+  background: ${colors.grey7};
   width: 100%;
   padding: 20px 0;
-  background: ${colors.grey7};
 `;
 
 const StRankInfoContainer = styled.div`
@@ -107,6 +106,5 @@ const StRankInfoContainer = styled.div`
 const StInfoText = styled.span`
   font-weight: 400;
 `;
-const StInfoPoint = styled.span``;
 
 export default RankModal;

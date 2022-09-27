@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors, fontSize } from "styles/theme";
 
 const MyListCard = ({ item }) => {
-  const { articlesId, title, price, image, process, point } = item;
+  const { articlesId, title, price, selectedPrice, image, process, point } =
+    item;
   const navigate = useNavigate();
 
   const handleGoToDetail = () => navigate(`/detail/${articlesId}`);
@@ -16,7 +16,7 @@ const MyListCard = ({ item }) => {
         <h2>{title}</h2>
         <StPrice>
           <span>{process === "진행중" ? "" : "채택가 "}</span>
-          {price}
+          {process === "진행중" ? `${price}` : `${selectedPrice}`}
           <span>원</span>
         </StPrice>
       </StMainInfo>
@@ -34,7 +34,7 @@ const StMyListCard = styled.div`
   justify-content: space-between;
   gap: 8px;
   height: 70px;
-  padding: 15px 0;
+  padding: 15px 35px;
 
   img {
     width: 40px;
@@ -47,6 +47,7 @@ const StMainInfo = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  background: ${colors.grey8};
   color: ${({ process }) =>
     process === "진행중" ? `${colors.black}` : `${colors.grey2}`};
 

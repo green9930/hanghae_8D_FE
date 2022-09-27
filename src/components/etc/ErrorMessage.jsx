@@ -1,12 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "styles/theme";
 import icons from "assets";
-import Button from "components/elements/Button";
-import { useNavigate } from "react-router-dom";
 
 const ErrorMessage = () => {
   const navigate = useNavigate();
   const { Error, ErrorHome } = icons;
+
   return (
     <StErrorMessage>
       <ErrorTitle>404</ErrorTitle>
@@ -26,23 +26,27 @@ const ErrorMessage = () => {
     </StErrorMessage>
   );
 };
+
 const StErrorMessage = styled.div`
+position:relative;
+top:64px;
   padding: 70px 35px 0px 35px;
   p {
     margin-top: 10px;
+    color: ${colors.grey3};
+    font-family: "twayfly", "Noto Sans KR", sans-serif;
     font-size: 20px;
     line-height: 24px;
-    font-family: "twayfly", "Noto Sans KR", sans-serif;
-    color: ${colors.grey3};
   }
 `;
 
 const ErrorTitle = styled.h1`
-  font-size: 70px;
-  letter-spacing: -1.5px;
   color: ${colors.mainP};
   font-family: "twayfly", "Noto Sans KR", sans-serif;
+  font-size: 70px;
+  letter-spacing: -1.5px;
 `;
+
 const StError = styled.div`
   margin-top: 60px;
   position: relative;
@@ -53,4 +57,5 @@ const StErrorHome = styled.div`
   top: 26px;
   left: 160px;
 `;
+
 export default ErrorMessage;

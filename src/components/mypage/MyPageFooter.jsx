@@ -1,40 +1,55 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Button from "components/elements/Button";
 import Modal from "components/layout/Modal";
 import LogoutAlert from "components/mypage/LogoutAlert";
 import UnregisterAlert from "components/mypage/UnregisterAlert";
-import icons from "assets";
+import { loginState } from "state/atom";
+import { getCookie } from "api/cookies";
 import { colors } from "styles/theme";
-import { useNavigate } from "react-router-dom";
+import icons from "assets";
 
 const MyPageFooter = () => {
   const [openLogoutAlert, setOpenLogoutAlert] = useState(false);
   const [openUnregisterAlert, setOpenUnregisterAlert] = useState(false);
 
+  const setIsLogin = useSetRecoilState(loginState);
+
   const navigate = useNavigate();
   const { SendMessage, Logout, Unregister } = icons;
 
-  const handleLogout = () => {
-    setOpenLogoutAlert(true);
+  const handleLogout = () => setOpenLogoutAlert(true);
+
+  const handleLogoutAlert = () => {
+    setOpenLogoutAlert(false);
+    setIsLogin(false);
+    navigate("/");
   };
 
-  const handleLogoutAlert = async () => {
-    await setOpenLogoutAlert(false);
-    // await navigate("/");
-    await window.location.reload();
-  };
-
-  const handleUnregisterAlert = async () => {
-    await setOpenUnregisterAlert(false);
-    await navigate("/");
+  const handleUnregisterAlert = () => {
+    setOpenUnregisterAlert(false);
+    if (!getCookie("accessToken") && !getCookie("refreshToken"))
+      window.location.replace("/");
+    setIsLogin(true);
+    navigate("/mypage");
   };
 
   return (
-    <UserInfoFooter>
+    <>
       <StFooterBtn>
-        <Button variant="image">
+        <Button
+          variant="image"
+          onClickHandler={() => {
+            window.open(
+              "https://docs.google.com/forms/d/e/1FAIpQLSfuiqkRDr68oyou4Ee8qA9zlF9dI-yYWIG-3QGIHjIZs0j4lQ/viewform?vc=0&c=0&w=1&flr=0",
+              "_blank"
+            );
+          }}
+        >
           <SendMessage />
+
           <span>의견보내기</span>
         </Button>
       </StFooterBtn>
@@ -63,25 +78,18 @@ const MyPageFooter = () => {
           <UnregisterAlert handleOpenModal={handleUnregisterAlert} />
         </Modal>
       )}
-    </UserInfoFooter>
+    </>
   );
 };
 
-const UserInfoFooter = styled.div`
-  flex-grow: 1;
-  display: grid;
-  grid-template-columns: 50% 50%;
-  background: ${colors.grey7};
-  padding-top: 30px;
-`;
-
 const StFooterBtn = styled.div`
+  height: 30px;
+  padding-left: 35px;
+
   button {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
-    margin-left: 35px;
 
     span {
       color: ${colors.grey1};

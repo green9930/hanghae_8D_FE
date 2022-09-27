@@ -1,30 +1,27 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import MyListCard from "components/mypage/MyListCard";
 import Button from "components/elements/Button";
-import { colors } from "styles/theme";
 import { getMyChecks } from "api/mypageApi";
+import { myListState } from "state/atom";
+import { colors } from "styles/theme";
 
 const MyList = () => {
   const [active, setActive] = useState("all");
 
-  const { isLoading, data, refetch } = useQuery(
-    "mylist",
-    () => getMyChecks(active),
-    {
-      onSuccess: (data) => {
-        console.log("GET MY LIST", data);
-      },
-      enabled: false,
-    }
-  );
+  const setMyListState = useSetRecoilState(myListState);
+
+  const { data, refetch } = useQuery("mylist", () => getMyChecks(active), {
+    onSuccess: (data) => {},
+    onError: (error) => setMyListState(false),
+    enabled: false,
+  });
 
   useEffect(() => {
     refetch();
   }, [active]);
-
-  if (isLoading) return null;
 
   return (
     <StMyList>
@@ -72,7 +69,11 @@ const MyList = () => {
 };
 
 const StMyList = styled.div`
-  padding: 15px 35px;
+  background: ${colors.white};
+
+  li {
+    background: ${colors.white};
+  }
 `;
 
 const StMainBtns = styled.div`
@@ -80,6 +81,8 @@ const StMainBtns = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 4px;
+  background: ${colors.grey7};
+  padding: 15px 35px;
 
   button {
     display: flex;

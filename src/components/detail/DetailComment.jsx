@@ -1,16 +1,16 @@
 import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
-import Button from "components/elements/Button";
 import Modal from "components/layout/Modal";
+import Button from "components/elements/Button";
 import DeleteAlert from "components/detail/DeleteAlert";
 import SelectAlert from "components/detail/SelectAlert";
-import { colors } from "styles/theme";
 import handleRankColor from "utils/handleRankColor";
-import icons from "assets/index";
-import { useMutation, useQueryClient } from "react-query";
 import { selectComment } from "api/detailApi";
+import { colors } from "styles/theme";
+import icons from "assets";
 
-const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
+const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
   const {
     commentsId,
     type,
@@ -28,20 +28,23 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
   const { BSalectPurple, BSalectWhite, IconTrash } = icons;
 
   const queryClient = useQueryClient();
+
   const { mutate: selectMutate } = useMutation(selectComment, {
     onSuccess: (data) => {
-      console.log("SELECT COMMENT", data);
       queryClient.invalidateQueries("detailCheck");
       queryClient.invalidateQueries("checkComments");
     },
+    onError: ({ response }) => window.alert(response.data.errorMessage),
   });
 
   const handleSelectComment = () => {
     selectMutate({ articlesId: articlesId, commentsId: commentsId });
-    setOpenSelectAlert(true);
+    setOpenSelectAlert(false);
   };
 
   const handleDeleteComment = () => setOpenDeleteAlert(true);
+  const handleSelectAlert = () => setOpenSelectAlert(true);
+  const handleDeleteAlert = () => setOpenDeleteAlert(false);
 
   return (
     <>
@@ -78,38 +81,38 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId }) => {
             <StPrice isSelected={isSelected}>
               <span>{comment}</span> 원
             </StPrice>
-            <StBtnContainer>
-              {isMyArticles && !isSelected ? (
+            <StPriceBtnContainer>
+              {isMyArticles && !isSelected && process === "진행중" ? (
                 isMyComment ? null : (
-                  <Button variant="image" onClickHandler={handleSelectComment}>
-                    <BSalectWhite />
+                  <Button variant="image" onClickHandler={handleSelectAlert}>
+                    <BSalectWhite width="30px" height="30px" />
                   </Button>
                 )
               ) : null}
-              {isSelected && <BSalectPurple />}
-              {isMyComment && (
+              {isSelected ? <BSalectPurple width="30px" height="30px" /> : null}
+              {isMyComment && !isSelected ? (
                 <Button variant="image" onClickHandler={handleDeleteComment}>
                   <IconTrash fill={`${colors.grey1}`} />
                 </Button>
-              )}
-            </StBtnContainer>
+              ) : null}
+            </StPriceBtnContainer>
           </StPriceContainer>
         </StPriceComment>
       )}
       {openSelectAlert && (
-        <Modal handleOpenModal={() => setOpenSelectAlert(false)}>
+        <Modal handleOpenModal={handleSelectComment}>
           <SelectAlert
             nickName={nickName}
-            handleOpenModal={() => setOpenSelectAlert(false)}
+            handleOpenModal={handleSelectComment}
           />
         </Modal>
       )}
       {openDeleteAlert && (
-        <Modal handleOpenModal={() => setOpenDeleteAlert(false)}>
+        <Modal handleOpenModal={handleDeleteAlert}>
           <DeleteAlert
             isArticle={false}
             commentsId={commentsId}
-            handleOpenModal={() => setOpenDeleteAlert(false)}
+            handleOpenModal={handleDeleteAlert}
           />
         </Modal>
       )}
@@ -135,6 +138,7 @@ const StTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex-grow: 1;
 `;
 
 const StSubInfo = styled.div`
@@ -162,39 +166,58 @@ const StTime = styled.span`
 `;
 
 const StText = styled.p`
-  margin-right: 4px;
   font-size: 12px;
-  line-height: 19px;
+  line-height: 18px;
+  word-break: break-all;
 `;
 
 const StTextBtnContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  width: 30px;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+  }
 `;
 
 const StPriceContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 5px;
+  flex-grow: 1;
 `;
 
 const StPrice = styled.span`
-  text-align: center;
+  flex-grow: 1;
+  text-align: right;
   font-size: 10px;
   color: ${({ isSelected }) => (isSelected ? `${colors.mainP}` : "inherit")};
 
   span {
+    text-align: right;
     font-family: "Roboto", "Noto Sans KR", sans-serif;
     font-size: 18px;
     font-weight: 700;
   }
 `;
 
-const StBtnContainer = styled.div`
+const StPriceBtnContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+  }
 `;
 
 export default DetailComment;

@@ -1,84 +1,64 @@
+import { useEffect, useRef } from "react";
+import { useQuery } from "react-query";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import DetailComment from "components/detail/DetailComment";
-import { useQuery } from "react-query";
 import { getComments } from "api/detailApi";
-import { createRef, useRef } from "react";
+import { commentRefState } from "state/atom";
 
-const DetailCommentList = ({ process, articlesId }) => {
-  const commentRef = useRef(null);
-  const commentRefs = [];
+const DetailCommentList = ({ process, articlesId, isMyArticles }) => {
+  const commentRef = useRef();
+  const mountRef = useRef(false);
 
-  console.log("GET COMMENTS ARTICLESID", articlesId);
+  const [refState, setRefState] = useRecoilState(commentRefState);
 
-  const { isLoading, data: comments } = useQuery(
-    "checkComments",
-    () => getComments(articlesId),
-    {
-      onSuccess: (data) => {
-        console.log("GET COMMENTS", data.data);
-        // console.log("GET ISMYARTICLES ", data.data.data.isMyArticles);
-        // console.log(commentRef.current);
-        // srcollToBottom();
-        // commentRef.current?.scrollIntoView();
-        // commentRefs[comments.data.data.comments];
-        // commentRef.current?.scrollIntoView({
-        //   behavior: "smooth",
-        // });
-      },
+  const {
+    isRefetching,
+    isLoading,
+    data: comments,
+  } = useQuery("checkComments", () => getComments(articlesId), {
+    onError: (error) => {},
+  });
+
+  const scrollToBottom = () => {
+    if (commentRef.current) {
+      commentRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  );
-
-  const srcollToBottom = () => {
-    if (commentRef.current)
-      commentRef.current.scrollTop = commentRef.current.scrollHeight;
   };
 
-  if (isLoading) return null;
+  useEffect(() => {
+    mountRef.current = false;
+    setRefState(false);
+  }, []);
 
-  // comments.data.data.comments.forEach(() => {
-  //   commentRefs.push(createRef(null));
-  // });
+  useEffect(() => {
+    mountRef.current && refState ? scrollToBottom() : (mountRef.current = true);
+  }, [comments]);
+
+  if ((isRefetching, isLoading)) return null;
 
   return (
-    <div>
-      <StCommentList process={process}>
-        {comments?.data.comments.map((comment, index, arr) => {
-          // console.log(index === arr.length - 1);
-          return (
-            <li
-              key={comment.commentsId}
-              // ref={index === arr.length - 1 ? commentRef : null}
-            >
-              <DetailComment
-                commentVal={comment}
-                isMyArticles={comments.data.isMyArticles}
-                articlesId={articlesId}
-              />
-              {/* {index === arr.length - 1 ? (
-                <>
-                  <StDiv></StDiv>
-                  <StDiv ref={commentRef}></StDiv>
-                </>
-              ) : null} */}
-            </li>
-          );
-        })}
-        {/* <StDiv ref={commentRef}></StDiv> */}
-      </StCommentList>
-    </div>
+    <StCommentList process={process} isMyArticles={isMyArticles}>
+      {comments?.data.comments.map((comment) => (
+        <li key={comment.commentsId}>
+          <DetailComment
+            commentVal={comment}
+            isMyArticles={comments.data.isMyArticles}
+            articlesId={articlesId}
+            process={process}
+          />
+        </li>
+      ))}
+      <div ref={mountRef.current && refState ? commentRef : null}></div>
+    </StCommentList>
   );
 };
 
 const StCommentList = styled.ul`
-  /* height: 100%; */
-  /* min-height: 20vh; */
-  /* margin-bottom: 100px; */
-  padding: ${({ process }) =>
-    process === "진행중" ? `0 35px 110px 35px` : `0 35px 26px 35px`};
-`;
-
-const StDiv = styled.div`
-  height: 50px;
+  padding: ${({ isMyArticles }) =>
+    isMyArticles ? "0 35px 16px 35px" : "0 35px 60px 35px"};
+  display: flex;
+  flex-direction: column;
 `;
 
 export default DetailCommentList;

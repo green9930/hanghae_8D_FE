@@ -1,101 +1,103 @@
-import styled from "styled-components";
-import MainCarouselCard from "./MainCarouselCard";
-import test01 from "assets/test01.jpg";
-import test02 from "assets/test02.jpg";
-import test03 from "assets/test03.jpg";
-import test04 from "assets/test04.jpg";
-import icons from "assets";
-import { colors } from "styles/theme";
-import { getRandomCards } from "api/mainApi";
 import { useQuery } from "react-query";
+import styled from "styled-components";
+import MainCarouselCard from "components/main/MainCarouselCard";
+import { getRandomCards } from "api/mainApi";
+import { colors } from "styles/theme";
+import icons from "assets";
+import { fontSize } from "styles/theme";
+import { isMobile } from "react-device-detect";
+import Slider from "react-slick";
 
 const MainCarousel = () => {
-  
-  // const datas = [
-  //   {
-  //     articlesId: 1,
-  //     title: "에어팟 중고",
-  //     price: "79,000",
-  //     image: test01,
-  //   },
-  //   {
-  //     articlesId: 2,
-  //     title: "맥북",
-  //     price: "10,000,000",
-  //     image: test02,
-  //   },
-  //   {
-  //     articlesId: 3,
-  //     title: "아이폰",
-  //     price: "300,000",
-  //     image: test03,
-  //   },
-  //   {
-  //     articlesId: 4,
-  //     title: "중고물품사세요플리즈",
-  //     price: "3,300,000",
-  //     image: test04,
-  //   },
-  // ];
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 100,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    arrows: false,
+    initialSlide: 0,
+    centerMode: true, //중앙에 슬라이드가 보여지는 모드 -default:false
+    centerPadding: "30px",
+    variableWidth: true,
+    autoplay: true,
+    autoplaySpeed: 1300,
+  };
+  const { MainArrow } = icons;
 
-  const { IconArrow } = icons;
-  
- //데이터 Read
- const checkRandomLists= useQuery("randomList",getRandomCards,{
-  onSuccess:(data)=>{
-    console.log(data.data.data)
-  }
- })
+  /* -------------------------------- 데이터 Read -------------------------------- */
+  const checkRandomLists = useQuery("randomList", getRandomCards, {
+    refetchOnWindowFocus: false,
+    onSuccess: (data) => {},
+  });
 
+  if (checkRandomLists.isLoading) return null;
 
- if (checkRandomLists.isLoading) {
-  return null;
-}
   return (
     <StMainRandomContainer>
       <StMainRandomTitle>
-        <IconArrow fill={colors.mainO}/>
+        <MainArrow fill={colors.mainO} />
         <StMainTitleSpan>책첵</StMainTitleSpan> 진행 중 체크
       </StMainRandomTitle>
-      <StMainRandomImg>
-        {checkRandomLists.data.data.data?.map((data) => (
-          <MainCarouselCard key={data.articlesId} data={data} />
-        ))}
-      </StMainRandomImg>
+      {isMobile ? (
+        <StMainRandomImg isMobile={isMobile}>
+          {checkRandomLists.data.data.data?.map((data) => (
+            <MainCarouselCard key={data.articlesId} data={data} />
+          ))}
+        </StMainRandomImg>
+      ) : (
+        <StSlider>
+          <Slider {...settings}>
+            {checkRandomLists.data.data.data?.map((data) => (
+              <MainCarouselCard key={data.articlesId} data={data} />
+            ))}
+          </Slider>
+        </StSlider>
+      )}
     </StMainRandomContainer>
   );
 };
+
 const StMainRandomContainer = styled.div`
-  background-color: ${colors.mainP};
+  box-sizing: border-box;
   width: 100%;
-  padding-bottom: 30px;
   height: 240px;
+  background-color: ${colors.mainP};
 `;
+
 const StMainRandomTitle = styled.div`
+  padding-top: 10px;
   text-align: center;
-  padding: 20px 0px 10px 0px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
   color: ${colors.white};
-  font-family: 'twayfly', 'Noto Sans KR', sans-serif;
- 
-`;
-const StMainTitleSpan = styled.span`
+  font-family: "twayfly", "Noto Sans KR", sans-serif;
   font-style: normal;
-  font-family: 'twayfly', 'Noto Sans KR', sans-serif;
   font-weight: 400;
-  font-size: 20px;
-  margin-left: 10px;
-  color:${colors.mainO};
+  font-size: ${fontSize.large20};
 `;
+
+const StMainTitleSpan = styled.span`
+  margin-left: 6px;
+  color: ${colors.mainO};
+  font-family: "twayfly", "Noto Sans KR", sans-serif;
+  font-size: ${fontSize.large20};
+  font-style: normal;
+  font-weight: 400;
+`;
+
 const StMainRandomImg = styled.div`
   display: flex;
   gap: 10px;
-  overflow: scroll;
-  padding: 0px 20px;
+  overflow-x: scroll;
+  padding: 15px 20px 35px 20px;
+
   ::-webkit-scrollbar {
     display: none;
+  }
+`;
+const StSlider = styled.div`
+  padding: 15px 0px 35px 0px;
+  .slick-slide {
+    padding-right: 10px;
   }
 `;
 

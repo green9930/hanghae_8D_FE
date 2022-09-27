@@ -11,7 +11,7 @@ const ImageAlert = ({ handleOpenModal }) => {
       <StMessage>
         <MainArrow width="40px" height="40px" fill={`${colors.mainP}`} />
         <p>
-          <span>20MB</span> 이하 <br />
+          <span>10MB</span> 이하 <br />
           이미지를 올려주세요!🤓
         </p>
       </StMessage>
@@ -37,15 +37,16 @@ const StMessage = styled.div`
 
   p {
     text-align: center;
-    font-size: ${fontSize.large22};
+    font-size: ${fontSize.large20};
     line-height: 30px;
-    letter-spacing:-5%;
+    letter-spacing: -5%;
   }
+
   span {
     font-weight: 700;
-    font-size: ${fontSize.large22};
+    font-size: ${fontSize.large20};
     line-height: 30px;
-    letter-spacing:-5%;
+    letter-spacing: -5%;
   }
 `;
 

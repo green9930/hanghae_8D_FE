@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import DetailPage from "pages/DetailPage";
 import ErrorPage from "pages/ErrorPage";
 import FormPage from "pages/FormPage";
@@ -9,48 +11,126 @@ import LoginPage from "pages/LoginPage";
 import KakaoLogin from "components/login/KakaoLogin";
 import NaverLogin from "components/login/NaverLogin";
 import GoogleLogin from "components/login/GoogleLogin";
+import { loginState, newAlarmsLengthState, newAlarmsState } from "state/atom";
 import { getCookie } from "api/cookies";
-import { useQuery } from "react-query";
+
+import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
+import { useQueryClient } from "react-query";
 
 const Router = () => {
-  const { isLoading, data: isLogin } = useQuery(
-    "loginState",
-    () => (getCookie("accessToken") ? true : false),
-    {
-      onSuccess: (data) => {
-        // console.log(data);
-      },
-    }
-  );
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const setNewAlarms = useSetRecoilState(newAlarmsState);
+  const setNewAlarm = useSetRecoilState(newAlarmsState);
+  const [newAlarmsLength, setNewAlarmsLength] =
+    useRecoilState(newAlarmsLengthState);
+  const [loading, setIsLoading] = useState(false);
 
-  if (isLoading) return null;
-  // console.log("ISLOGIN", isLogin);
+  /* 실시간 알림 수신 TEST ----------------------------------------------------------- */
+  const [listening, setListening] = useState(false);
+  const [eventSourceStatus, setEventSourceStatus] = useState(null);
 
+  const queryClient = useQueryClient();
+  const EventSource = EventSourcePolyfill || NativeEventSource;
+
+  useEffect(() => {
+    let eventSource;
+    const fetchSse = async () => {
+      try {
+        eventSource = new EventSource(
+          `${process.env.REACT_APP_BASE_URL}/api/subscribe`,
+          {
+            headers: {
+              Authorization: getCookie("accessToken"),
+            },
+            withCredentials: true,
+          }
+        );
+        // console.log("EVENTSOURCE RESPONSE", eventSource);
+        /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
+        eventSource.onopen = async (event) => {
+          const result = await event;
+          // console.log("EVENTSOURCE ONOPEN", result);
+          // setEventSourceStatus(result.type); //구독
+        };
+
+        /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
+        eventSource.onmessage = async (event) => {
+          // 헤더 마이페이지 아이콘 상태 변경
+          const res = await event.data;
+          if (!res.includes("EventStream Created.")) setNewAlarms(true);
+          // 알람 리스트 개수 변경
+          queryClient.invalidateQueries("myprofile");
+          queryClient.invalidateQueries("alertNoti");
+          queryClient.invalidateQueries("alertLists");
+          // const json = JSON.parse(res);
+          // console.log("EVENTSOURCE MESSAGE : ", json);
+          // setNewAlarm(json);
+        };
+
+        /* EVENTSOURCE ONERROR ------------------------------------------------------ */
+        eventSource.onerror = async (event) => {
+          const result = await event;
+          // console.log("EVENTSOURCE ONERROR", result);
+          // console.log(event.error.message); // No activity within 45000 milliseconds.
+          event.error.message.includes("No activity within 45000 milliseconds.")
+            ? setEventSourceStatus(result.type) //구독
+            : eventSource.close();
+          setListening(false);
+        };
+        setListening(true);
+      } catch (error) {
+        // console.log(error);
+      }
+    };
+    fetchSse();
+    return () => eventSource.close();
+  });
+
+  useEffect(() => {
+    const fetchLoading = async () => {
+      try {
+        (await getCookie("accessToken")) ? setIsLogin(true) : setIsLogin(false);
+        await setIsLoading(true);
+      } catch (err) {
+        // console.log("GET LOGIN STATE", err);
+      }
+    };
+    fetchLoading();
+  }, [isLogin]);
+
+  /* 서버 페이지 접근 테스트 중 ---------------------------------------------------------- */
   return (
-    <Routes>
-      <Route path="/" element={<MainPage />} />
-      <Route
-        path="/login"
-        element={isLogin ? <Navigate to="/" /> : <LoginPage />}
-      />
-      <Route path="/user/signin/kakao" element={<KakaoLogin />} />
-      <Route path="/user/signin/naver" element={<NaverLogin />} />
-      <Route path="/user/signin/google" element={<GoogleLogin />} />
-      <Route
-        path="/form"
-        element={isLogin ? <FormPage /> : <Navigate to="/login" />}
-      />
-      <Route
-        path="/detail/:id"
-        element={isLogin ? <DetailPage /> : <Navigate to="/login" />}
-      />
-      <Route path="/edit/:id" element={<EditPage />} />
-      <Route
-        path="/mypage"
-        element={isLogin ? <MyPage /> : <Navigate to="/" />}
-      />
-      <Route path="/*" element={<ErrorPage />} />
-    </Routes>
+    <>
+      {loading ? (
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route
+            path="/login"
+            element={isLogin ? <Navigate to="/" /> : <LoginPage />}
+          />
+          <Route path="/user/signin/kakao" element={<KakaoLogin />} />
+          <Route path="/user/signin/naver" element={<NaverLogin />} />
+          <Route path="/user/signin/google" element={<GoogleLogin />} />
+          <Route
+            path="/form"
+            element={isLogin ? <FormPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/detail/:id"
+            element={isLogin ? <DetailPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/edit/:id"
+            element={isLogin ? <EditPage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/mypage"
+            element={isLogin ? <MyPage /> : <Navigate to="/" />}
+          />
+          <Route path="/*" element={<ErrorPage />} />
+        </Routes>
+      ) : null}
+    </>
   );
 };
 
