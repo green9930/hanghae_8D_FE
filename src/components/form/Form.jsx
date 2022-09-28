@@ -405,6 +405,7 @@ const StBtn = styled.button`
 const StThirdWrap = styled.div`
   padding: 20px 35px 0 35px;
   width: 100%;
+  padding-bottom: 100px;
   textarea {
     ::placeholder {
       color: ${({ validDesc }) =>
