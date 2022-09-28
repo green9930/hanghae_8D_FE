@@ -7,6 +7,7 @@ import icons from "assets";
 import { fontSize } from "styles/theme";
 import { isMobile } from "react-device-detect";
 import Slider from "react-slick";
+import LoadingMessage from "components/etc/LoadingMessage";
 
 const MainCarousel = () => {
   const settings = {
@@ -17,7 +18,7 @@ const MainCarousel = () => {
     slidesToScroll: 1,
     arrows: false,
     initialSlide: 0,
-    centerMode: true, //중앙에 슬라이드가 보여지는 모드 -default:false
+    centerMode: true,
     centerPadding: "30px",
     variableWidth: true,
     autoplay: true,
@@ -26,12 +27,12 @@ const MainCarousel = () => {
   const { MainArrow } = icons;
 
   /* -------------------------------- 데이터 Read -------------------------------- */
-  const checkRandomLists = useQuery("randomList", getRandomCards, {
+  const { data, isLoading } = useQuery("randomList", getRandomCards, {
     refetchOnWindowFocus: false,
     onSuccess: (data) => {},
   });
 
-  if (checkRandomLists.isLoading) return null;
+  if (isLoading) return <LoadingMessage />;
 
   return (
     <StMainRandomContainer>
@@ -41,14 +42,14 @@ const MainCarousel = () => {
       </StMainRandomTitle>
       {isMobile ? (
         <StMainRandomImg isMobile={isMobile}>
-          {checkRandomLists.data.data.data?.map((data) => (
+          {data.data.data?.map((data) => (
             <MainCarouselCard key={data.articlesId} data={data} />
           ))}
         </StMainRandomImg>
       ) : (
         <StSlider>
           <Slider {...settings}>
-            {checkRandomLists.data.data.data?.map((data) => (
+            {data.data.data?.map((data) => (
               <MainCarouselCard key={data.articlesId} data={data} />
             ))}
           </Slider>

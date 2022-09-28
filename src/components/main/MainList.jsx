@@ -67,18 +67,24 @@ const MainList = () => {
     threshold: 0,
   });
 
-  const { data, isFetchingNextPage, fetchNextPage, remove, status, refetch } =
-    useInfiniteQuery(
-      "mainCheckList",
-      ({ pageParam = 0 }) => getMainCheck(payload, pageParam),
-      {
-        refetchOnWindowFocus: false,
-        enabled: false,
-        getNextPageParam: (lastPage, allPages) => {
-          return lastPage.nextPage;
-        },
-      }
-    );
+  const {
+    data,
+    isFetchingNextPage,
+    fetchNextPage,
+    remove,
+    isLoading,
+    refetch,
+  } = useInfiniteQuery(
+    "mainCheckList",
+    ({ pageParam = 0 }) => getMainCheck(payload, pageParam),
+    {
+      refetchOnWindowFocus: false,
+      enabled: false,
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.nextPage;
+      },
+    }
+  );
 
   useEffect(() => {
     if (inView) {
@@ -103,7 +109,7 @@ const MainList = () => {
     };
   }, [scrollPosition]);
 
-  if (status === "loading") return null;
+  if (isLoading) return null;
 
   return (
     <StMain>

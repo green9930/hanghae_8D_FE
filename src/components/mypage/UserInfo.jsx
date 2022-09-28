@@ -360,7 +360,7 @@ const StNickNameInput = styled.div`
       isDisabled ? `0.5px solid ${colors.grey3}` : `0.5px solid ${colors.red}`};
     color: ${colors.grey1};
     text-align: center;
-    font-family: "twayfly", "Noto Sans KR", sans-serif;
+    /* font-family: "twayfly", "Noto Sans KR", sans-serif; */
     font-size: ${fontSize.large20};
   }
 
@@ -402,8 +402,9 @@ const StNameContainer = styled.div`
 const StName = styled.span`
   max-width: 132px;
   color: ${colors.white};
-  font-family: "twayfly", "Noto Sans KR", sans-serif;
+  /* font-family: "twayfly", "Noto Sans KR", sans-serif; */
   font-size: ${fontSize.large24};
+  font-weight: 700;
   @media screen and (max-width: 350px) {
     font-size: ${fontSize.large20};
     max-width: 102px;
@@ -415,8 +416,9 @@ const StName = styled.span`
 
 const StNickName = styled.span`
   color: ${colors.white};
-  font-family: "twayfly", "Noto Sans KR", sans-serif;
+  /* font-family: "twayfly", "Noto Sans KR", sans-serif; */
   font-size: ${fontSize.large24};
+  font-weight: 700;
   @media screen and (max-width: 350px) {
     font-size: ${fontSize.large20};
   }
