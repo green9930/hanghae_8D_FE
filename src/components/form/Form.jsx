@@ -17,6 +17,7 @@ import handlePrice from "utils/handlePrice";
 import { fontSize } from "styles/theme";
 import imageCompression from "browser-image-compression";
 import { isMobile } from "react-device-detect";
+import LoadingMessage from "components/etc/LoadingMessage";
 
 const Form = () => {
   const [openImageAlert, setOpenImageAlert] = useState(false);
@@ -144,6 +145,10 @@ const Form = () => {
     },
   });
 
+  if (isLoading) {
+    return <LoadingMessage />;
+  }
+
   const onSubmitHandler = async () => {
     let formData = new FormData();
     const dataSet = {
@@ -178,7 +183,7 @@ const Form = () => {
       <StFirstWrap>
         <StPreview>
           <label htmlFor="input-file">
-            <IconPlus />
+            <IconPlus width={"40px"} height={"40px"} />
             <input
               type="file"
               id="input-file"
@@ -354,7 +359,7 @@ const StPreview = styled.div`
 `;
 
 const StImageList = styled.div`
-  padding-left: 10px;
+  margin-left: 10px;
   overflow-x: scroll;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
