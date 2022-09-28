@@ -11,26 +11,26 @@ import GlobalStyle from "styles/GlobalStyle";
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: {
-      suspense: true,
-    },
+    // queries: {
+    //   suspense: true,
+    // },
   },
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
-    <Suspense fallback={<LoadingMessage />}>
-      <GlobalStyle />
-      <BrowserRouter>
-        <ScrollToTop />
-        <QueryClientProvider client={queryClient}>
-          <RecoilRoot>
-            <ReactQueryDevtools initialIsOpen={true} />
-            <App />
-          </RecoilRoot>
-        </QueryClientProvider>
-      </BrowserRouter>
-    </Suspense>
+    {/* <Suspense fallback={<LoadingMessage />}> */}
+    <GlobalStyle />
+    <BrowserRouter>
+      <ScrollToTop />
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <ReactQueryDevtools initialIsOpen={true} />
+          <App />
+        </RecoilRoot>
+      </QueryClientProvider>
+    </BrowserRouter>
+    {/* </Suspense> */}
   </>
 );
