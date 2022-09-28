@@ -50,11 +50,6 @@ const StBackground = styled.div`
   height: 100vh;
   position: relative;
   overflow-y: scroll;
-  @media screen and (min-width: 950px) {
-    display: flex;
-    justify-content: space-around;
-  }
-
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   ::-webkit-scrollbar {
@@ -64,7 +59,11 @@ const StBackground = styled.div`
 
 const StBackgroundImg = styled.div`
   padding-top: 64px;
-  width: 514px;
+  width: 360px;
+  height: auto;
+  position: absolute;
+  bottom: 0;
+  left: 10%;
 
   img {
     width: 100%;
@@ -81,10 +80,17 @@ const StBrowserLayout = styled.div`
   overflow-y: scroll;
   background: ${colors.white};
   min-width: 360px;
+  position: absolute;
+  left: 55%;
+
   @media (min-width: 950px) {
     width: 500px;
   }
 
+  @media (max-width: 950px) {
+    left: 50%;
+    transform: translateX(-50%);
+  }
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   ::-webkit-scrollbar {
