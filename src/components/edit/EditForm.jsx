@@ -234,11 +234,11 @@ const EditForm = () => {
             <span>{createdAt}</span>
           </StTime>
           <StImage>
-            <img alt="detailcheck" src={images[0]} />
+            <StBgImage alt="detailcheck" src={images[0]} />
           </StImage>
           <StPreview>
             <label htmlFor="input-file" onChange={handleAddImages}>
-              <IconPlus />
+              <IconPlus width="40px" height="40px" />
               <input
                 className="a11y-hidden"
                 type="file"
@@ -379,11 +379,13 @@ const StImage = styled.div`
   height: 230px;
 
   img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 30%;
   }
+`;
+const StBgImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 30%;
 `;
 
 const StPreview = styled.div`
@@ -392,12 +394,20 @@ const StPreview = styled.div`
   justify-content: flex-start;
   gap: 10px;
   height: 70px;
-  padding-left: 35px;
+  padding-left: 85px;
   bottom: 20px;
-  position: absolute;
+  margin-top: -70px;
+  position: relative;
 
   .a11y-hidden {
     ${a11yHidden}
+  }
+
+  label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 35px;
   }
 `;
 
