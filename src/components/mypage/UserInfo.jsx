@@ -362,6 +362,7 @@ const StNickNameInput = styled.div`
     text-align: center;
     /* font-family: "twayfly", "Noto Sans KR", sans-serif; */
     font-size: ${fontSize.large20};
+    font-weight: 500;
   }
 
   button {
