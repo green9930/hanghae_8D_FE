@@ -42,6 +42,7 @@ const Router = () => {
             {
               headers: {
                 Authorization: getCookie("accessToken"),
+                Connection: "keep-alive",
               },
               withCredentials: true,
             }
@@ -59,8 +60,8 @@ const Router = () => {
           eventSource.onmessage = async (event) => {
             // 헤더 마이페이지 아이콘 상태 변경
             const res = await event.data;
-            const json = JSON.parse(res);
-            console.log("EVENTSOURCE MESSAGE : ", json);
+            // const json = JSON.parse(res);
+            // console.log("EVENTSOURCE MESSAGE : ", json);
 
             if (!res.includes("EventStream Created.")) setNewAlarms(true);
             // 알람 리스트 개수 변경
