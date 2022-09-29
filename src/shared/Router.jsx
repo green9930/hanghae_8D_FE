@@ -42,6 +42,7 @@ const Router = () => {
             {
               headers: {
                 Authorization: getCookie("accessToken"),
+                Connection: "keep-alive",
               },
               withCredentials: true,
             }
@@ -59,8 +60,8 @@ const Router = () => {
           eventSource.onmessage = async (event) => {
             // 헤더 마이페이지 아이콘 상태 변경
             const res = await event.data;
-            const json = JSON.parse(res);
-            console.log("EVENTSOURCE MESSAGE : ", json);
+            // const json = JSON.parse(res);
+            // console.log("EVENTSOURCE MESSAGE : ", json);
 
             if (!res.includes("EventStream Created.")) setNewAlarms(true);
             // 알람 리스트 개수 변경
@@ -74,7 +75,9 @@ const Router = () => {
           eventSource.onerror = async (event) => {
             const result = await event;
             console.log("EVENTSOURCE ONERROR", result);
-            eventSource.close();
+            if (result.error.message === "Failed to fetch") return;
+            if (result.error.message.includes("No activity"))
+              eventSource.close();
             // if (result.error) {
             // console.log("EVENTSOURCE ONERROR", result);
             // console.log(event.error.message); // No activity within 45000 milliseconds.
