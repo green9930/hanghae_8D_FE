@@ -111,7 +111,7 @@ const StMobileLayout = styled.div`
   width: 100%;
   position: relative;
   margin: 0 auto;
-  background: ${colors.white};
+  background: ${colors.mainP};
 `;
 
 const StMobileHeader = styled.div`
