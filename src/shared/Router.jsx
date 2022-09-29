@@ -42,6 +42,7 @@ const Router = () => {
             {
               headers: {
                 Authorization: getCookie("accessToken"),
+                Connection: "keep-alive",
               },
               withCredentials: true,
             }
