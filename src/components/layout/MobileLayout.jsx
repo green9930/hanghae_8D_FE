@@ -33,6 +33,7 @@ const MobileLayout = ({ title, children }) => {
       </BrowserView>
       <MobileView>
         <StMobileLayout>
+          <StDiv></StDiv>
           <StMobileHeader>
             <Header title={title} />
           </StMobileHeader>
@@ -111,7 +112,15 @@ const StMobileLayout = styled.div`
   width: 100%;
   position: relative;
   margin: 0 auto;
+  background: ${colors.white};
+`;
+
+const StDiv = styled.div`
+  width: 100%;
+  height: 64px;
   background: ${colors.mainP};
+  position: absolute;
+  top: 0;
 `;
 
 const StMobileHeader = styled.div`

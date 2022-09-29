@@ -50,9 +50,12 @@ const StLogin = styled.div`
   @media screen and (max-width: 350px) {
     padding: 0 15px;
   }
+  background: ${colors.white};
 `;
 const StLoginMessage = styled.div`
-  margin: 70px 7px 60px 7px;
+  margin: 0 7px 60px 7px;
+  padding-top: 70px;
+  background: ${colors.white};
 `;
 
 const StLoginTitle = styled.h2`
