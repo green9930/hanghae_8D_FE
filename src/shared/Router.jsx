@@ -75,9 +75,14 @@ const Router = () => {
           eventSource.onerror = async (event) => {
             const result = await event;
             console.log("EVENTSOURCE ONERROR", result);
-            if (result.error.message === "Failed to fetch") return;
-            if (result.error.message.includes("No activity"))
-              eventSource.close();
+            // if (result.error.message.includes("fetch")) return;
+            // if (result.error.message.includes("No activity")) {
+            //   eventSource.close();
+            //   setListening(!listening);
+            // }
+
+            eventSource.close();
+
             // if (result.error) {
             // console.log("EVENTSOURCE ONERROR", result);
             // console.log(event.error.message); // No activity within 45000 milliseconds.
@@ -87,15 +92,14 @@ const Router = () => {
             //   : setEventSourceStatus(result.type); //구독
 
             // }
-            setListening(!listening);
           };
           // setListening(true);
         } catch (error) {
-          // console.log(error);
+          console.log(error);
         }
       };
       fetchSse();
-      return () => eventSource.close();
+      // return () => eventSource.close();
     }
   }, [isLogin, loading, listening]);
 
