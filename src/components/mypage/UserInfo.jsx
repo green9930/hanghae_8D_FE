@@ -342,11 +342,9 @@ const StUserInfo = styled.div`
   gap: 10px;
   background: ${colors.mainP};
   height: ${({ isOpenMyList, isOpenAlarmList }) =>
-    isOpenMyList || isOpenAlarmList ? "140px" : "192px"};
+    isOpenMyList || isOpenAlarmList ? "156px" : "206px"};
   padding: ${({ isOpenMyList, isOpenAlarmList }) =>
-    isOpenMyList || isOpenAlarmList ? "20px 0" : "50px 0"};
-  transition: padding 0.8s;
-  -webkit-transition: padding 0.8s;
+    isOpenMyList || isOpenAlarmList ? "20px 0" : "50px 0 40px 0"};
 `;
 
 const StNickNameInput = styled.div`
@@ -360,7 +358,6 @@ const StNickNameInput = styled.div`
       isDisabled ? `0.5px solid ${colors.grey3}` : `0.5px solid ${colors.red}`};
     color: ${colors.grey1};
     text-align: center;
-    /* font-family: "twayfly", "Noto Sans KR", sans-serif; */
     font-size: ${fontSize.large20};
     font-weight: 500;
   }
@@ -408,7 +405,6 @@ const StName = styled.span`
   height: 40px;
   max-width: 132px;
   color: ${colors.white};
-  /* font-family: "twayfly", "Noto Sans KR", sans-serif; */
   font-size: ${fontSize.large24};
   font-weight: 700;
   @media screen and (max-width: 350px) {

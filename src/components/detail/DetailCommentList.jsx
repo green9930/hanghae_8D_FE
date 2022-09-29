@@ -5,6 +5,7 @@ import styled from "styled-components";
 import DetailComment from "components/detail/DetailComment";
 import { getComments } from "api/detailApi";
 import { commentRefState } from "state/atom";
+import { colors } from "styles/theme";
 
 const DetailCommentList = ({ process, articlesId, isMyArticles }) => {
   const commentRef = useRef();
@@ -59,6 +60,7 @@ const StCommentList = styled.ul`
     isMyArticles ? "0 35px 16px 35px" : "0 35px 60px 35px"};
   display: flex;
   flex-direction: column;
+  background: ${colors.white};
 `;
 
 export default DetailCommentList;
