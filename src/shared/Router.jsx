@@ -27,6 +27,7 @@ const Router = () => {
 
   /* 실시간 알림 수신 TEST ----------------------------------------------------------- */
   const [listening, setListening] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [eventSourceStatus, setEventSourceStatus] = useState(null);
 
   const queryClient = useQueryClient();
@@ -53,6 +54,7 @@ const Router = () => {
           eventSource.onopen = async (event) => {
             const result = await event;
             console.log("EVENTSOURCE ONOPEN", result);
+            setIsError(false);
             // setEventSourceStatus(result.type); //구독
           };
 
@@ -72,28 +74,31 @@ const Router = () => {
           };
 
           /* EVENTSOURCE ONERROR ------------------------------------------------------ */
-          // eventSource.onerror = async (event) => {
-          //   const result = await event;
-          //   console.log("EVENTSOURCE ONERROR", result);
-          //   // if (result.error.message.includes("fetch")) return;
-          //   // if (result.error.message.includes("No activity")) {
-          //   //   eventSource.close();
-          //   //   setListening(!listening);
-          //   // }
+          eventSource.onerror = async (event) => {
+            const result = await event;
+            console.log("EVENTSOURCE ONERROR", result);
+            if (result.error.message.includes("fetch")) eventSource.close();
+            if (result.error.message.includes("No activity")) {
+              eventSource.close();
+              setIsError(true);
+              // setListening(false);
+            }
 
-          //   eventSource.close();
+            // eventSource.close();
 
-          //   // if (result.error) {
-          //   // console.log("EVENTSOURCE ONERROR", result);
-          //   // console.log(event.error.message); // No activity within 45000 milliseconds.
-          //   // }
-          // };
+            // if (result.error) {
+            // console.log("EVENTSOURCE ONERROR", result);
+            // console.log(event.error.message); // No activity within 45000 milliseconds.
+            // }
+          };
 
-          eventSource.addEventListener("error", (e) => {
-            console.log("EVENTSOURCE ONERROR", e);
-            setListening(!listening);
-            if (e) eventSource.close();
-          });
+          // eventSource.addEventListener("error", (e) => {
+          //   console.log("EVENTSOURCE ONERROR", e);
+
+          //   setListening(!listening);
+          //   if (e) eventSource.close();
+          // });
+
           // setListening(true);
         } catch (error) {
           console.log(error);
@@ -102,7 +107,7 @@ const Router = () => {
       fetchSse();
       // return () => eventSource.close();
     }
-  }, [isLogin, loading, listening]);
+  }, [isLogin, loading, isError]);
 
   useEffect(() => {
     const fetchLoading = async () => {
