@@ -1,53 +1,67 @@
 import SelectBox from "components/elements/SelectBox";
 import Input from "components/elements/Input";
-import styled from "styled-components";
 import Textarea from "components/elements/Textarea";
 import Button from "components/elements/Button";
-import { useState } from "react";
-import icons from "assets";
-import { colors } from "styles/theme";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "react-query";
 import Modal from "components/layout/Modal";
 import ImageAlert from "components/form/ImageAlert";
 import ImageNumAlert from "components/form/ImageNumAlert";
 import ImageFileAlert from "components/form/ImageFileAlert";
-import { postCheck } from "api/formApi";
+import icons from "assets";
 import handlePrice from "utils/handlePrice";
-import { fontSize } from "styles/theme";
-import imageCompression from "browser-image-compression";
-import { isMobile } from "react-device-detect";
 import LoadingMessage from "components/etc/LoadingMessage";
+import styled from "styled-components";
+import imageCompression from "browser-image-compression";
+import { useState } from "react";
+import { colors } from "styles/theme";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import { postCheck } from "api/formApi";
+import { fontSize } from "styles/theme";
+import { isMobile } from "react-device-detect";
 
 const Form = () => {
+  const navigate = useNavigate();
+  const { IconPlus, IconX } = icons;
+
   const [openImageAlert, setOpenImageAlert] = useState(false);
   const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
   const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
-  const [title, setTitle] = useState("");
-  const [currentValue, setCurrentValue] = useState("카테고리를 선택해 주세요.");
-  const [price, setPrice] = useState("");
-  const [realPrice, setRealPrice] = useState("");
-  const [desc, setDesc] = useState("");
+
+  const [item, setItem] = useState({
+    title: "",
+    category: "카테고리를 선택해 주세요.",
+    price: "",
+    desc: "",
+    sendingPrice: "",
+  });
+  const { title, category, price, desc, sendingPrice } = item;
 
   const [files, setFiles] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
 
   const VALID_IMAGE_TYPE = ["png", "jpg", "jpeg"];
   /* ---------------------------------- 유효성검사 --------------------------------- */
-  const [validTitle, setValidTitle] = useState(true);
-  const [validImage, setValidImage] = useState(true);
-  const [validCategory, setValidCategory] = useState(true);
-  const [validPrice, setValidPrice] = useState(true);
-  const [validLengthDesc, setValidLengthDesc] = useState(true);
-  const [validDesc, setValidDesc] = useState(true);
-
-  const navigate = useNavigate();
-  const { IconPlus, IconX } = icons;
+  const [validation, setValidation] = useState({
+    validTitle: true,
+    validImage: true,
+    validCategory: true,
+    validPrice: true,
+    validDesc: true,
+    validLengthDesc: true,
+  });
+  const {
+    validTitle,
+    validImage,
+    validCategory,
+    validPrice,
+    validDesc,
+    validLengthDesc,
+  } = validation;
 
   const checkVali =
     title.trim().length > 0 &&
     desc.trim().length >= 15 &&
-    currentValue !== "카테고리를 선택해 주세요." &&
+    category !== "카테고리를 선택해 주세요." &&
     price.trim().length > 0 &&
     files.length > 0;
 
@@ -56,22 +70,27 @@ const Form = () => {
     let target = "";
     if (name === "title") {
       target = value.substr(0, 30);
-      setTitle(target);
-      target.length >= 0 ? setValidTitle(true) : setValidTitle(false);
+      setItem({ ...item, title: target });
+      target.length >= 0
+        ? setValidation({ ...validation, validTitle: true })
+        : setValidation({ ...validation, validTitle: false });
     }
-
     if (name === "price") {
       const { realPrice, previewPrice } = handlePrice(value.replace(" ", ""));
-      value.length >= 0 ? setValidPrice(true) : setValidPrice(false);
-      setRealPrice(realPrice);
-      setPrice(previewPrice);
+      value.length >= 0
+        ? setValidation({ ...validation, validPrice: true })
+        : setValidation({ ...validation, validPrice: false });
+      setItem({ ...item, sendingPrice: realPrice, price: previewPrice });
     }
-
     if (name === "desc") {
       target = value.substr(0, 400);
-      setDesc(target);
-      target.length >= 0 ? setValidDesc(true) : setValidDesc(false);
-      target.length >= 0 ? setValidLengthDesc(true) : setValidLengthDesc(false);
+      setItem({ ...item, desc: target });
+      target.length >= 0
+        ? setValidation({ ...validation, validDesc: true })
+        : setValidation({ ...validation, validDesc: false });
+      target.length >= 0
+        ? setValidation({ ...validation, validLengthDesc: true })
+        : setValidation({ ...validation, validLengthDesc: false });
     }
   };
 
@@ -80,15 +99,14 @@ const Form = () => {
     if (files.length + e.target.files.length > 5) {
       return setOpenImageNumberAlert(true);
     }
-    for (let i = 0; i < e.target.files.length; i++) {
-      let file = e.target.files[i];
+    [...e.target.files].map(async (file) => {
       if (
         !VALID_IMAGE_TYPE.includes(
           file.name.split(".")[file.name.split(".").length - 1].toLowerCase()
         )
       )
         return setOpenImageFileAlert(true);
-      if (file.size > 10000000) return setOpenImageAlert(true);
+      if (file.size > 10000000) return setOpenImageAlert(true); //10메가
 
       const options = {
         maxSizeMB: 10,
@@ -108,9 +126,10 @@ const Form = () => {
       } catch (error) {
         alert("이미지를 불러올 수 없습니다");
       }
-    }
-
-    files.length >= 0 ? setValidImage(true) : setValidImage(false);
+    });
+    files.length >= 0
+      ? setValidation({ ...validation, validImage: true })
+      : setValidation({ ...validation, validImage: false });
   };
 
   const handleDeleteImage = (id) => {
@@ -130,9 +149,11 @@ const Form = () => {
   ];
 
   const handleOnChangeSelectValue = (e) => {
-    setCurrentValue(e.target.getAttribute("value"));
+    setItem({ ...item, category: e.target.getAttribute("value") });
 
-    currentValue ? setValidCategory(true) : setValidCategory(false);
+    item.category
+      ? setValidation({ ...validation, validCategory: true })
+      : setValidation({ ...validation, validCategory: false });
   };
 
   /* -------------------------------- 데이터 Post -------------------------------- */
@@ -152,9 +173,9 @@ const Form = () => {
   const onSubmitHandler = async () => {
     let formData = new FormData();
     const dataSet = {
-      title: title,
-      category: currentValue,
-      price: realPrice,
+      title,
+      category,
+      price: sendingPrice,
       content: desc,
     };
     files.map((file) => formData.append("multipartFile", file));
@@ -166,16 +187,25 @@ const Form = () => {
   };
 
   const clickCheckHandler = () => {
-    title.trim().length === 0 ? setValidTitle(false) : setValidTitle(true);
+    console.log(title.trim().length);
+    title.trim().length === 0
+      ? setValidation((prev) => ({ ...prev, validTitle: false }))
+      : setValidation((prev) => ({ ...prev, validTitle: true }));
     desc.trim().length > 14
-      ? setValidLengthDesc(true)
-      : setValidLengthDesc(false);
-    desc.trim().length === 0 ? setValidDesc(false) : setValidDesc(true);
-    price.trim().length === 0 ? setValidPrice(false) : setValidPrice(true);
-    files.length === 0 ? setValidImage(false) : setValidImage(true);
-    currentValue === "카테고리를 선택해 주세요."
-      ? setValidCategory(false)
-      : setValidCategory(true);
+      ? setValidation((prev) => ({ ...prev, validLengthDesc: true }))
+      : setValidation((prev) => ({ ...prev, validLengthDesc: false }));
+    desc.trim().length === 0
+      ? setValidation((prev) => ({ ...prev, validDesc: false }))
+      : setValidation((prev) => ({ ...prev, validDesc: true }));
+    price.trim().length === 0
+      ? setValidation((prev) => ({ ...prev, validPrice: false }))
+      : setValidation((prev) => ({ ...prev, validPrice: true }));
+    files.length === 0
+      ? setValidation((prev) => ({ ...prev, validImage: false }))
+      : setValidation((prev) => ({ ...prev, validImage: true }));
+    category === "카테고리를 선택해 주세요."
+      ? setValidation((prev) => ({ ...prev, validCategory: false }))
+      : setValidation((prev) => ({ ...prev, validCategory: true }));
   };
 
   return (
@@ -194,7 +224,11 @@ const Form = () => {
           </label>
           <StImageList validImage={validImage}>
             {files.length === 0 ? (
-              <p>사진을 등록해 주세요.</p>
+              <p>
+                사진을 등록해 주세요.
+                <br />
+                <span>(최대 5장 png, jpg, jpeg)</span>
+              </p>
             ) : (
               <div>
                 {previewImg.map((image, id) => (
@@ -241,7 +275,7 @@ const Form = () => {
           <StSelectBox validCategory={validCategory}>
             <SelectBox
               data={data}
-              currentValue={currentValue}
+              currentValue={category}
               handleOnChangeSelectValue={handleOnChangeSelectValue}
             />
           </StSelectBox>
@@ -377,6 +411,9 @@ const StImageList = styled.div`
     letter-spacing: -0.5px;
     color: ${({ validImage }) =>
       validImage ? `${colors.grey3}` : `${colors.red}`};
+    span {
+      font-size: ${fontSize.regular14};
+    }
   }
 `;
 
