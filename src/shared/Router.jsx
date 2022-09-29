@@ -94,7 +94,7 @@ const Router = () => {
       } catch (error) {
         console.log(error);
       }
-      // return () => eventSource.close();
+      return () => eventSource.close();
     }
   });
 
