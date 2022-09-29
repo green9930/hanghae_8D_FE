@@ -75,7 +75,9 @@ const Router = () => {
           eventSource.onerror = async (event) => {
             const result = await event;
             console.log("EVENTSOURCE ONERROR", result);
-            eventSource.close();
+            if (result.error.message === "Failed to fetch") return;
+            if (result.error.message.includes("No activity"))
+              eventSource.close();
             // if (result.error) {
             // console.log("EVENTSOURCE ONERROR", result);
             // console.log(event.error.message); // No activity within 45000 milliseconds.
