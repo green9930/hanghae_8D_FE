@@ -383,6 +383,7 @@ const StNameContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 40px;
   position: relative;
 
   button {
@@ -393,6 +394,8 @@ const StNameContainer = styled.div`
     right: -56px;
     width: 56px;
     height: 24px;
+    top: 50%;
+    transform: translateY(-50%);
     text-align: center;
     color: ${colors.subP};
     font-family: "twayfly", "Noto Sans KR", sans-serif;
@@ -401,6 +404,8 @@ const StNameContainer = styled.div`
 `;
 
 const StName = styled.span`
+  display: inline-block;
+  height: 40px;
   max-width: 132px;
   color: ${colors.white};
   /* font-family: "twayfly", "Noto Sans KR", sans-serif; */
@@ -416,8 +421,9 @@ const StName = styled.span`
 `;
 
 const StNickName = styled.span`
+  display: inline-block;
+  height: 40px;
   color: ${colors.white};
-  /* font-family: "twayfly", "Noto Sans KR", sans-serif; */
   font-size: ${fontSize.large24};
   font-weight: 700;
   @media screen and (max-width: 350px) {
