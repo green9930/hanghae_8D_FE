@@ -46,6 +46,7 @@ const Router = () => {
               withCredentials: true,
             }
           );
+          // console.log("EVENTSOURCE", eventSource);
           // console.log("EVENTSOURCE RESPONSE", eventSource);
           /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
           eventSource.onopen = async (event) => {
@@ -73,11 +74,9 @@ const Router = () => {
             const result = await event;
             // console.log("EVENTSOURCE ONERROR", result);
             // console.log(event.error.message); // No activity within 45000 milliseconds.
-            event.error.message.includes(
-              "No activity within 45000 milliseconds."
-            )
-              ? setEventSourceStatus(result.type) //구독
-              : eventSource.close();
+            event.error.message.includes("No activity")
+              ? eventSource.close()
+              : setEventSourceStatus(result.type); //구독
             setListening(false);
           };
           setListening(true);
