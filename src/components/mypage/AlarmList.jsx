@@ -3,12 +3,16 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import AlarmCard from "components/mypage/AlarmCard";
 import { getAlertLists } from "api/alarmApi";
-import { alarmListState, newAlarmsLengthState } from "state/atom";
+import {
+  alarmListState,
+  newAlarmsLengthState,
+  newAlarmsState,
+} from "state/atom";
 import { colors } from "styles/theme";
 
 const AlarmList = () => {
   const setAlarmListState = useSetRecoilState(alarmListState);
-  // const setNewAlarms = useSetRecoilState(newAlarmsState);
+  const setNewAlarms = useSetRecoilState(newAlarmsState);
   const setNewAlarmsLength = useSetRecoilState(newAlarmsLengthState);
 
   // const queryClient = useQueryClient();
@@ -21,7 +25,7 @@ const AlarmList = () => {
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
       // 헤더 마이페이지 아이콘 상태 변경
-      // setNewAlarms(false);
+      setNewAlarms(false);
       // 알람 리스트 개수 변경
       setNewAlarmsLength(0);
       // queryClient.invalidateQueries("myprofile");
