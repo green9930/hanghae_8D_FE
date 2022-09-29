@@ -42,7 +42,6 @@ const Router = () => {
             {
               headers: {
                 Authorization: getCookie("accessToken"),
-                Connection: "keep-alive",
               },
               withCredentials: true,
             }
@@ -73,11 +72,13 @@ const Router = () => {
           /* EVENTSOURCE ONERROR ------------------------------------------------------ */
           eventSource.onerror = async (event) => {
             const result = await event;
-            // console.log("EVENTSOURCE ONERROR", result);
-            // console.log(event.error.message); // No activity within 45000 milliseconds.
-            event.error.message.includes("No activity")
-              ? eventSource.close()
-              : setEventSourceStatus(result.type); //구독
+            if (result.error) {
+              // console.log("EVENTSOURCE ONERROR", result);
+              // console.log(event.error.message); // No activity within 45000 milliseconds.
+              result.error.message.includes("No activity")
+                ? eventSource.close()
+                : setEventSourceStatus(result.type); //구독
+            }
             setListening(false);
           };
           setListening(true);
