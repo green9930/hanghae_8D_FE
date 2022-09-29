@@ -28,9 +28,11 @@ const ErrorMessage = () => {
 };
 
 const StErrorMessage = styled.div`
-position:relative;
-top:64px;
+  position: relative;
+  top: 64px;
   padding: 70px 35px 0px 35px;
+  background: ${colors.white};
+
   p {
     margin-top: 10px;
     color: ${colors.grey3};

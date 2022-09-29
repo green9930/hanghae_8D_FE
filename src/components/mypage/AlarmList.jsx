@@ -4,6 +4,7 @@ import styled from "styled-components";
 import AlarmCard from "components/mypage/AlarmCard";
 import { getAlertLists } from "api/alarmApi";
 import { alarmListState, newAlarmsLengthState } from "state/atom";
+import { colors } from "styles/theme";
 
 const AlarmList = () => {
   const setAlarmListState = useSetRecoilState(alarmListState);
@@ -47,6 +48,7 @@ const StAlarmList = styled.ul`
   @media screen and (max-width: 350px) {
     padding: 0 15px;
   }
+  background: ${colors.white};
 `;
 
 export default AlarmList;

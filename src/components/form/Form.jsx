@@ -443,6 +443,7 @@ const StThirdWrap = styled.div`
   padding: 20px 35px 0 35px;
   width: 100%;
   padding-bottom: 100px;
+  background: ${colors.white};
   textarea {
     ::placeholder {
       color: ${({ validDesc }) =>
