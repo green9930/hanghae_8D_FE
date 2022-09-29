@@ -51,7 +51,7 @@ const Router = () => {
           /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
           eventSource.onopen = async (event) => {
             const result = await event;
-            // console.log("EVENTSOURCE ONOPEN", result);
+            console.log("EVENTSOURCE ONOPEN", result);
             // setEventSourceStatus(result.type); //구독
           };
 
@@ -59,29 +59,34 @@ const Router = () => {
           eventSource.onmessage = async (event) => {
             // 헤더 마이페이지 아이콘 상태 변경
             const res = await event.data;
+            const json = JSON.parse(res);
+            console.log("EVENTSOURCE MESSAGE : ", json);
+
             if (!res.includes("EventStream Created.")) setNewAlarms(true);
             // 알람 리스트 개수 변경
             queryClient.invalidateQueries("myprofile");
             queryClient.invalidateQueries("alertNoti");
             queryClient.invalidateQueries("alertLists");
-            // const json = JSON.parse(res);
-            // console.log("EVENTSOURCE MESSAGE : ", json);
             // setNewAlarm(json);
           };
 
           /* EVENTSOURCE ONERROR ------------------------------------------------------ */
           eventSource.onerror = async (event) => {
             const result = await event;
-            if (result.error) {
-              // console.log("EVENTSOURCE ONERROR", result);
-              // console.log(event.error.message); // No activity within 45000 milliseconds.
-              result.error.message.includes("No activity")
-                ? eventSource.close()
-                : setEventSourceStatus(result.type); //구독
-            }
-            setListening(false);
+            console.log("EVENTSOURCE ONERROR", result);
+            eventSource.close();
+            // if (result.error) {
+            // console.log("EVENTSOURCE ONERROR", result);
+            // console.log(event.error.message); // No activity within 45000 milliseconds.
+
+            // result.error.message.includes("No activity")
+            //   ? eventSource.close()
+            //   : setEventSourceStatus(result.type); //구독
+
+            // }
+            setListening(!listening);
           };
-          setListening(true);
+          // setListening(true);
         } catch (error) {
           // console.log(error);
         }
@@ -89,7 +94,7 @@ const Router = () => {
       fetchSse();
       return () => eventSource.close();
     }
-  });
+  }, [isLogin, loading, listening]);
 
   useEffect(() => {
     const fetchLoading = async () => {
