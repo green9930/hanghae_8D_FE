@@ -72,27 +72,28 @@ const Router = () => {
           };
 
           /* EVENTSOURCE ONERROR ------------------------------------------------------ */
-          eventSource.onerror = async (event) => {
-            const result = await event;
-            console.log("EVENTSOURCE ONERROR", result);
-            // if (result.error.message.includes("fetch")) return;
-            // if (result.error.message.includes("No activity")) {
-            //   eventSource.close();
-            //   setListening(!listening);
-            // }
+          // eventSource.onerror = async (event) => {
+          //   const result = await event;
+          //   console.log("EVENTSOURCE ONERROR", result);
+          //   // if (result.error.message.includes("fetch")) return;
+          //   // if (result.error.message.includes("No activity")) {
+          //   //   eventSource.close();
+          //   //   setListening(!listening);
+          //   // }
 
-            eventSource.close();
+          //   eventSource.close();
 
-            // if (result.error) {
-            // console.log("EVENTSOURCE ONERROR", result);
-            // console.log(event.error.message); // No activity within 45000 milliseconds.
+          //   // if (result.error) {
+          //   // console.log("EVENTSOURCE ONERROR", result);
+          //   // console.log(event.error.message); // No activity within 45000 milliseconds.
+          //   // }
+          // };
 
-            // result.error.message.includes("No activity")
-            //   ? eventSource.close()
-            //   : setEventSourceStatus(result.type); //구독
-
-            // }
-          };
+          eventSource.addEventListener("error", (e) => {
+            console.log("EVENTSOURCE ONERROR", e);
+            setListening(!listening);
+            if (e) eventSource.close();
+          });
           // setListening(true);
         } catch (error) {
           console.log(error);
