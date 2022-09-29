@@ -18,18 +18,19 @@ const Start = () => {
   );
 };
 
-export default Start;
 const StStart = styled.div`
   position: relative;
   background-color: ${colors.mainP};
   height: 100vh;
   padding-top: 50%;
+
   svg {
     width: 199px;
     height: 199px;
     display: block;
     margin: auto;
   }
+
   p {
     font-size: 32px;
     line-height: 39px;
@@ -48,6 +49,7 @@ const StStart = styled.div`
     }
   }
 `;
+
 const StCopyright = styled.span`
   position: absolute;
   bottom: 30px;
@@ -56,3 +58,5 @@ const StCopyright = styled.span`
   color: ${colors.grey4};
   font-weight: 400;
 `;
+
+export default Start;
