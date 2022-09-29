@@ -2,11 +2,9 @@ import styled from "styled-components";
 
 const LoadingMessage = () => {
   return (
-    <div>
-      <StLoadingMessage>
-        <div className="rainbow"></div>
-      </StLoadingMessage>
-    </div>
+    <StLoadingMessage>
+      <div className="rainbow"></div>
+    </StLoadingMessage>
   );
 };
 

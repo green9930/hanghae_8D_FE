@@ -72,7 +72,7 @@ const StMainWrap = styled.div`
   border-radius: 5px;
   margin: 10px auto;
   background-color: ${({ selectedPrice }) =>
-    selectedPrice ? `${colors.grey7}` : null};
+    selectedPrice ? `${colors.grey7}` : `${colors.white}`};
 `;
 const StImage = styled.div`
   min-width: 70px;

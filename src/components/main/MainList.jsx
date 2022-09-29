@@ -1,26 +1,21 @@
+import Button from "components/elements/Button";
+import SelectBox from "components/elements/SelectBox";
+import MainListCard from "components/main/MainListCard";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInfiniteQuery } from "react-query";
 import { useInView } from "react-intersection-observer";
-import styled from "styled-components";
-import Button from "components/elements/Button";
-import SelectBox from "components/elements/SelectBox";
-import MainListCard from "components/main/MainListCard";
 import { getMainCheck } from "api/mainApi";
-import { getCookie } from "api/cookies";
 import { colors } from "styles/theme";
 import icons from "assets";
 import { fontSize } from "styles/theme";
+import styled from "styled-components";
 import { isMobile } from "react-device-detect";
-import { useRef } from "react";
 
 const MainList = () => {
   const { IconPlus, GoBack } = icons;
   const navigate = useNavigate();
 
-  const onClickHandler = () => {
-    getCookie("accessToken") ? navigate("/form") : navigate("/login");
-  };
   const onClickScroll = () => {
     window.scrollTo({
       top: 0,
@@ -80,25 +75,22 @@ const MainList = () => {
     {
       refetchOnWindowFocus: false,
       enabled: false,
-      getNextPageParam: (lastPage, allPages) => {
+      getNextPageParam: (lastPage) => {
         return lastPage.nextPage;
       },
     }
   );
 
   useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
+    if (inView) fetchNextPage();
   }, [inView]);
 
   /* ------------------------------- goToTop 버튼 ------------------------------- */
   const [scrollPosition, setScrollPosition] = useState(0);
-  const listRef = useRef();
+
   const updateScroll = () => {
     setScrollPosition(window.pageYOffset);
   };
-
   useEffect(() => {
     const timer = setInterval(() => {
       window.addEventListener("scroll", updateScroll);
@@ -165,7 +157,7 @@ const MainList = () => {
         <StGoBack onClick={onClickScroll} scrollPosition={scrollPosition}>
           <GoBack />
         </StGoBack>
-        <StIcon onClick={onClickHandler} isMobile={isMobile}>
+        <StIcon onClick={() => navigate("/form")} isMobile={isMobile}>
           <IconPlus />
         </StIcon>
       </StMainContainer>
@@ -259,6 +251,7 @@ const StIcon = styled.div`
   border-radius: 100px;
   width: 50px;
   height: 50px;
+
   right: ${({ isMobile }) => (isMobile ? "8%" : "13%")};
 
   @media screen and (min-width: 1800px) {
