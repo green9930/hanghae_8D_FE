@@ -142,25 +142,24 @@ const MainList = () => {
           </StDoneBtn>
         </StMainBtns>
       </StSelectList>
-      <StMainContainer>
-        {data?.pages.map((page, idx) => (
-          <div key={idx}>
-            {page?.data.data.content.map((d) => {
-              return <MainListCard key={d.articlesId} data={d} />;
-            })}
-          </div>
-        ))}
-        <StNext ref={ref}>
-          {isFetchingNextPage && <div>로딩 중</div>}
-          {!isFetchingNextPage && <div>목록의 마지막입니다.</div>}
-        </StNext>
-        <StGoBack onClick={onClickScroll} scrollPosition={scrollPosition}>
-          <GoBack />
-        </StGoBack>
-        <StIcon onClick={() => navigate("/form")} isMobile={isMobile}>
-          <IconPlus />
-        </StIcon>
-      </StMainContainer>
+
+      {data?.pages.map((page, idx) => (
+        <div key={idx}>
+          {page?.data.data.content.map((d) => {
+            return <MainListCard key={d.articlesId} data={d} />;
+          })}
+        </div>
+      ))}
+      <StNext ref={ref}>
+        {isFetchingNextPage && <div>로딩 중</div>}
+        {!isFetchingNextPage && <div>목록의 마지막입니다.</div>}
+      </StNext>
+      <StGoBack onClick={onClickScroll} scrollPosition={scrollPosition}>
+        <GoBack />
+      </StGoBack>
+      <StIcon onClick={() => navigate("/form")} isMobile={isMobile}>
+        <IconPlus />
+      </StIcon>
     </StMain>
   );
 };
@@ -228,8 +227,6 @@ const StDoneBtn = styled.div`
     }};
   }
 `;
-
-const StMainContainer = styled.div``;
 
 const StGoBack = styled.div`
   position: fixed;
