@@ -10,11 +10,10 @@ import { colors } from "styles/theme";
 
 const MyList = () => {
   const [active, setActive] = useState("all");
-
   const setMyListState = useSetRecoilState(myListState);
 
+  /* 내가 쓴 게시글 목록 GET ---------------------------------------------------------- */
   const { data, refetch } = useQuery("mylist", () => getMyChecks(active), {
-    onSuccess: (data) => {},
     onError: (error) => setMyListState(false),
     enabled: false,
   });

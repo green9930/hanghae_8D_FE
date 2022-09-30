@@ -12,6 +12,7 @@ const UnregisterAlert = ({ handleOpenModal }) => {
 
   const { MainArrow } = icons;
 
+  /* 회원 탈퇴 -------------------------------------------------------------------- */
   const { mutate: deleteMutate } = useMutation(deleteMyProfile, {
     onSuccess: (data) => {
       removeCookie("accessToken");
@@ -19,8 +20,6 @@ const UnregisterAlert = ({ handleOpenModal }) => {
       setIsUnregister(true);
     },
   });
-
-  const handleUnregister = () => deleteMutate();
 
   return (
     <StLogoutAlert>
@@ -45,7 +44,7 @@ const UnregisterAlert = ({ handleOpenModal }) => {
         </StButton>
       ) : (
         <StButton>
-          <Button theme="grey" onClickHandler={handleUnregister}>
+          <Button theme="grey" onClickHandler={() => deleteMutate()}>
             탈퇴하기
           </Button>
           <Button onClickHandler={handleOpenModal}>아니오</Button>

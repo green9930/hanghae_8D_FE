@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import AlarmCard from "components/mypage/AlarmCard";
@@ -15,8 +15,6 @@ const AlarmList = () => {
   const setNewAlarms = useSetRecoilState(newAlarmsState);
   const setNewAlarmsLength = useSetRecoilState(newAlarmsLengthState);
 
-  // const queryClient = useQueryClient();
-
   const {
     isSuccess,
     isLoading,
@@ -24,11 +22,8 @@ const AlarmList = () => {
   } = useQuery("alertLists", getAlertLists, {
     refetchOnWindowFocus: false,
     onSuccess: (data) => {
-      // 헤더 마이페이지 아이콘 상태 변경
-      setNewAlarms(false);
-      // 알람 리스트 개수 변경
-      setNewAlarmsLength(0);
-      // queryClient.invalidateQueries("myprofile");
+      setNewAlarms(false); // 헤더 마이페이지 아이콘 상태 변경
+      setNewAlarmsLength(0); // 알람 리스트 개수 변경
     },
     onError: () => setAlarmListState(false),
   });

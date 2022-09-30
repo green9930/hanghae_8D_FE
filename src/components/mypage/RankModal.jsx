@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Button from "components/elements/Button";
+import handleRankColor from "utils/handleRankColor";
 import { colors } from "styles/theme";
 import icons from "assets";
-import handleRankColor from "utils/handleRankColor";
 
 const RankModal = ({ handleOpenModal }) => {
   const { RankListWhite } = icons;

@@ -33,13 +33,14 @@ const MAX_NICKNAME_LENGTH = 7;
 const MIN_NICKNAME_LENGTH = 1;
 
 const UserInfo = () => {
-  const [isOpenRankModal, setIsOpenRankModal] = useState(false);
+  /* 닉네임 수정 ------------------------------------------------------------------- */
   const [newName, setNewName] = useState("");
   const [nickNameVali, setNickNameVali] = useState({
     message: "",
     isValid: true,
   });
   const [openNickNameAlert, setOpenickNameAlert] = useState(false);
+  const [isOpenRankModal, setIsOpenRankModal] = useState(false);
 
   const setTitleState = useSetRecoilState(myPageTitleState);
   const setNewAlarms = useSetRecoilState(newAlarmsState);
@@ -67,13 +68,12 @@ const UserInfo = () => {
     }
   };
 
+  /* 사용자 정보 GET --------------------------------------------------------------- */
   const { isLoading: myProfileLoading, data: myProfileData } = useQuery(
     "myprofile",
     getMyProfile,
     {
-      onSuccess: (data) => {
-        setNewAlarms(!data.data.data.alarmStatus);
-      },
+      onSuccess: (data) => setNewAlarms(!data.data.data.alarmStatus),
       refetchOnWindowFocus: false,
     }
   );
@@ -90,7 +90,6 @@ const UserInfo = () => {
         setOpenickNameAlert(true);
       },
       onError: ({ response }) => {
-        // console.log(response.data.errorMessage);
         setNickNameVali({
           message: response.data.errorMessage,
           isValid: false,
@@ -102,16 +101,14 @@ const UserInfo = () => {
 
   /* 이메일 수신 동의 ---------------------------------------------------------------- */
   const { mutate: patchAcceptEmailMutate } = useMutation(patchAcceptEmail, {
-    onSuccess: (data) => queryClient.invalidateQueries("myprofile"),
+    onSuccess: () => queryClient.invalidateQueries("myprofile"),
   });
 
   const { isLoading: alertNotiLoading, data: alertNotiData } = useQuery(
     "alertNoti",
     getMyNotification,
     {
-      onSuccess: (data) => {
-        setNewAlarmsLength(data.data.count);
-      },
+      onSuccess: (data) => setNewAlarmsLength(data.data.count),
       refetchOnWindowFocus: false,
     }
   );
