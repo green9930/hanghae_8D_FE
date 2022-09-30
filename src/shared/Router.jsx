@@ -34,63 +34,119 @@ const Router = () => {
   const EventSource = EventSourcePolyfill || NativeEventSource;
 
   useEffect(() => {
-    let eventSource;
-    if (getCookie("accessToken")) {
-      eventSource = new EventSource(
-        `${process.env.REACT_APP_BASE_URL}/api/subscribe`,
-        {
-          headers: {
-            Authorization: getCookie("accessToken"),
-            Connection: "keep-alive",
-          },
-          withCredentials: true,
+    if (loading && isLogin) {
+      let eventSource;
+      const fetchSse = async () => {
+        try {
+          eventSource = new EventSource(
+            `${process.env.REACT_APP_BASE_URL}/api/subscribe`,
+            {
+              headers: {
+                Authorization: getCookie("accessToken"),
+              },
+              withCredentials: true,
+            }
+          );
+          // console.log("EVENTSOURCE RESPONSE", eventSource);
+          /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
+          eventSource.onopen = async (event) => {
+            const result = await event;
+            console.log("EVENTSOURCE ONOPEN", result);
+            // setEventSourceStatus(result.type); //구독
+          };
+
+          /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
+          eventSource.onmessage = async (event) => {
+            // 헤더 마이페이지 아이콘 상태 변경
+            const res = await event.data;
+            if (!res.includes("EventStream Created.")) setNewAlarms(true);
+            // 알람 리스트 개수 변경
+            queryClient.invalidateQueries("myprofile");
+            queryClient.invalidateQueries("alertNoti");
+            queryClient.invalidateQueries("alertLists");
+            // const json = JSON.parse(res);
+            // console.log("EVENTSOURCE MESSAGE : ", json);
+            // setNewAlarm(json);
+          };
+
+          /* EVENTSOURCE ONERROR ------------------------------------------------------ */
+          eventSource.onerror = async (event) => {
+            const result = await event;
+            console.log("EVENTSOURCE ONERROR", result);
+            // console.log(event.error.message); // No activity within 45000 milliseconds.
+            event.error.message.includes("No activity")
+              ? setEventSourceStatus(result.type) //구독
+              : eventSource.close();
+            setListening(false);
+          };
+          setListening(true);
+        } catch (error) {
+          // console.log(error);
         }
-      );
-      /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
-      eventSource.onopen = async (event) => {
-        const result = await event;
-        console.log("EVENTSOURCE ONOPEN", result);
-        setIsError(false);
-        // setEventSourceStatus(result.type); //구독
       };
-
-      /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
-      eventSource.onmessage = async (event) => {
-        // 헤더 마이페이지 아이콘 상태 변경
-        const res = await event.data;
-        // const json = JSON.parse(res);
-        // console.log("EVENTSOURCE MESSAGE : ", json);
-
-        if (!res.includes("EventStream Created.")) setNewAlarms(true);
-        // 알람 리스트 개수 변경
-        queryClient.invalidateQueries("myprofile");
-        queryClient.invalidateQueries("alertNoti");
-        queryClient.invalidateQueries("alertLists");
-        // setNewAlarm(json);
-      };
-
-      /* EVENTSOURCE ONERROR ------------------------------------------------------ */
-      eventSource.onerror = async (event) => {
-        const result = await event;
-        console.log("EVENTSOURCE ONERROR", result);
-        // if (result.error.message.includes("fetch")) eventSource.close();
-        // if (result.error.message.includes("No activity")) {
-        //   eventSource.close();
-        //   setIsError(true);
-        //   // setListening(false);
-        // }
-        setIsError(true);
-        eventSource.close();
-
-        // if (result.error) {
-        // console.log("EVENTSOURCE ONERROR", result);
-        // console.log(event.error.message); // No activity within 45000 milliseconds.
-        // }
-      };
-      // setListening(true);
+      fetchSse();
+      return () => eventSource.close();
     }
-    // return () => eventSource.close();
-  }, [isError]);
+  });
+
+  // useEffect(() => {
+  //   let eventSource;
+  //   if (getCookie("accessToken")) {
+  //     eventSource = new EventSource(
+  //       `${process.env.REACT_APP_BASE_URL}/api/subscribe`,
+  //       {
+  //         headers: {
+  //           Authorization: getCookie("accessToken"),
+  //           Connection: "keep-alive",
+  //         },
+  //         withCredentials: true,
+  //       }
+  //     );
+  //     /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
+  //     eventSource.onopen = async (event) => {
+  //       const result = await event;
+  //       console.log("EVENTSOURCE ONOPEN", result);
+  //       setIsError(false);
+  //       // setEventSourceStatus(result.type); //구독
+  //     };
+
+  //     /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
+  //     eventSource.onmessage = async (event) => {
+  //       // 헤더 마이페이지 아이콘 상태 변경
+  //       const res = await event.data;
+  //       // const json = JSON.parse(res);
+  //       // console.log("EVENTSOURCE MESSAGE : ", json);
+
+  //       if (!res.includes("EventStream Created.")) setNewAlarms(true);
+  //       // 알람 리스트 개수 변경
+  //       queryClient.invalidateQueries("myprofile");
+  //       queryClient.invalidateQueries("alertNoti");
+  //       queryClient.invalidateQueries("alertLists");
+  //       // setNewAlarm(json);
+  //     };
+
+  //     /* EVENTSOURCE ONERROR ------------------------------------------------------ */
+  //     eventSource.onerror = async (event) => {
+  //       const result = await event;
+  //       console.log("EVENTSOURCE ONERROR", result);
+  //       // if (result.error.message.includes("fetch")) eventSource.close();
+  //       // if (result.error.message.includes("No activity")) {
+  //       //   eventSource.close();
+  //       //   setIsError(true);
+  //       //   // setListening(false);
+  //       // }
+  //       setIsError(true);
+  //       eventSource.close();
+
+  //       // if (result.error) {
+  //       // console.log("EVENTSOURCE ONERROR", result);
+  //       // console.log(event.error.message); // No activity within 45000 milliseconds.
+  //       // }
+  //     };
+  //     // setListening(true);
+  //   }
+  //   // return () => eventSource.close();
+  // }, [isError]);
 
   useEffect(() => {
     const fetchLoading = async () => {
