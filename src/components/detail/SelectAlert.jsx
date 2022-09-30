@@ -18,6 +18,7 @@ const SelectAlert = ({ nickName, handleOpenModal }) => {
     </StSelectAlert>
   );
 };
+
 const StSelectAlert = styled.div`
   display: flex;
   flex-direction: column;

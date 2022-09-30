@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { BrowserView, MobileView } from "react-device-detect";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
@@ -20,36 +20,33 @@ import {
 import {
   alarmListState,
   myListState,
-  myPageTitleState,
   newAlarmsLengthState,
   newAlarmsState,
   nickNameState,
 } from "state/atom";
 import handleRankColor from "utils/handleRankColor";
 import { colors, fontSize } from "styles/theme";
-import icons from "assets";
+import MyActivities from "components/mypage/MyActivities";
 
 const MAX_NICKNAME_LENGTH = 7;
 const MIN_NICKNAME_LENGTH = 1;
 
 const UserInfo = () => {
-  const [isOpenRankModal, setIsOpenRankModal] = useState(false);
+  /* 닉네임 수정 ------------------------------------------------------------------- */
   const [newName, setNewName] = useState("");
   const [nickNameVali, setNickNameVali] = useState({
     message: "",
     isValid: true,
   });
   const [openNickNameAlert, setOpenickNameAlert] = useState(false);
+  const [isOpenRankModal, setIsOpenRankModal] = useState(false);
 
-  const setTitleState = useSetRecoilState(myPageTitleState);
   const setNewAlarms = useSetRecoilState(newAlarmsState);
-  const [newAlarmsLength, setNewAlarmsLength] =
-    useRecoilState(newAlarmsLengthState);
+  const setNewAlarmsLength = useSetRecoilState(newAlarmsLengthState);
   const [isEdit, setIsEdit] = useRecoilState(nickNameState);
-  const [isOpenMyList, setIsOpenMyList] = useRecoilState(myListState);
-  const [isOpenAlarmList, setIsOpenAlarmList] = useRecoilState(alarmListState);
+  const isOpenMyList = useRecoilValue(myListState);
+  const isOpenAlarmList = useRecoilValue(alarmListState);
 
-  const { List, Alarm, RankList } = icons;
   const fullUserRank = (rank) => {
     switch (rank) {
       case "B":
@@ -67,13 +64,12 @@ const UserInfo = () => {
     }
   };
 
+  /* 사용자 정보 GET --------------------------------------------------------------- */
   const { isLoading: myProfileLoading, data: myProfileData } = useQuery(
     "myprofile",
     getMyProfile,
     {
-      onSuccess: (data) => {
-        setNewAlarms(!data.data.data.alarmStatus);
-      },
+      onSuccess: (data) => setNewAlarms(!data.data.data.alarmStatus),
       refetchOnWindowFocus: false,
     }
   );
@@ -90,7 +86,6 @@ const UserInfo = () => {
         setOpenickNameAlert(true);
       },
       onError: ({ response }) => {
-        // console.log(response.data.errorMessage);
         setNickNameVali({
           message: response.data.errorMessage,
           isValid: false,
@@ -102,16 +97,14 @@ const UserInfo = () => {
 
   /* 이메일 수신 동의 ---------------------------------------------------------------- */
   const { mutate: patchAcceptEmailMutate } = useMutation(patchAcceptEmail, {
-    onSuccess: (data) => queryClient.invalidateQueries("myprofile"),
+    onSuccess: () => queryClient.invalidateQueries("myprofile"),
   });
 
   const { isLoading: alertNotiLoading, data: alertNotiData } = useQuery(
     "alertNoti",
     getMyNotification,
     {
-      onSuccess: (data) => {
-        setNewAlarmsLength(data.data.count);
-      },
+      onSuccess: (data) => setNewAlarmsLength(data.data.count),
       refetchOnWindowFocus: false,
     }
   );
@@ -130,24 +123,6 @@ const UserInfo = () => {
 
   if (alertNotiLoading) return null;
   if (nickNameLoading) return null;
-
-  /* 작성 게시글 목록 ---------------------------------------------------------------- */
-  const handleShowMyList = () => {
-    setIsEdit(false);
-    setIsOpenMyList(true);
-    setIsOpenAlarmList(false);
-    setIsOpenRankModal(false);
-    setTitleState(`내가 쓴 게시글(${articleCount})`);
-  };
-
-  /* 알람 목록 -------------------------------------------------------------------- */
-  const handleShowAlarmList = () => {
-    setIsEdit(false);
-    setIsOpenAlarmList(true);
-    setIsOpenMyList(false);
-    setIsOpenRankModal(false);
-    setTitleState("알림");
-  };
 
   /* 포인트 정보 ------------------------------------------------------------------- */
   const handleShowRankModal = () => {
@@ -251,34 +226,7 @@ const UserInfo = () => {
       {!isOpenMyList && !isOpenAlarmList && (
         <>
           <StActivities>
-            <StActList>
-              <StBtn>
-                <Button variant="image" onClickHandler={handleShowMyList}>
-                  <List />
-                  <StText>
-                    <span>내가 쓴 게시글</span>
-                    <span>{articleCount}개</span>
-                  </StText>
-                </Button>
-              </StBtn>
-              <StBtn>
-                <Button variant="image" onClickHandler={handleShowAlarmList}>
-                  <Alarm />
-                  <StText>
-                    <span>알림</span>
-                    <span>{newAlarmsLength}개</span>
-                  </StText>
-                </Button>
-              </StBtn>
-              <StBtn>
-                <Button variant="image" onClickHandler={handleShowRankModal}>
-                  <RankList />
-                  <StText>
-                    <span>등급표</span>
-                  </StText>
-                </Button>
-              </StBtn>
-            </StActList>
+            <MyActivities articleCount={articleCount} />
             <StEmail>
               <StEmailMessage>이메일 수신 동의</StEmailMessage>
               <StEmailButton>
@@ -469,41 +417,6 @@ const StActivities = styled.div`
   background-color: ${colors.white};
   height: 274px;
   padding: 60px 0 30px 0;
-`;
-
-const StActList = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: ${colors.white};
-  padding: 0 35px;
-  gap: 50px;
-  @media screen and (max-width: 350px) {
-    gap: 26px;
-  }
-`;
-
-const StBtn = styled.div`
-  height: 100px;
-
-  button {
-    position: relative;
-    font-weight: 700;
-  }
-`;
-
-const StText = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  height: 40px;
-  position: absolute;
-  bottom: -40px;
-  padding-top: 10px;
-  white-space: nowrap;
-  color: ${colors.grey1};
 `;
 
 const StEmail = styled.div`

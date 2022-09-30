@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "components/elements/Button";
-import { removeCookie, setCookie } from "api/cookies";
+import { removeCookie, setWeekCookie } from "api/cookies";
 import { patchAcceptEmail } from "api/mypageApi";
 import { colors, fontSize } from "styles/theme";
 import { a11yHidden } from "styles/mixin";
@@ -11,14 +11,16 @@ const EmailAlert = ({ handleOpenModal, social, email }) => {
   const [isChecked, setIsChecked] = useState(false);
   const { MainArrow } = icons;
 
+  /* 동의할 경우 이메일 수신 동의 PATCH --------------------------------------------------- */
   const handleAccept = () => {
     patchAcceptEmail({ isAccepted: true });
     handleOpenModal();
   };
 
+  /* 체크박스 체크 여부에 따라 쿠기 생성 or 제거 ----------------------------------------------- */
   useEffect(() => {
     isChecked
-      ? setCookie(`emailAlertCookie_${social}`, email)
+      ? setWeekCookie(`emailAlertCookie_${social}`, email)
       : removeCookie(`emailAlertCookie_${social}`);
   }, [isChecked]);
 

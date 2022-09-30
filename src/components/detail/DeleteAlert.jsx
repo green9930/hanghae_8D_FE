@@ -25,9 +25,9 @@ const DeleteAlert = ({
   const navigate = useNavigate();
 
   const { IconTrash } = icons;
-
   const queryClient = useQueryClient();
 
+  /* 게시글 DELETE --------------------------------------------------------------- */
   const { mutate: detailDeleteMutate } = useMutation(deleteDetailCheck, {
     onSuccess: (data) => {
       queryClient.invalidateQueries("detailCheck");
@@ -35,15 +35,15 @@ const DeleteAlert = ({
       navigate("/");
     },
   });
-
+  /* 댓글 DELETE ---------------------------------------------------------------- */
   const { mutate: commentDeleteMutate } = useMutation(deleteComment, {
     onSuccess: (data) => {
-      setCommentRefState(false);
+      setCommentRefState(false); // 댓글 삭제 시 댓글 목록 하단 포커스 이동 방지
       queryClient.invalidateQueries("checkComments");
       handleOpenModal();
     },
+    // 댓글 삭제 중 회원 정보 만료된 경우
     onError: ({ response }) => {
-      // console.log("DELETE COMMENT ERROR", response);
       setDeleteData({
         isError: true,
         deleteMessage: response.data.errorMessage,
@@ -53,11 +53,11 @@ const DeleteAlert = ({
 
   const handleDelete = () => {
     isArticle
-      ? detailDeleteMutate(articlesId)
-      : commentDeleteMutate(commentsId);
-    // handleOpenModal();
+      ? detailDeleteMutate(articlesId) // 게시글 삭제
+      : commentDeleteMutate(commentsId); // 댓글 삭제
   };
 
+  /* 405 에러 발생 시 모달 창 닫을 때 회원 토큰 제거 ------------------------------------------- */
   const handleCloseModal = () => {
     setIsLogin(false);
     removeCookie("accessToken");

@@ -7,10 +7,12 @@ const MyListCard = ({ item }) => {
     item;
   const navigate = useNavigate();
 
-  const handleGoToDetail = () => navigate(`/detail/${articlesId}`);
-
   return (
-    <StMyListCard onClick={process === "진행중" ? handleGoToDetail : null}>
+    <StMyListCard
+      onClick={
+        process === "진행중" ? () => navigate(`/detail/${articlesId}`) : null
+      }
+    >
       <img alt="thumbnail" src={image} />
       <StMainInfo process={process}>
         <h2>{title}</h2>

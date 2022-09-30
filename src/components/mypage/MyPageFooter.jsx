@@ -20,8 +20,6 @@ const MyPageFooter = () => {
   const navigate = useNavigate();
   const { SendMessage, Logout, Unregister } = icons;
 
-  const handleLogout = () => setOpenLogoutAlert(true);
-
   const handleLogoutAlert = () => {
     setOpenLogoutAlert(false);
     setIsLogin(false);
@@ -49,12 +47,11 @@ const MyPageFooter = () => {
           }}
         >
           <SendMessage />
-
           <span>의견보내기</span>
         </Button>
       </StFooterBtn>
       <StFooterBtn>
-        <Button variant="image" onClickHandler={handleLogout}>
+        <Button variant="image" onClickHandler={() => setOpenLogoutAlert(true)}>
           <Logout />
           <span>로그아웃</span>
         </Button>
