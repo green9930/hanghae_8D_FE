@@ -130,7 +130,7 @@ const EditForm = () => {
 
         try {
           const compressedFile = await imageCompression(item, options);
-          setFiles([...files, compressedFile]);
+          setFiles((files) => [...files, compressedFile]);
           const reader = new FileReader();
           reader.readAsDataURL(item);
           reader.onload = () =>
@@ -220,9 +220,7 @@ const EditForm = () => {
           articlesId: id,
           data: formData,
         };
-        setTimeout(() => {
-          patchMutate(payload);
-        }, 300);
+        patchMutate(payload);
         navigate(`/detail/${id}`);
       }
     };
