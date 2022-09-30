@@ -11,12 +11,10 @@ import LoadingMessage from "components/etc/LoadingMessage";
 
 const MainCarousel = () => {
   const settings = {
-    dots: false,
     infinite: true,
     speed: 100,
     slidesToShow: 4,
     slidesToScroll: 1,
-    arrows: false,
     initialSlide: 0,
     centerMode: true,
     centerPadding: "30px",
@@ -29,7 +27,6 @@ const MainCarousel = () => {
   /* -------------------------------- 데이터 Read -------------------------------- */
   const { data, isLoading } = useQuery("randomList", getRandomCards, {
     refetchOnWindowFocus: false,
-    onSuccess: (data) => {},
   });
 
   if (isLoading) return <LoadingMessage />;
@@ -71,8 +68,6 @@ const StMainRandomTitle = styled.div`
   text-align: center;
   color: ${colors.white};
   font-family: "twayfly", "Noto Sans KR", sans-serif;
-  font-style: normal;
-  font-weight: 400;
   font-size: ${fontSize.large20};
 `;
 
@@ -81,8 +76,6 @@ const StMainTitleSpan = styled.span`
   color: ${colors.mainO};
   font-family: "twayfly", "Noto Sans KR", sans-serif;
   font-size: ${fontSize.large20};
-  font-style: normal;
-  font-weight: 400;
 `;
 
 const StMainRandomImg = styled.div`
