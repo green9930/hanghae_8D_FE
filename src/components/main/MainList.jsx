@@ -251,11 +251,16 @@ const StIcon = styled.div`
   border-radius: 100px;
   width: 50px;
   height: 50px;
-
   right: ${({ isMobile }) => (isMobile ? "8%" : "13%")};
 
   @media screen and (min-width: 1800px) {
+    right: 15%;
+  }
+  @media screen and (min-width: 2000px) {
     right: 16%;
+  }
+  @media screen and (min-width: 2400px) {
+    right: 18%;
   }
   @media screen and (min-width: 3000px) {
     right: 21%;
