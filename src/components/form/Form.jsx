@@ -96,9 +96,8 @@ const Form = () => {
 
   /* ------------------------------ 사진 미리보기 & 리사이징 ---------------------------- */
   const handleAddImages = async (e) => {
-    if (files.length + e.target.files.length > 5) {
-      return setOpenImageNumberAlert(true);
-    }
+    if (files.length + e.target.files.length > 5) setOpenImageNumberAlert(true);
+
     [...e.target.files].map(async (file) => {
       if (
         !VALID_IMAGE_TYPE.includes(
@@ -151,7 +150,7 @@ const Form = () => {
   const handleOnChangeSelectValue = (e) => {
     setItem({ ...item, category: e.target.getAttribute("value") });
 
-    item.category
+    category
       ? setValidation({ ...validation, validCategory: true })
       : setValidation({ ...validation, validCategory: false });
   };
@@ -166,9 +165,7 @@ const Form = () => {
     },
   });
 
-  if (isLoading) {
-    return <LoadingMessage />;
-  }
+  if (isLoading) <LoadingMessage />;
 
   const onSubmitHandler = async () => {
     let formData = new FormData();
@@ -187,7 +184,6 @@ const Form = () => {
   };
 
   const clickCheckHandler = () => {
-    console.log(title.trim().length);
     title.trim().length === 0
       ? setValidation((prev) => ({ ...prev, validTitle: false }))
       : setValidation((prev) => ({ ...prev, validTitle: true }));
@@ -432,7 +428,6 @@ const StBtn = styled.button`
   right: 0;
   border: none;
   padding: 0;
-  padding-bottom: 0;
   width: 20px;
   height: 20px;
   background-color: ${colors.black};
