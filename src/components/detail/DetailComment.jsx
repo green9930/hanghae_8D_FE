@@ -26,9 +26,9 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
 
   const { BSalectPurple, BSalectWhite, IconTrash } = icons;
-
   const queryClient = useQueryClient();
 
+  /* 댓글 채택 -------------------------------------------------------------------- */
   const { mutate: selectMutate } = useMutation(selectComment, {
     onSuccess: (data) => {
       queryClient.invalidateQueries("detailCheck");

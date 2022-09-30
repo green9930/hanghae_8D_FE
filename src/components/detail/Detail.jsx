@@ -12,13 +12,12 @@ import { detailCheckState } from "state/atom";
 const Detail = ({ page }) => {
   const setDetailCheckState = useSetRecoilState(detailCheckState);
 
+  /* 상세 게시글 GET --------------------------------------------------------------- */
   const { isRefetching, isLoading, data } = useQuery(
     ["detailCheck", () => getDetailCheck(page)],
     () => getDetailCheck(page),
     {
-      onSuccess: (data) => {
-        setDetailCheckState(data.data);
-      },
+      onSuccess: ({ data }) => setDetailCheckState(data),
       onError: (error) => {
         window.alert(error.response.data.errorMessage);
         window.location.replace("/");
@@ -27,6 +26,7 @@ const Detail = ({ page }) => {
   );
 
   if (isRefetching || isLoading) return <LoadingMessage />;
+  // isRefetching : 게시글 로딩 중 이전 게시글이 일시적으로 보이는 문제 방지
 
   const {
     nickName,

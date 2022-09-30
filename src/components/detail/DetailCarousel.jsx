@@ -139,6 +139,8 @@ const StTime = styled.div`
 `;
 
 const StImg = styled.div`
+  cursor: pointer;
+
   img {
     width: ${({ width }) => `${width}`};
     height: ${({ height }) => `${height}`};

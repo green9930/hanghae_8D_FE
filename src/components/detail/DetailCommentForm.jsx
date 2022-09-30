@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
+import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
 import Button from "components/elements/Button";
@@ -11,8 +13,6 @@ import { postComment } from "api/detailApi";
 import { commentRefState, loginState } from "state/atom";
 import { colors, fontSize } from "styles/theme";
 import { removeCookie } from "api/cookies";
-import { useNavigate } from "react-router-dom";
-import { isMobile } from "react-device-detect";
 
 const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   const [commentPrice, setCommentPrice] = useState("");
@@ -38,10 +38,10 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   const setCommentRefState = useSetRecoilState(commentRefState);
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const MAX_LENGTH_TEXT = 80;
 
-  const queryClient = useQueryClient();
-
+  /* 댓글 POST ------------------------------------------------------------------ */
   const { mutate: postMutate, isLoading: postIsLoading } = useMutation(
     postComment,
     {
@@ -54,6 +54,7 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
         setIsPriceActive(false);
         setCommentRefState(true);
       },
+      // 댓글 업로드 중 회원 정보 만료된 경우
       onError: ({ response }) => {
         setErrorData({
           errorCode: response.data.errorCode,
@@ -86,6 +87,7 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
     }
   };
 
+  /* 405 에러 발생 시 회원 토큰 제거 ----------------------------------------------------- */
   const handleCommentAlert = () => {
     if (errorData.errorCode === "405") {
       setIsLogin(false);
