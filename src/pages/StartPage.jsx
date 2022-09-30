@@ -46,10 +46,10 @@ const StBackground = styled.div`
 `;
 
 const StBackgroundImg = styled.div`
-  padding-top: 64px;
-  width: 514px;
+  width: 400px;
 
   img {
+    padding-top: 64px;
     width: 100%;
     height: 100%;
     @media screen and (max-width: 950px) {
