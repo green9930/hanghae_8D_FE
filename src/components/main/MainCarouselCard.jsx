@@ -8,11 +8,17 @@ const MainCarouselCard = ({ data }) => {
   const navigate = useNavigate();
 
   const onClickDetail = () => navigate(`/detail/${articlesId}`);
+  const MAX_TITLE_LENGTH = 6;
+  const MIN_TITLE_LENGTH = 0; //6자리까지 보이고 나머지는 ⋯
 
   return (
     <StImgBox onClick={onClickDetail}>
       <StImg src={image} alt="이미지" />
-      <StTitle>{title.length < 6 ? title : title.slice(0, 6) + "⋯"}</StTitle>
+      <StTitle>
+        {title.length < MAX_TITLE_LENGTH
+          ? title
+          : title.slice(MIN_TITLE_LENGTH, MAX_TITLE_LENGTH) + "⋯"}
+      </StTitle>
       <StPrice>
         {price}
         <span>원</span>

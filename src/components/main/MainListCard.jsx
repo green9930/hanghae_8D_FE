@@ -6,7 +6,9 @@ import { fontSize } from "styles/theme";
 
 const MainListCard = ({ data }) => {
   const navigate = useNavigate();
-  const onClickDetail = () => navigate(`/detail/${articlesId}`);
+
+  const MAX_TITLE_LENGTH = 13;
+  const MIN_TITLE_LENGTH = 0; //13자리까지 보이고 나머지는 ⋯
 
   const {
     articlesId,
@@ -17,18 +19,23 @@ const MainListCard = ({ data }) => {
     image,
     selectedPrice,
     userRank,
-  } = data;
+  } = data; //메인리스트에서 받아 온 data 구조 분해
 
   return (
     <StMainContainer>
-      <StMainWrap selectedPrice={selectedPrice} onClick={onClickDetail}>
+      <StMainWrap
+        selectedPrice={selectedPrice}
+        onClick={() => navigate(`/detail/${articlesId}`)}
+      >
         <StImage>
           <StMainListImg src={image} alt="이미지" />
         </StImage>
         <StMainDesc>
           <StFirstLine>
             <StTitle selectedPrice={selectedPrice}>
-              {title.length < 13 ? title : title.slice(0, 13) + "⋯"}
+              {title.length < MAX_TITLE_LENGTH
+                ? title
+                : title.slice(MIN_TITLE_LENGTH, MAX_TITLE_LENGTH) + "⋯"}
             </StTitle>
             <StMainProcess process={process}>{process}</StMainProcess>
           </StFirstLine>
@@ -65,12 +72,12 @@ const StMainWrap = styled.div`
   display: flex;
   padding: 15px;
   gap: 10px;
-  color: ${({ selectedPrice }) =>
-    selectedPrice ? `${colors.grey3}` : `${colors.black}`};
   height: 100px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   margin: 10px auto;
+  color: ${({ selectedPrice }) =>
+    selectedPrice ? `${colors.grey3}` : `${colors.black}`};
   background-color: ${({ selectedPrice }) =>
     selectedPrice ? `${colors.grey7}` : `${colors.white}`};
 `;
