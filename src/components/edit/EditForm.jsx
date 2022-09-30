@@ -21,9 +21,9 @@ import { a11yHidden } from "styles/mixin";
 import icons from "assets";
 
 const EditForm = () => {
-  const [files, setFiles] = useState([]);
-  const [deletedFiles, setDeletedFiles] = useState([]);
-  const [previewFiles, setPreviewFiles] = useState([]);
+  const [files, setFiles] = useState([]); // 추가된 사진 목록록
+  const [deletedFiles, setDeletedFiles] = useState([]); // 삭제된 사진 목록
+  const [previewFiles, setPreviewFiles] = useState([]); // 미리보기 사진 목록
   const [editText, setEditText] = useState({
     category: "",
     title: "",
@@ -36,20 +36,19 @@ const EditForm = () => {
   const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
   const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
   /* VALIDATION : TITLE, PRICE, CONTENT --------------------------------------- */
-  const [isValidFiles, setIsValidFiles] = useState(true);
   const [isValidTitle, setIsValidTitle] = useState(true);
   const [isValidPrice, setIsValidPrice] = useState(true);
   const [isValidContent, setIsValidContent] = useState(true);
+
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { IconPlus, IconX } = icons;
+  const queryClient = useQueryClient();
 
   const MAX_IMG_SIZE = 10000000;
   const MAX_TITLE_LENGTH = 30;
   const MAX_CONTENT_LENGTH = 400;
   const VALID_IMAGE_TYPE = ["png", "jpg", "jpeg"];
-
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const { IconPlus, IconX } = icons;
-
   const selectboxData = [
     { key: 1, value: "디지털/생활가전" },
     { key: 2, value: "의류/잡화" },
@@ -61,37 +60,34 @@ const EditForm = () => {
     { key: 8, value: "기타" },
   ];
 
-  const queryClient = useQueryClient();
-
+  /* 상세 게시글 GET --------------------------------------------------------------- */
   const { isLoading, data, refetch, isSuccess } = useQuery(
     "detailCheckEdit",
     () => getDetailCheck(id),
     {
-      onSuccess: (data) => {
-        if (!data.data.isMyArticles) {
-          window.alert("수정 권한이 없는 게시글입니다.");
+      onSuccess: ({ data }) => {
+        if (!data.isMyArticles) {
+          window.alert("수정 권한이 없는 게시글입니다."); // 타인 게시글 수정 페이지 직접 접근 제한
           window.location.replace("/");
         }
         setEditText({
           ...editText,
-          category: data.data.category,
-          title: data.data.title,
-          price: data.data.price.replaceAll(",", ""),
-          content: data.data.content,
+          category: data.category,
+          title: data.title,
+          price: data.price.replaceAll(",", ""),
+          content: data.content,
         });
-        setPreviewFiles([...data.data.images]);
-        setPreviewPrice(data.data.price);
+        setPreviewFiles([...data.images]);
+        setPreviewPrice(data.price);
       },
-      staleTime: 50000,
       enabled: false,
     }
   );
 
+  /* 상세 게시글 PATCH ------------------------------------------------------------- */
   const { mutate: patchMutate, isLoading: patchDetailCheckLoading } =
     useMutation(patchDetailCheck, {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries("detailCheck");
-      },
+      onSuccess: () => queryClient.invalidateQueries("detailCheck"),
       onError: (error) => {
         navigate(`/detail/${id}`);
         window.alert("게시글 수정을 실패했습니다.");
@@ -108,7 +104,7 @@ const EditForm = () => {
     if (!data.data.isMyArticles) return window.location.replace("/");
     const { createdAt, images } = data?.data;
 
-    /* 이미지 편집 ------------------------------------------------------------------- */
+    /* 이미지 추가 ------------------------------------------------------------------- */
     const handleAddImages = (e) => {
       if (previewFiles.length + [...e.target.files].length > 5)
         return setOpenImageNumberAlert(true);
@@ -129,7 +125,7 @@ const EditForm = () => {
         };
 
         try {
-          const compressedFile = await imageCompression(item, options);
+          const compressedFile = await imageCompression(item, options); // 이미지 압축
           setFiles((files) => [...files, compressedFile]);
           const reader = new FileReader();
           reader.readAsDataURL(item);
@@ -141,6 +137,7 @@ const EditForm = () => {
       });
     };
 
+    /* 이미지 삭제 ------------------------------------------------------------------- */
     const handleDeleteImage = (image, id) => {
       images.includes(image)
         ? setDeletedFiles([...deletedFiles, image])
@@ -192,10 +189,7 @@ const EditForm = () => {
       if (!editText.title.trim().length) setIsValidTitle(false);
       if (!editText.price.trim().length) setIsValidPrice(false);
       if (!editText.content.trim().length) setIsValidContent(false);
-      if (!previewFiles.length) {
-        setIsValidFiles(false);
-        setOpenImageNumberAlert(true);
-      }
+      if (!previewFiles.length) setOpenImageNumberAlert(true);
 
       if (
         editText.title.trim().length &&
