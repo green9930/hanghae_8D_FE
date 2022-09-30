@@ -5,6 +5,12 @@ const cookies = new Cookies();
 export const setCookie = (name, value) => {
   cookies.set(name, value, {
     path: "/",
+  });
+};
+
+export const setWeekCookie = (name, value) => {
+  cookies.set(name, value, {
+    path: "/",
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   });
 };

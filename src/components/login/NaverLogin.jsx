@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCookie, setCookie } from "api/cookies";
+import { getCookie, setCookie, setWeekCookie } from "api/cookies";
 import { instance } from "api/axios";
 import { useSetRecoilState } from "recoil";
 import Modal from "components/layout/Modal";
@@ -29,7 +29,7 @@ const NaverLogin = () => {
           const res = await instance.get(`/user/signin/naver?code=${code}`);
           if (await res.headers.authorization) {
             setCookie("accessToken", res.headers.authorization);
-            setCookie("refreshToken", res.headers.refreshtoken);
+            setWeekCookie("refreshToken", res.headers.refreshtoken);
             setIsLogin(true);
 
             const { data } = await getMyProfile();

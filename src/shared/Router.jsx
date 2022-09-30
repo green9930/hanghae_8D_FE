@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { useQueryClient } from "react-query";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
 import DetailPage from "pages/DetailPage";
 import ErrorPage from "pages/ErrorPage";
 import FormPage from "pages/FormPage";
@@ -11,24 +13,14 @@ import LoginPage from "pages/LoginPage";
 import KakaoLogin from "components/login/KakaoLogin";
 import NaverLogin from "components/login/NaverLogin";
 import GoogleLogin from "components/login/GoogleLogin";
-import { loginState, newAlarmsLengthState, newAlarmsState } from "state/atom";
+import { loginState, newAlarmsState } from "state/atom";
 import { getCookie } from "api/cookies";
 
-import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
-import { useQueryClient } from "react-query";
-
 const Router = () => {
-  const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const setNewAlarms = useSetRecoilState(newAlarmsState);
-  const setNewAlarm = useSetRecoilState(newAlarmsState);
-  const [newAlarmsLength, setNewAlarmsLength] =
-    useRecoilState(newAlarmsLengthState);
   const [loading, setIsLoading] = useState(false);
 
-  /* 실시간 알림 수신 TEST ----------------------------------------------------------- */
-  const [listening, setListening] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [eventSourceStatus, setEventSourceStatus] = useState(null);
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const setNewAlarms = useSetRecoilState(newAlarmsState);
 
   const queryClient = useQueryClient();
   const EventSource = EventSourcePolyfill || NativeEventSource;
@@ -47,39 +39,28 @@ const Router = () => {
               withCredentials: true,
             }
           );
-          // console.log("EVENTSOURCE RESPONSE", eventSource);
           /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
           eventSource.onopen = async (event) => {
-            const result = await event;
-            console.log("EVENTSOURCE ONOPEN", result);
-            // setEventSourceStatus(result.type); //구독
+            // const result = await event;
+            // console.log("EVENTSOURCE ONOPEN", result);
           };
 
           /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
           eventSource.onmessage = async (event) => {
-            // 헤더 마이페이지 아이콘 상태 변경
             const res = await event.data;
-            if (!res.includes("EventStream Created.")) setNewAlarms(true);
-            // 알람 리스트 개수 변경
-            queryClient.invalidateQueries("myprofile");
-            queryClient.invalidateQueries("alertNoti");
-            queryClient.invalidateQueries("alertLists");
-            // const json = JSON.parse(res);
-            // console.log("EVENTSOURCE MESSAGE : ", json);
-            // setNewAlarm(json);
+            if (!res.includes("EventStream Created.")) setNewAlarms(true); // 헤더 마이페이지 아이콘 상태 변경
+            queryClient.invalidateQueries("myprofile"); // 프로필 업데이트
+            queryClient.invalidateQueries("alertNoti"); // 알람 리스트 개수 변경
+            queryClient.invalidateQueries("alertLists"); // 알림 목록 업데이트
           };
 
           /* EVENTSOURCE ONERROR ------------------------------------------------------ */
           eventSource.onerror = async (event) => {
-            const result = await event;
-            console.log("EVENTSOURCE ONERROR", result);
-            // console.log(event.error.message); // No activity within 45000 milliseconds.
-            event.error.message.includes("No activity")
-              ? setEventSourceStatus(result.type) //구독
-              : eventSource.close();
-            setListening(false);
+            // const result = await event;
+            // console.log("EVENTSOURCE ONERROR", result);
+            if (!event.error.message.includes("No activity"))
+              eventSource.close();
           };
-          setListening(true);
         } catch (error) {
           // console.log(error);
         }
@@ -89,65 +70,7 @@ const Router = () => {
     }
   });
 
-  // useEffect(() => {
-  //   let eventSource;
-  //   if (getCookie("accessToken")) {
-  //     eventSource = new EventSource(
-  //       `${process.env.REACT_APP_BASE_URL}/api/subscribe`,
-  //       {
-  //         headers: {
-  //           Authorization: getCookie("accessToken"),
-  //           Connection: "keep-alive",
-  //         },
-  //         withCredentials: true,
-  //       }
-  //     );
-  //     /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
-  //     eventSource.onopen = async (event) => {
-  //       const result = await event;
-  //       console.log("EVENTSOURCE ONOPEN", result);
-  //       setIsError(false);
-  //       // setEventSourceStatus(result.type); //구독
-  //     };
-
-  //     /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
-  //     eventSource.onmessage = async (event) => {
-  //       // 헤더 마이페이지 아이콘 상태 변경
-  //       const res = await event.data;
-  //       // const json = JSON.parse(res);
-  //       // console.log("EVENTSOURCE MESSAGE : ", json);
-
-  //       if (!res.includes("EventStream Created.")) setNewAlarms(true);
-  //       // 알람 리스트 개수 변경
-  //       queryClient.invalidateQueries("myprofile");
-  //       queryClient.invalidateQueries("alertNoti");
-  //       queryClient.invalidateQueries("alertLists");
-  //       // setNewAlarm(json);
-  //     };
-
-  //     /* EVENTSOURCE ONERROR ------------------------------------------------------ */
-  //     eventSource.onerror = async (event) => {
-  //       const result = await event;
-  //       console.log("EVENTSOURCE ONERROR", result);
-  //       // if (result.error.message.includes("fetch")) eventSource.close();
-  //       // if (result.error.message.includes("No activity")) {
-  //       //   eventSource.close();
-  //       //   setIsError(true);
-  //       //   // setListening(false);
-  //       // }
-  //       setIsError(true);
-  //       eventSource.close();
-
-  //       // if (result.error) {
-  //       // console.log("EVENTSOURCE ONERROR", result);
-  //       // console.log(event.error.message); // No activity within 45000 milliseconds.
-  //       // }
-  //     };
-  //     // setListening(true);
-  //   }
-  //   // return () => eventSource.close();
-  // }, [isError]);
-
+  /* 로그인 상태 확인 ---------------------------------------------------------------- */
   useEffect(() => {
     const fetchLoading = async () => {
       try {
@@ -160,7 +83,6 @@ const Router = () => {
     fetchLoading();
   }, [isLogin]);
 
-  /* 서버 페이지 접근 테스트 중 ---------------------------------------------------------- */
   return (
     <>
       {loading ? (

@@ -13,6 +13,7 @@ const DetailCommentList = ({ process, articlesId, isMyArticles }) => {
 
   const [refState, setRefState] = useRecoilState(commentRefState);
 
+  /* 댓글 GET ------------------------------------------------------------------- */
   const {
     isRefetching,
     isLoading,
@@ -22,9 +23,9 @@ const DetailCommentList = ({ process, articlesId, isMyArticles }) => {
   });
 
   const scrollToBottom = () => {
-    if (commentRef.current) {
+    // 댓글 작성 시 목록 하단 포커스
+    if (commentRef.current)
       commentRef.current.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   useEffect(() => {

@@ -8,11 +8,11 @@ import icons from "assets";
 
 const AlarmCard = ({ alarmItem }) => {
   const { notificationId, title, createdAt, alarmType, articlesId } = alarmItem;
-  const { IconX } = icons;
   const navigate = useNavigate();
+  const { IconX } = icons;
   const queryClient = useQueryClient();
 
-  /* ------------------------------- 데이터 delete ------------------------------- */
+  /* 알람 DELETE ---------------------------------------------------------------- */
   const { mutate: deleteAlert } = useMutation(deleteAlertList, {
     onSuccess: () => queryClient.invalidateQueries("alertLists"),
   });
