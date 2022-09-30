@@ -38,31 +38,31 @@ const MainCarousel = () => {
   );
 
   if (isLoading) return <LoadingMessage />;
-  // if (isSuccess) {
-  return (
-    <StMainRandomContainer>
-      <StMainRandomTitle>
-        <MainArrow fill={colors.mainO} />
-        <StMainTitleSpan>책첵</StMainTitleSpan> 진행 중 체크
-      </StMainRandomTitle>
-      {isMobile ? (
-        <StMainRandomImg isMobile={isMobile}>
-          {data.data.data?.map((data) => (
-            <MainCarouselCard key={data.articlesId} data={data} />
-          ))}
-        </StMainRandomImg>
-      ) : (
-        <StSlider>
-          <Slider {...settings}>
+  if (isSuccess) {
+    return (
+      <StMainRandomContainer>
+        <StMainRandomTitle>
+          <MainArrow fill={colors.mainO} />
+          <StMainTitleSpan>책첵</StMainTitleSpan> 진행 중 체크
+        </StMainRandomTitle>
+        {isMobile ? (
+          <StMainRandomImg isMobile={isMobile}>
             {data.data.data?.map((data) => (
               <MainCarouselCard key={data.articlesId} data={data} />
             ))}
-          </Slider>
-        </StSlider>
-      )}
-    </StMainRandomContainer>
-  );
-  // }
+          </StMainRandomImg>
+        ) : (
+          <StSlider>
+            <Slider {...settings}>
+              {data.data.data?.map((data) => (
+                <MainCarouselCard key={data.articlesId} data={data} />
+              ))}
+            </Slider>
+          </StSlider>
+        )}
+      </StMainRandomContainer>
+    );
+  }
 };
 
 const StMainRandomContainer = styled.div`

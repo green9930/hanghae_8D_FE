@@ -36,67 +36,61 @@ const Router = () => {
   useEffect(() => {
     let eventSource;
     if (getCookie("accessToken")) {
-      try {
-        eventSource = new EventSource(
-          `${process.env.REACT_APP_BASE_URL}/api/subscribe`,
-          {
-            headers: {
-              Authorization: getCookie("accessToken"),
-              Connection: "keep-alive",
-            },
-            withCredentials: true,
-          }
-        );
-        // console.log("EVENTSOURCE", eventSource);
-        // console.log("EVENTSOURCE RESPONSE", eventSource);
-        /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
-        eventSource.onopen = async (event) => {
-          const result = await event;
-          console.log("EVENTSOURCE ONOPEN", result);
-          setIsError(false);
-          // setEventSourceStatus(result.type); //구독
-        };
+      eventSource = new EventSource(
+        `${process.env.REACT_APP_BASE_URL}/api/subscribe`,
+        {
+          headers: {
+            Authorization: getCookie("accessToken"),
+            Connection: "keep-alive",
+          },
+          withCredentials: true,
+        }
+      );
+      /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
+      eventSource.onopen = async (event) => {
+        const result = await event;
+        console.log("EVENTSOURCE ONOPEN", result);
+        setIsError(false);
+        // setEventSourceStatus(result.type); //구독
+      };
 
-        /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
-        eventSource.onmessage = async (event) => {
-          // 헤더 마이페이지 아이콘 상태 변경
-          const res = await event.data;
-          // const json = JSON.parse(res);
-          // console.log("EVENTSOURCE MESSAGE : ", json);
+      /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
+      eventSource.onmessage = async (event) => {
+        // 헤더 마이페이지 아이콘 상태 변경
+        const res = await event.data;
+        // const json = JSON.parse(res);
+        // console.log("EVENTSOURCE MESSAGE : ", json);
 
-          if (!res.includes("EventStream Created.")) setNewAlarms(true);
-          // 알람 리스트 개수 변경
-          queryClient.invalidateQueries("myprofile");
-          queryClient.invalidateQueries("alertNoti");
-          queryClient.invalidateQueries("alertLists");
-          // setNewAlarm(json);
-        };
+        if (!res.includes("EventStream Created.")) setNewAlarms(true);
+        // 알람 리스트 개수 변경
+        queryClient.invalidateQueries("myprofile");
+        queryClient.invalidateQueries("alertNoti");
+        queryClient.invalidateQueries("alertLists");
+        // setNewAlarm(json);
+      };
 
-        /* EVENTSOURCE ONERROR ------------------------------------------------------ */
-        eventSource.onerror = async (event) => {
-          const result = await event;
-          console.log("EVENTSOURCE ONERROR", result);
-          // if (result.error.message.includes("fetch")) eventSource.close();
-          // if (result.error.message.includes("No activity")) {
-          //   eventSource.close();
-          //   setIsError(true);
-          //   // setListening(false);
-          // }
+      /* EVENTSOURCE ONERROR ------------------------------------------------------ */
+      eventSource.onerror = async (event) => {
+        const result = await event;
+        console.log("EVENTSOURCE ONERROR", result);
+        // if (result.error.message.includes("fetch")) eventSource.close();
+        // if (result.error.message.includes("No activity")) {
+        //   eventSource.close();
+        //   setIsError(true);
+        //   // setListening(false);
+        // }
+        setIsError(true);
+        eventSource.close();
 
-          eventSource.close();
-
-          // if (result.error) {
-          // console.log("EVENTSOURCE ONERROR", result);
-          // console.log(event.error.message); // No activity within 45000 milliseconds.
-          // }
-        };
-        // setListening(true);
-      } catch (error) {
-        console.log(error);
-      }
-      return () => eventSource.close();
+        // if (result.error) {
+        // console.log("EVENTSOURCE ONERROR", result);
+        // console.log(event.error.message); // No activity within 45000 milliseconds.
+        // }
+      };
+      // setListening(true);
     }
-  });
+    // return () => eventSource.close();
+  }, [isError]);
 
   useEffect(() => {
     const fetchLoading = async () => {

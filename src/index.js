@@ -5,32 +5,23 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import App from "./App";
-import LoadingMessage from "components/etc/LoadingMessage";
 import ScrollToTop from "components/etc/ScrollToTop";
 import GlobalStyle from "styles/GlobalStyle";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      suspense: true,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <>
-    <Suspense fallback={<LoadingMessage />}>
-      <GlobalStyle />
-      <BrowserRouter>
-        <ScrollToTop />
-        <QueryClientProvider client={queryClient}>
-          <RecoilRoot>
-            <ReactQueryDevtools initialIsOpen={true} />
-            <App />
-          </RecoilRoot>
-        </QueryClientProvider>
-      </BrowserRouter>
-    </Suspense>
+    <GlobalStyle />
+    <BrowserRouter>
+      <ScrollToTop />
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <ReactQueryDevtools initialIsOpen={true} />
+          <App />
+        </RecoilRoot>
+      </QueryClientProvider>
+    </BrowserRouter>
   </>
 );
