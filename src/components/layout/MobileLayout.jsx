@@ -33,7 +33,6 @@ const MobileLayout = ({ title, children }) => {
       </BrowserView>
       <MobileView>
         <StMobileLayout>
-          <StDiv></StDiv>
           <StMobileHeader>
             <Header title={title} />
           </StMobileHeader>
@@ -50,7 +49,10 @@ const StBackground = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
-  overflow-y: scroll;
+  @media screen and (min-width: 950px) {
+    display: flex;
+    justify-content: space-around;
+  }
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   ::-webkit-scrollbar {
@@ -59,16 +61,11 @@ const StBackground = styled.div`
 `;
 
 const StBackgroundImg = styled.div`
-  padding-top: 64px;
-  width: 360px;
-  height: auto;
-  position: absolute;
-  bottom: 0;
-  left: 10%;
-
+  width: 400px;
   img {
     width: 100%;
     height: 100%;
+    padding-top: 64px;
     @media screen and (max-width: 950px) {
       display: none;
     }
@@ -79,18 +76,11 @@ const StBrowserLayout = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  position: relative;
   background: ${colors.white};
   min-width: 360px;
-  position: absolute;
-  left: 55%;
-
   @media (min-width: 950px) {
     width: 500px;
-  }
-
-  @media (max-width: 950px) {
-    left: 50%;
-    transform: translateX(-50%);
   }
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -113,14 +103,6 @@ const StMobileLayout = styled.div`
   position: relative;
   margin: 0 auto;
   background: ${colors.white};
-`;
-
-const StDiv = styled.div`
-  width: 100%;
-  height: 64px;
-  background: ${colors.mainP};
-  position: absolute;
-  top: 0;
 `;
 
 const StMobileHeader = styled.div`
