@@ -29,7 +29,7 @@ const DeleteAlert = ({
 
   /* 게시글 DELETE --------------------------------------------------------------- */
   const { mutate: detailDeleteMutate } = useMutation(deleteDetailCheck, {
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries("detailCheck");
       handleOpenModal();
       navigate("/");
@@ -37,7 +37,7 @@ const DeleteAlert = ({
   });
   /* 댓글 DELETE ---------------------------------------------------------------- */
   const { mutate: commentDeleteMutate } = useMutation(deleteComment, {
-    onSuccess: (data) => {
+    onSuccess: () => {
       setCommentRefState(false); // 댓글 삭제 시 댓글 목록 하단 포커스 이동 방지
       queryClient.invalidateQueries("checkComments");
       handleOpenModal();
