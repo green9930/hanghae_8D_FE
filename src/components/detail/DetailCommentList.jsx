@@ -19,7 +19,7 @@ const DetailCommentList = ({ process, articlesId, isMyArticles }) => {
     isLoading,
     data: comments,
   } = useQuery("checkComments", () => getComments(articlesId), {
-    onError: (error) => {},
+    onError: () => {},
   });
 
   const scrollToBottom = () => {
@@ -37,7 +37,8 @@ const DetailCommentList = ({ process, articlesId, isMyArticles }) => {
     mountRef.current && refState ? scrollToBottom() : (mountRef.current = true);
   }, [comments]);
 
-  if ((isRefetching, isLoading)) return null;
+  if (isRefetching || isLoading) return null;
+  // isRefetching || isLoading : 댓글 로딩 중 이전 게시글이 일시적으로 보이는 문제 방지
 
   return (
     <StCommentList process={process} isMyArticles={isMyArticles}>
