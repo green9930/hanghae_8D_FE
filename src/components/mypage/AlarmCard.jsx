@@ -9,15 +9,16 @@ import icons from "assets";
 const AlarmCard = ({ alarmItem }) => {
   const { notificationId, title, createdAt, alarmType, articlesId } = alarmItem;
   const navigate = useNavigate();
-  const { IconX } = icons;
   const queryClient = useQueryClient();
+  const { IconX } = icons;
+
+  const MAX_TITLE_LENGTH = 10;
 
   /* 알람 DELETE ---------------------------------------------------------------- */
   const { mutate: deleteAlert } = useMutation(deleteAlertList, {
     onSuccess: () => queryClient.invalidateQueries("alertLists"),
   });
 
-  const handleDelete = (id) => deleteAlert(id);
   const onClickNavigate = () => navigate(`/detail/${articlesId}`);
 
   return (
@@ -25,7 +26,9 @@ const AlarmCard = ({ alarmItem }) => {
       {alarmType === "comment" && (
         <StContent>
           <StTitle onClick={onClickNavigate}>
-            {title.length < 10 ? title : title.slice(0, 10) + "⋯"}
+            {title.length < MAX_TITLE_LENGTH
+              ? title
+              : title.slice(0, MAX_TITLE_LENGTH) + "⋯"}
           </StTitle>
           <StText>
             에 <StMessage type={alarmType}>댓글</StMessage>이 달렸습니다.
@@ -34,7 +37,7 @@ const AlarmCard = ({ alarmItem }) => {
             <StTime>{createdAt}</StTime>
             <Button
               variant="image"
-              onClickHandler={() => handleDelete(notificationId)}
+              onClickHandler={() => deleteAlert(notificationId)}
             >
               <IconX stroke={colors.grey2} />
             </Button>
@@ -44,7 +47,9 @@ const AlarmCard = ({ alarmItem }) => {
       {alarmType === "selected" && (
         <StContent>
           <StTitle onClick={onClickNavigate}>
-            {title.length < 10 ? title : title.slice(0, 10) + "⋯"}
+            {title.length < MAX_TITLE_LENGTH
+              ? title
+              : title.slice(0, MAX_TITLE_LENGTH) + "⋯"}
           </StTitle>
           <StText>
             에 댓글이 <StMessage type={alarmType}>채택</StMessage>되었습니다.
@@ -53,7 +58,7 @@ const AlarmCard = ({ alarmItem }) => {
             <StTime>{createdAt}</StTime>
             <Button
               variant="image"
-              onClickHandler={() => handleDelete(notificationId)}
+              onClickHandler={() => deleteAlert(notificationId)}
             >
               <IconX stroke={colors.grey2} />
             </Button>

@@ -100,7 +100,7 @@ const UserInfo = () => {
     onSuccess: () => queryClient.invalidateQueries("myprofile"),
   });
 
-  const { isLoading: alertNotiLoading, data: alertNotiData } = useQuery(
+  const { isLoading: alertNotiLoading } = useQuery(
     "alertNoti",
     getMyNotification,
     {
