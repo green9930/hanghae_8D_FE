@@ -14,7 +14,7 @@ const UnregisterAlert = ({ handleOpenModal }) => {
 
   /* 회원 탈퇴 -------------------------------------------------------------------- */
   const { mutate: deleteMutate } = useMutation(deleteMyProfile, {
-    onSuccess: (data) => {
+    onSuccess: () => {
       removeCookie("accessToken");
       removeCookie("refreshToken");
       setIsUnregister(true);

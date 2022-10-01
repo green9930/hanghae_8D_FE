@@ -14,7 +14,7 @@ const MyList = () => {
 
   /* 내가 쓴 게시글 목록 GET ---------------------------------------------------------- */
   const { data, refetch } = useQuery("mylist", () => getMyChecks(active), {
-    onError: (error) => setMyListState(false),
+    onError: () => setMyListState(false),
     enabled: false,
   });
 
