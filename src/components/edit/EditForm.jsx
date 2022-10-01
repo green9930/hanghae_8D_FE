@@ -88,7 +88,7 @@ const EditForm = () => {
   const { mutate: patchMutate, isLoading: patchDetailCheckLoading } =
     useMutation(patchDetailCheck, {
       onSuccess: () => queryClient.invalidateQueries("detailCheck"),
-      onError: (error) => {
+      onError: () => {
         navigate(`/detail/${id}`);
         window.alert("게시글 수정을 실패했습니다.");
       },
