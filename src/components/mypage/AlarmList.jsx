@@ -21,7 +21,7 @@ const AlarmList = () => {
     data: alarmData,
   } = useQuery("alertLists", getAlertLists, {
     refetchOnWindowFocus: false,
-    onSuccess: (data) => {
+    onSuccess: () => {
       setNewAlarms(false); // 헤더 마이페이지 아이콘 상태 변경
       setNewAlarmsLength(0); // 알람 리스트 개수 변경
     },

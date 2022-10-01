@@ -26,7 +26,7 @@ const Detail = ({ page }) => {
   );
 
   if (isRefetching || isLoading) return <LoadingMessage />;
-  // isRefetching : 게시글 로딩 중 이전 게시글이 일시적으로 보이는 문제 방지
+  // isRefetching || isLoading : 게시글 로딩 중 이전 게시글이 일시적으로 보이는 문제 방지
 
   const {
     nickName,

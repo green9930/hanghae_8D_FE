@@ -30,7 +30,7 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
 
   /* 댓글 채택 -------------------------------------------------------------------- */
   const { mutate: selectMutate } = useMutation(selectComment, {
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries("detailCheck");
       queryClient.invalidateQueries("checkComments");
     },
