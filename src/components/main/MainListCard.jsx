@@ -66,6 +66,7 @@ const MainListCard = ({ data }) => {
 
 const StMainContainer = styled.div`
   padding: 0px 20px;
+  cursor: pointer;
 `;
 
 const StMainWrap = styled.div`

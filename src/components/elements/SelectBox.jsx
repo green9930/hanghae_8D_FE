@@ -108,6 +108,7 @@ const StLabel = styled.label`
   text-align: center;
   width: 100%;
   padding-right: 7px;
+  cursor: pointer;
 
   span {
     text-align: center;

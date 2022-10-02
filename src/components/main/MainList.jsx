@@ -248,6 +248,7 @@ const StIcon = styled.div`
   border-radius: 100px;
   width: 50px;
   height: 50px;
+  cursor: pointer;
   right: ${({ isMobile }) => (isMobile ? "8%" : "13%")};
 
   @media screen and (min-width: 1800px) {
