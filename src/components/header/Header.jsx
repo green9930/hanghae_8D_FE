@@ -43,11 +43,11 @@ const Header = ({ title }) => {
 
   return (
     <StHeader>
-      <Button variant="image" onClickHandler={clickLogo}>
+      <Button variant="image" name="checkLogo" onClickHandler={clickLogo}>
         <HeaderLogo />
       </Button>
       <StHeaderTitle>{title}</StHeaderTitle>
-      <Button variant="image" onClickHandler={clickNavigator}>
+      <Button variant="image" name="mypageLogo" onClickHandler={clickNavigator}>
         {isLogin && newAlarms ? (
           <MyPageAlarm />
         ) : (
