@@ -11,6 +11,7 @@ import icons from "assets";
 import { fontSize } from "styles/theme";
 import styled from "styled-components";
 import { isMobile } from "react-device-detect";
+import { getCookie } from "api/cookies";
 
 const MainList = () => {
   const { IconPlus, GoBack } = icons;
@@ -51,7 +52,6 @@ const MainList = () => {
     setActive({ pro: name, cate: active.cate });
     payload = { category: active.cate, process: name };
   };
-
   useEffect(() => {
     remove();
     refetch();
@@ -157,7 +157,12 @@ const MainList = () => {
       <StGoBack onClick={onClickScroll} scrollPosition={scrollPosition}>
         <GoBack />
       </StGoBack>
-      <StIcon onClick={() => navigate("/form")} isMobile={isMobile}>
+      <StIcon
+        onClick={() =>
+          getCookie("accessToken") ? navigate("/form") : navigate("/login")
+        }
+        isMobile={isMobile}
+      >
         <IconPlus />
       </StIcon>
     </StMain>

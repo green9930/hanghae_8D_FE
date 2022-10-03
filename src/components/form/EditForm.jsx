@@ -19,6 +19,18 @@ import handlePrice from "utils/handlePrice";
 import { colors } from "styles/theme";
 import { a11yHidden } from "styles/mixin";
 import icons from "assets";
+import {
+  CATEGORY_DATA,
+  IMAGE_TYPE,
+  MAX_IMG_SIZE,
+  MAX_TITLE_LENGTH,
+  MAX_CONTENT_LENGTH,
+  MAX_IMG_LENGTH,
+  MAX_RESIZE,
+  MAX_RESIZE_WIDTH_HEIGHT,
+  MIN_CONTENT_LENGTH,
+  MIN_LENGTH,
+} from "./formVali";
 
 const EditForm = () => {
   const [files, setFiles] = useState([]); // 추가된 사진 목록록
@@ -44,22 +56,6 @@ const EditForm = () => {
   const { id } = useParams();
   const { IconPlus, IconX } = icons;
   const queryClient = useQueryClient();
-
-  const MAX_IMG_SIZE = 10000000;
-  const MAX_TITLE_LENGTH = 30;
-  const MAX_CONTENT_LENGTH = 400;
-  const MIN_CONTENT_LENGTH = 15;
-  const VALID_IMAGE_TYPE = ["png", "jpg", "jpeg"];
-  const selectboxData = [
-    { key: 1, value: "디지털/생활가전" },
-    { key: 2, value: "의류/잡화" },
-    { key: 3, value: "스포츠/레저" },
-    { key: 4, value: "가구/인테리어" },
-    { key: 5, value: "도서/여행/취미" },
-    { key: 6, value: "반려동물/식물" },
-    { key: 7, value: "식품" },
-    { key: 8, value: "기타" },
-  ];
 
   /* 상세 게시글 GET --------------------------------------------------------------- */
   const { isLoading, data, refetch, isSuccess } = useQuery(
@@ -107,21 +103,21 @@ const EditForm = () => {
 
     /* 이미지 추가 ------------------------------------------------------------------- */
     const handleAddImages = (e) => {
-      if (previewFiles.length + [...e.target.files].length > 5)
+      if (previewFiles.length + [...e.target.files].length > MAX_IMG_LENGTH)
         return setOpenImageNumberAlert(true);
 
       [...e.target.files].map(async (item) => {
         if (item.size > MAX_IMG_SIZE) return setOpenImageAlert(true);
         if (
-          !VALID_IMAGE_TYPE.includes(
+          !IMAGE_TYPE.includes(
             item.name.split(".")[item.name.split(".").length - 1].toLowerCase()
           )
         )
           return setOpenImageFileAlert(true);
 
         const options = {
-          maxSizeMB: 10,
-          maxWidthOrHeight: 3000,
+          maxSizeMB: MAX_RESIZE,
+          maxWidthOrHeight: MAX_RESIZE_WIDTH_HEIGHT,
           useWebWorker: true,
         };
 
@@ -158,7 +154,7 @@ const EditForm = () => {
         const { isValid, realPrice, previewPrice } = handlePrice(
           value.replace(" ", "")
         );
-        if (value.length === 0) {
+        if (value.length === MIN_LENGTH) {
           setEditText({ ...editText, price: "" });
           setPreviewPrice("");
         } else {
@@ -238,12 +234,12 @@ const EditForm = () => {
                 type="file"
                 id="input-file"
                 multiple
-                accept="image/*"
+                accept=".png, .jpg, .jpeg"
               />
             </label>
             <StImages>
               <StImagesList>
-                {previewFiles.length === 0 ? (
+                {previewFiles.length === MIN_LENGTH ? (
                   <p>사진을 등록해 주세요.</p>
                 ) : (
                   <>
@@ -291,7 +287,7 @@ const EditForm = () => {
         </StImageContainer>
         <StTextContainer>
           <SelectBox
-            data={selectboxData}
+            data={CATEGORY_DATA}
             currentValue={editText.category}
             handleOnChangeSelectValue={handleChangeSelectbox}
           />
