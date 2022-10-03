@@ -39,11 +39,6 @@ const Router = () => {
               withCredentials: true,
             }
           );
-          /* EVENTSOURCE ONOPEN ------------------------------------------------------- */
-          eventSource.onopen = async (event) => {
-            // const result = await event;
-            // console.log("EVENTSOURCE ONOPEN", result);
-          };
 
           /* EVENTSOURCE ONMESSAGE ---------------------------------------------------- */
           eventSource.onmessage = async (event) => {
@@ -56,14 +51,10 @@ const Router = () => {
 
           /* EVENTSOURCE ONERROR ------------------------------------------------------ */
           eventSource.onerror = async (event) => {
-            // const result = await event;
-            // console.log("EVENTSOURCE ONERROR", result);
             if (!event.error.message.includes("No activity"))
               eventSource.close();
           };
-        } catch (error) {
-          // console.log(error);
-        }
+        } catch (error) {}
       };
       fetchSse();
       return () => eventSource.close();
@@ -77,7 +68,7 @@ const Router = () => {
         (await getCookie("accessToken")) ? setIsLogin(true) : setIsLogin(false);
         await setIsLoading(true);
       } catch (err) {
-        // console.log("GET LOGIN STATE", err);
+        window.alert("사용자 정보가 없습니다. 다시 로그인 해주세요.");
       }
     };
     fetchLoading();
