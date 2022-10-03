@@ -18,6 +18,18 @@ import { useMutation } from "react-query";
 import { postCheck } from "api/formApi";
 import { fontSize } from "styles/theme";
 import { isMobile } from "react-device-detect";
+import {
+  CATEGORY_DATA,
+  IMAGE_TYPE,
+  MAX_IMG_SIZE,
+  MAX_TITLE_LENGTH,
+  MAX_CONTENT_LENGTH,
+  MAX_IMG_LENGTH,
+  MAX_RESIZE,
+  MAX_RESIZE_WIDTH_HEIGHT,
+  MIN_CONTENT_LENGTH,
+  MIN_LENGTH,
+} from "components/form/formVali";
 
 const Form = () => {
   const navigate = useNavigate();
@@ -39,7 +51,6 @@ const Form = () => {
   const [files, setFiles] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
 
-  const VALID_IMAGE_TYPE = ["png", "jpg", "jpeg"];
   /* ---------------------------------- 유효성검사 --------------------------------- */
   const [validation, setValidation] = useState({
     validTitle: true,
@@ -47,69 +58,53 @@ const Form = () => {
     validCategory: true,
     validPrice: true,
     validDesc: true,
-    validLengthDesc: true,
   });
-  const {
-    validTitle,
-    validImage,
-    validCategory,
-    validPrice,
-    validDesc,
-    validLengthDesc,
-  } = validation;
+  const { validTitle, validImage, validCategory, validPrice, validDesc } =
+    validation;
 
   const checkVali =
-    title.trim().length > 0 &&
-    desc.trim().length >= 15 &&
+    title.trim().length > MIN_LENGTH &&
+    desc.trim().length >= MIN_CONTENT_LENGTH &&
     category !== "카테고리를 선택해 주세요." &&
-    price.trim().length > 0 &&
-    files.length > 0;
+    price.trim().length > MIN_LENGTH &&
+    files.length > MIN_LENGTH;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    let target = "";
     if (name === "title") {
-      target = value.substr(0, 30);
-      setItem({ ...item, title: target });
-      target.length >= 0
-        ? setValidation({ ...validation, validTitle: true })
-        : setValidation({ ...validation, validTitle: false });
+      setValidation({ ...validation, validTitle: true });
+      if (value.length > MAX_TITLE_LENGTH) return;
+      setItem({ ...item, title: value });
     }
     if (name === "price") {
+      setValidation({ ...validation, validPrice: true });
       const { realPrice, previewPrice } = handlePrice(value.replace(" ", ""));
-      value.length >= 0
-        ? setValidation({ ...validation, validPrice: true })
-        : setValidation({ ...validation, validPrice: false });
       setItem({ ...item, sendingPrice: realPrice, price: previewPrice });
     }
     if (name === "desc") {
-      target = value.substr(0, 400);
-      setItem({ ...item, desc: target });
-      target.length >= 0
-        ? setValidation({ ...validation, validDesc: true })
-        : setValidation({ ...validation, validDesc: false });
-      target.length >= 0
-        ? setValidation({ ...validation, validLengthDesc: true })
-        : setValidation({ ...validation, validLengthDesc: false });
+      setValidation({ ...validation, validDesc: true });
+      if (value.length > MAX_CONTENT_LENGTH) return;
+      setItem({ ...item, desc: value });
     }
   };
 
   /* ------------------------------ 사진 미리보기 & 리사이징 ---------------------------- */
   const handleAddImages = async (e) => {
-    if (files.length + e.target.files.length > 5) setOpenImageNumberAlert(true);
+    if (files.length + e.target.files.length > MAX_IMG_LENGTH)
+      return setOpenImageNumberAlert(true);
 
     [...e.target.files].map(async (file) => {
       if (
-        !VALID_IMAGE_TYPE.includes(
+        !IMAGE_TYPE.includes(
           file.name.split(".")[file.name.split(".").length - 1].toLowerCase()
         )
       )
         return setOpenImageFileAlert(true);
-      if (file.size > 10000000) return setOpenImageAlert(true); //10메가
+      if (file.size > MAX_IMG_SIZE) return setOpenImageAlert(true); //10메가
 
       const options = {
-        maxSizeMB: 10,
-        maxWidthOrHeight: 3000,
+        maxSizeMB: MAX_RESIZE,
+        maxWidthOrHeight: MAX_RESIZE_WIDTH_HEIGHT,
         useWebWorker: true,
       };
       try {
@@ -126,7 +121,7 @@ const Form = () => {
         alert("이미지를 불러올 수 없습니다");
       }
     });
-    files.length >= 0
+    files.length >= MIN_LENGTH
       ? setValidation({ ...validation, validImage: true })
       : setValidation({ ...validation, validImage: false });
   };
@@ -136,17 +131,6 @@ const Form = () => {
     setFiles(files.filter((_, index) => index !== id));
   };
   /* ----------------------------- 카테고리 select-box ---------------------------- */
-  const data = [
-    { key: 1, value: "디지털/생활가전" },
-    { key: 2, value: "의류/잡화" },
-    { key: 3, value: "스포츠/레저" },
-    { key: 4, value: "가구/인테리어" },
-    { key: 5, value: "도서/여행/취미" },
-    { key: 6, value: "반려동물/식물" },
-    { key: 7, value: "식품" },
-    { key: 8, value: "기타" },
-  ];
-
   const handleOnChangeSelectValue = (e) => {
     setItem({ ...item, category: e.target.getAttribute("value") });
 
@@ -168,40 +152,36 @@ const Form = () => {
   if (isLoading) <LoadingMessage />;
 
   const onSubmitHandler = async () => {
-    let formData = new FormData();
-    const dataSet = {
-      title,
-      category,
-      price: sendingPrice,
-      content: desc,
-    };
-    files.map((file) => formData.append("multipartFile", file));
-    formData.append(
-      "articlesDto",
-      new Blob([JSON.stringify(dataSet)], { type: "application/json" })
-    );
-    addCheck(formData);
-  };
+    if (title.trim().length === MIN_LENGTH)
+      setValidation((prev) => ({ ...prev, validTitle: false }));
 
-  const clickCheckHandler = () => {
-    title.trim().length === 0
-      ? setValidation((prev) => ({ ...prev, validTitle: false }))
-      : setValidation((prev) => ({ ...prev, validTitle: true }));
-    desc.trim().length > 14
-      ? setValidation((prev) => ({ ...prev, validLengthDesc: true }))
-      : setValidation((prev) => ({ ...prev, validLengthDesc: false }));
-    desc.trim().length === 0
-      ? setValidation((prev) => ({ ...prev, validDesc: false }))
-      : setValidation((prev) => ({ ...prev, validDesc: true }));
-    price.trim().length === 0
-      ? setValidation((prev) => ({ ...prev, validPrice: false }))
-      : setValidation((prev) => ({ ...prev, validPrice: true }));
-    files.length === 0
-      ? setValidation((prev) => ({ ...prev, validImage: false }))
-      : setValidation((prev) => ({ ...prev, validImage: true }));
-    category === "카테고리를 선택해 주세요."
-      ? setValidation((prev) => ({ ...prev, validCategory: false }))
-      : setValidation((prev) => ({ ...prev, validCategory: true }));
+    if (desc.trim().length < MIN_CONTENT_LENGTH)
+      setValidation((prev) => ({ ...prev, validDesc: false }));
+
+    if (price.trim().length === MIN_LENGTH)
+      setValidation((prev) => ({ ...prev, validPrice: false }));
+
+    if (files.length === MIN_LENGTH)
+      setValidation((prev) => ({ ...prev, validImage: false }));
+
+    if (category === "카테고리를 선택해 주세요.")
+      setValidation((prev) => ({ ...prev, validCategory: false }));
+
+    if (validTitle && validCategory && validPrice && validImage && validDesc) {
+      let formData = new FormData();
+      const dataSet = {
+        title,
+        category,
+        price: sendingPrice,
+        content: desc,
+      };
+      files.map((file) => formData.append("multipartFile", file));
+      formData.append(
+        "articlesDto",
+        new Blob([JSON.stringify(dataSet)], { type: "application/json" })
+      );
+      addCheck(formData);
+    }
   };
 
   return (
@@ -219,7 +199,7 @@ const Form = () => {
             />
           </label>
           <StImageList validImage={validImage}>
-            {files.length === 0 ? (
+            {files.length === MIN_LENGTH ? (
               <p>
                 사진을 등록해 주세요.
                 <br />
@@ -270,7 +250,7 @@ const Form = () => {
           </StTitleInput>
           <StSelectBox validCategory={validCategory}>
             <SelectBox
-              data={data}
+              data={CATEGORY_DATA}
               currentValue={category}
               handleOnChangeSelectValue={handleOnChangeSelectValue}
             />
@@ -287,14 +267,14 @@ const Form = () => {
           </StPriceInput>
         </StSecondWrap>
       </StFirstWrap>
-      <StThirdWrap validLengthDesc={validLengthDesc} validDesc={validDesc}>
+      <StThirdWrap validDesc={validDesc}>
         <Textarea onChangeHandler={handleChange} value={desc} name="desc" />
         <p>*15글자 이상 입력해 주세요.</p>
         <StButton isMobile={isMobile}>
           <Button
             children={"등록하기"}
             theme={checkVali ? "purple" : "disabled"}
-            onClickHandler={checkVali ? onSubmitHandler : clickCheckHandler}
+            onClickHandler={onSubmitHandler}
             isDisabled={isLoading ? true : false}
           />
         </StButton>
@@ -448,22 +428,21 @@ const StThirdWrap = styled.div`
         validDesc ? `${colors.grey3}` : `${colors.red}`};
     }
     border: 0.5px solid
-      ${({ validLengthDesc }) =>
-        validLengthDesc ? `${colors.grey3}` : `${colors.red}`};
+      ${({ validDesc }) => (validDesc ? `${colors.grey3}` : `${colors.red}`)};
   }
 
   p {
     font-size: ${fontSize.small12};
     letter-spacing: -3%;
-    color: ${({ validLengthDesc }) =>
-      validLengthDesc ? `${colors.grey3}` : `${colors.red}`};
+    color: ${({ validDesc }) =>
+      validDesc ? `${colors.grey3}` : `${colors.red}`};
     padding-top: 4px;
     text-align: right;
   }
 `;
 
 const StButton = styled.div`
-  position: fixed;
+  position: absolute;
   bottom: 30px;
   width: ${({ isMobile }) => (isMobile ? "100%" : "430px")};
   left: ${({ isMobile }) => (isMobile ? 0 : null)};
