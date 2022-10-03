@@ -14,9 +14,9 @@ const NickNameAlert = ({ message, handleOpenModal }) => {
           <MainArrow width="40px" height="40px" fill={`${colors.mainP}`} />
         </StIcon>
         <div>
-          {messageArr.map((val, index) => {
+          {messageArr.map((val) => {
             return (
-              <span key={index}>
+              <span key={val}>
                 {val}
                 <br />
               </span>
