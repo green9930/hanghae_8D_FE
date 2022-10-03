@@ -1,11 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { useMutation } from "react-query";
 import Button from "components/elements/Button";
 import { deleteMyProfile } from "api/mypageApi";
 import { removeCookie } from "api/cookies";
 import { colors, fontSize } from "styles/theme";
 import icons from "assets";
-import { useMutation } from "react-query";
 
 const UnregisterAlert = ({ handleOpenModal }) => {
   const [isUnregister, setIsUnregister] = useState(false);
@@ -32,9 +32,8 @@ const UnregisterAlert = ({ handleOpenModal }) => {
         <StMessage isUnregister={isUnregister}>
           <StUnregister>회원 탈퇴</StUnregister>
           <span>
-            탈퇴하면 재가입 할 수 없습니다.
-            <br />
-            정말 탈퇴하시겠어요?😥
+            해당 이메일 계정으로는 <br /> 재가입 할 수 없습니다.
+            <br /> 정말 탈퇴하시겠어요?😥
           </span>
         </StMessage>
       )}
@@ -66,12 +65,12 @@ const StMessage = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: ${({ isUnregister }) => (isUnregister ? "24px" : "18px")};
+  gap: ${({ isUnregister }) => (isUnregister ? "24px" : "6px")};
   padding-top: ${({ isUnregister }) => (isUnregister ? "10px" : "14px")};
 
   span {
     text-align: center;
-    font-size: ${fontSize.large20};
+    font-size: ${fontSize.regular18};
   }
 `;
 

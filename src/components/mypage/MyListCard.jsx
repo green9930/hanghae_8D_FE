@@ -3,16 +3,12 @@ import styled from "styled-components";
 import { colors, fontSize } from "styles/theme";
 
 const MyListCard = ({ item }) => {
+  const navigate = useNavigate();
   const { articlesId, title, price, selectedPrice, image, process, point } =
     item;
-  const navigate = useNavigate();
 
   return (
-    <StMyListCard
-      onClick={
-        process === "진행중" ? () => navigate(`/detail/${articlesId}`) : null
-      }
-    >
+    <StMyListCard onClick={() => navigate(`/detail/${articlesId}`)}>
       <img alt="thumbnail" src={image} />
       <StMainInfo process={process}>
         <h2>{title}</h2>
@@ -37,6 +33,7 @@ const StMyListCard = styled.div`
   gap: 8px;
   height: 70px;
   padding: 15px 35px;
+  cursor: pointer;
 
   img {
     width: 40px;
