@@ -12,8 +12,8 @@ const RegisterAlert = ({ message, handleOpenModal }) => {
       <StMessage>
         <IconOops width="40px" height="40px" fill={`${colors.mainP}`} />
         <StSelectMessage>
-          {message.split("\n").map((val, idx) => (
-            <React.Fragment key={idx}>
+          {message.split("\n").map((val) => (
+            <React.Fragment key={val}>
               {val} <br />
             </React.Fragment>
           ))}
