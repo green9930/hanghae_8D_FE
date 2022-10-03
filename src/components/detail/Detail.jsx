@@ -14,7 +14,7 @@ const Detail = ({ page }) => {
 
   /* 상세 게시글 GET --------------------------------------------------------------- */
   const { isRefetching, isLoading, data } = useQuery(
-    ["detailCheck", () => getDetailCheck(page)],
+    "detailCheck",
     () => getDetailCheck(page),
     {
       onSuccess: ({ data }) => setDetailCheckState(data),
