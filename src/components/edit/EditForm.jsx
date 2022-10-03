@@ -400,6 +400,7 @@ const StPreview = styled.div`
     top: 50%;
     transform: translateY(-50%);
     left: 35px;
+    cursor: pointer;
   }
 `;
 
