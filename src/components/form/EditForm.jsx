@@ -30,7 +30,7 @@ import {
   MAX_RESIZE_WIDTH_HEIGHT,
   MIN_CONTENT_LENGTH,
   MIN_LENGTH,
-} from "./formVali";
+} from "components/form/formVali";
 
 const EditForm = () => {
   const [files, setFiles] = useState([]); // 추가된 사진 목록록
@@ -182,7 +182,6 @@ const EditForm = () => {
     /* SUBMIT EDIT FORM --------------------------------------------------------- */
     const handleSubmit = (e) => {
       e.preventDefault();
-
       if (!editText.title.trim().length) setIsValidTitle(false);
       if (!editText.price.trim().length) setIsValidPrice(false);
       if (editText.content.length < MIN_CONTENT_LENGTH)
@@ -517,4 +516,5 @@ const StSendBtn = styled.div`
     width: 100%;
   }
 `;
+
 export default EditForm;
