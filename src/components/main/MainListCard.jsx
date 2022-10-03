@@ -3,6 +3,7 @@ import styled from "styled-components";
 import handleRankColor from "utils/handleRankColor";
 import { colors } from "styles/theme";
 import { fontSize } from "styles/theme";
+import { getCookie } from "api/cookies";
 
 const MainListCard = ({ data }) => {
   const navigate = useNavigate();
@@ -19,13 +20,18 @@ const MainListCard = ({ data }) => {
     image,
     selectedPrice,
     userRank,
+    commentCount,
   } = data; //메인리스트에서 받아 온 data 구조 분해
 
   return (
     <StMainContainer>
       <StMainWrap
         selectedPrice={selectedPrice}
-        onClick={() => navigate(`/detail/${articlesId}`)}
+        onClick={() =>
+          getCookie("accessToken")
+            ? navigate(`/detail/${articlesId}`)
+            : navigate("/login")
+        }
       >
         <StImage>
           <StMainListImg src={image} alt="이미지" />
@@ -46,18 +52,21 @@ const MainListCard = ({ data }) => {
             <span>{userRank}</span>
             {nickName}
           </StSeller>
-          <StPrice selectedPrice={selectedPrice}>
-            {selectedPrice ? (
-              <div>
-                <StSelectedPrice>채택가</StSelectedPrice>
-                <span>{selectedPrice}</span>원
-              </div>
-            ) : (
-              <div>
-                <span>{price}</span>원
-              </div>
-            )}
-          </StPrice>
+          <StLastLine>
+            <p>댓글 {commentCount}</p>
+            <StPrice selectedPrice={selectedPrice}>
+              {selectedPrice ? (
+                <div>
+                  <StSelectedPrice>채택가</StSelectedPrice>
+                  <span>{selectedPrice}</span>원
+                </div>
+              ) : (
+                <div>
+                  <span>{price}</span>원
+                </div>
+              )}
+            </StPrice>
+          </StLastLine>
         </StMainDesc>
       </StMainWrap>
     </StMainContainer>
@@ -121,10 +130,16 @@ const StSeller = styled.div`
     padding-right: 4px;
   }
 `;
-
+const StLastLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+  p {
+    font-size: ${fontSize.small10};
+    letter-spacing: -3%;
+    color: ${colors.grey3};
+  }
+`;
 const StPrice = styled.div`
-  text-align: right;
-
   div {
     font-size: ${fontSize.small10};
     letter-spacing: -0.5px;

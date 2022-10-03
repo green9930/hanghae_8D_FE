@@ -2,14 +2,19 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "styles/theme";
 import { fontSize } from "styles/theme";
+import { getCookie } from "api/cookies";
 
 const MainCarouselCard = ({ data }) => {
   const { articlesId, title, price, image } = data;
   const navigate = useNavigate();
 
-  const onClickDetail = () => navigate(`/detail/${articlesId}`);
   const MAX_TITLE_LENGTH = 6;
   const MIN_TITLE_LENGTH = 0; //6자리까지 보이고 나머지는 ⋯
+
+  const onClickDetail = () =>
+    getCookie("accessToken")
+      ? navigate(`/detail/${articlesId}`)
+      : navigate("/login");
 
   return (
     <StImgBox onClick={onClickDetail}>
