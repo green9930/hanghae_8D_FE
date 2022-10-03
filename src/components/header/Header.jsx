@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useQueryClient } from "react-query";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Button from "components/elements/Button";
 import {
@@ -16,10 +16,10 @@ import { colors, fontSize } from "styles/theme";
 import icons from "assets";
 
 const Header = ({ title }) => {
-  const setMyListState = useSetRecoilState(myListState);
-  const setAlarmListState = useSetRecoilState(alarmListState);
+  const [myList, setMyListState] = useRecoilState(myListState);
+  const [alarmList, setAlarmListState] = useRecoilState(alarmListState);
+  const [nickName, setNickNameState] = useRecoilState(nickNameState);
   const setTitleState = useSetRecoilState(myPageTitleState);
-  const setNickNameState = useSetRecoilState(nickNameState);
   const newAlarms = useRecoilValue(newAlarmsState);
   const isLogin = useRecoilValue(loginState);
 
@@ -43,11 +43,18 @@ const Header = ({ title }) => {
 
   return (
     <StHeader>
-      <Button variant="image" onClickHandler={clickLogo}>
+      <Button variant="image" name="checkLogo" onClickHandler={clickLogo}>
         <HeaderLogo />
       </Button>
       <StHeaderTitle>{title}</StHeaderTitle>
-      <Button variant="image" onClickHandler={clickNavigator}>
+      <Button
+        variant="image"
+        name="mypageLogo"
+        onClickHandler={clickNavigator}
+        isDisabled={
+          !nickName && !alarmList && !myList && location.pathname === "/mypage"
+        }
+      >
         {isLogin && newAlarms ? (
           <MyPageAlarm />
         ) : (

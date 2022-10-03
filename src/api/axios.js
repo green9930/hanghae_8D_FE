@@ -38,18 +38,14 @@ tokenInstance.interceptors.request.use(
 tokenInstance.interceptors.response.use(
   (response) => {
     // 응답 데이터가 있는 작업 수행 : STATUS CODE 2XX
-    // console.log("INSTANCE RESPONSE", response);
     return response;
   },
   async (error) => {
     // 응답 오류가 있는 작업 수행 : STATUS CODE WITHOUT 2XX
-    // console.log("RESPONSE INTERCEPTORS : FAILED", error);
     try {
       const { message, response, config } = error;
       const originalRequest = config;
-
-      // ACCESSTOKEN FAILED : 405
-      // REFRESHTOKEN FAILED : 403
+      // ACCESSTOKEN FAILED : 405 / REFRESHTOKEN FAILED : 403
       /* GET ACCESSTOKEN FAILED --------------------------------------------------- */
       if (message === "Network Error" || response.data.errorCode === "405") {
         const refreshToken = getCookie("refreshToken");
@@ -64,11 +60,6 @@ tokenInstance.interceptors.response.use(
             },
           });
           /* CHANGE ACCESSTOKEN ------------------------------------------------------- */
-          // console.log(
-          //   "NEW ACCESSTOKEN AUTHORIZATION",
-          //   response.headers.authorization
-          // );
-          // console.log("REFRESHTOKEN SUCCESSED : 405");
           originalRequest.headers.Authorization =
             response.headers.authorization;
           removeCookie("accessToken");
@@ -76,25 +67,19 @@ tokenInstance.interceptors.response.use(
           return axios(originalRequest);
         } catch (error) {
           /* CHANGE ACCESSTOKEN FAILED ------------------------------------------------ */
-          // console.log("REFRESHTOKEN FAILED", error.response);
           removeCookie("accessToken");
           removeCookie("refreshToken");
           window.location.href = "/";
         }
         /* GET REFRESHTOKEN FAILED -------------------------------------------------- */
       } else if (response.data.errorCode === "403") {
-        // console.log("RESPONSE INTERCEPTORS : FAILED 403");
         removeCookie("accessToken");
         removeCookie("refreshToken");
         window.location.href = "/";
       }
     } catch (error) {
-      // console.log("INTERCEPTOR ERROR : ", error);
-      // removeCookie("accessToken");
-      // removeCookie("refreshToken");
       window.location.href = "/";
     }
-    // console.log("RESPONSE INTERCEPTOR ERROR : ?????");
     return Promise.reject(error);
   }
 );

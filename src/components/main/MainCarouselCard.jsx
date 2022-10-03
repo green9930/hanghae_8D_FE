@@ -33,6 +33,7 @@ const StImgBox = styled.div`
   min-height: 160px;
   border-radius: 10px;
   filter: drop-shadow(0px 4px 13px rgba(0, 0, 0, 0.25));
+  cursor: pointer;
 `;
 
 const StTitle = styled.div`

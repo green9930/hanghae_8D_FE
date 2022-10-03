@@ -379,6 +379,9 @@ const StPreview = styled.div`
   justify-content: left;
   height: 70px;
   align-items: center;
+  svg {
+    cursor: pointer;
+  }
 
   input {
     display: none;

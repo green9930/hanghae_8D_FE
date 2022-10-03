@@ -27,6 +27,8 @@ const SelectBox = ({ data, size, currentValue, handleOnChangeSelectValue }) => {
       onClick={() => setShowOptions((prev) => !prev)}
       ref={modalRef}
       size={size}
+      tabIndex={0}
+      onKeyDown={() => setShowOptions((prev) => !prev)}
     >
       <StArrow size={size}>
         <IconArrow
@@ -73,6 +75,7 @@ const StSelectBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  outline: none;
   ${({ size }) => {
     return (
       size === "small" &&
@@ -108,6 +111,7 @@ const StLabel = styled.label`
   text-align: center;
   width: 100%;
   padding-right: 7px;
+  cursor: pointer;
 
   span {
     text-align: center;
