@@ -48,6 +48,7 @@ const EditForm = () => {
   const MAX_IMG_SIZE = 10000000;
   const MAX_TITLE_LENGTH = 30;
   const MAX_CONTENT_LENGTH = 400;
+  const MIN_CONTENT_LENGTH = 15;
   const VALID_IMAGE_TYPE = ["png", "jpg", "jpeg"];
   const selectboxData = [
     { key: 1, value: "디지털/생활가전" },
@@ -188,13 +189,14 @@ const EditForm = () => {
 
       if (!editText.title.trim().length) setIsValidTitle(false);
       if (!editText.price.trim().length) setIsValidPrice(false);
-      if (!editText.content.trim().length) setIsValidContent(false);
+      if (editText.content.length < MIN_CONTENT_LENGTH)
+        setIsValidContent(false);
       if (!previewFiles.length) setOpenImageNumberAlert(true);
 
       if (
         editText.title.trim().length &&
         editText.price.trim().length &&
-        editText.content.trim().length &&
+        editText.content.length > MIN_CONTENT_LENGTH &&
         previewFiles.length
       ) {
         const textData = {

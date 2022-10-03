@@ -1,5 +1,5 @@
 import MobileLayout from "components/layout/MobileLayout";
-import EditForm from "components/edit/EditForm";
+import EditForm from "components/form/EditForm";
 
 const EditPage = () => {
   return (
