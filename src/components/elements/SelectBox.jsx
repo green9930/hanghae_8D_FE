@@ -82,7 +82,7 @@ const StSelectBox = styled.div`
       css`
         height: 30px;
         border-radius: 30px;
-        width: 120px;
+        width: 110px;
         border: 1px solid ${colors.grey3};
         padding: 3px 5px;
         @media screen and (max-width: 350px) {
@@ -131,6 +131,7 @@ const StLabel = styled.label`
               : `${colors.black}`};
           font-size: ${fontSize.small12};
           padding-right: 4px;
+          width: 110px;
           font-family: "twayfly", "Noto Sans KR", sans-serif;
         `
       );
@@ -159,7 +160,7 @@ const StSelectOptions = styled.ul`
       css`
         top: 29px;
         height: 178px;
-        width: 120px;
+        width: 110px;
         border: ${({ show }) => (show ? ` 1px solid ${colors.grey3}` : 0)};
         @media screen and (max-width: 350px) {
           width: 100px;

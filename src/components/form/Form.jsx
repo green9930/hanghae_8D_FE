@@ -167,7 +167,13 @@ const Form = () => {
     if (category === "카테고리를 선택해 주세요.")
       setValidation((prev) => ({ ...prev, validCategory: false }));
 
-    if (validTitle && validCategory && validPrice && validImage && validDesc) {
+    if (
+      title.trim().length &&
+      desc.trim().length >= MIN_CONTENT_LENGTH &&
+      price.trim().length &&
+      files.length &&
+      category !== "카테고리를 선택해 주세요."
+    ) {
       let formData = new FormData();
       const dataSet = {
         title,
@@ -442,7 +448,7 @@ const StThirdWrap = styled.div`
 `;
 
 const StButton = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 30px;
   width: ${({ isMobile }) => (isMobile ? "100%" : "430px")};
   left: ${({ isMobile }) => (isMobile ? 0 : null)};

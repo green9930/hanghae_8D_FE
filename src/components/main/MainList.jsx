@@ -29,7 +29,9 @@ const MainList = () => {
     pro: "all",
   });
 
-  let payload = { category: active.cate, process: active.pro };
+  const { cate, pro } = active;
+
+  let payload = { category: cate, process: pro };
 
   const datas = [
     { key: 1, value: "전체" },
@@ -44,18 +46,18 @@ const MainList = () => {
   ];
 
   const handleOnChangeSelectValue = (e) => {
-    setActive({ cate: e.target.getAttribute("value"), pro: active.pro });
-    payload = { category: e.target.getAttribute("value"), process: active.pro };
+    setActive({ cate: e.target.getAttribute("value"), pro: pro });
+    payload = { category: e.target.getAttribute("value"), process: pro };
   };
 
   const handleActiveStatus = (name) => {
-    setActive({ pro: name, cate: active.cate });
-    payload = { category: active.cate, process: name };
+    setActive({ pro: name, cate: cate });
+    payload = { category: cate, process: name };
   };
   useEffect(() => {
     remove();
     refetch();
-  }, [active.cate, active.pro]);
+  }, [cate, pro]);
 
   /* -------------------------------- 데이터 read -------------------------------- */
   const { ref, inView } = useInView({
@@ -109,11 +111,11 @@ const MainList = () => {
         <SelectBox
           size="small"
           data={datas}
-          currentValue={active.cate}
+          currentValue={cate}
           handleOnChangeSelectValue={handleOnChangeSelectValue}
         />
         <StMainBtns>
-          <StAllBtn active={active.pro} name="all">
+          <StAllBtn active={pro} name="all">
             <Button
               children="전체 보기"
               size="small_round"
@@ -122,7 +124,7 @@ const MainList = () => {
               onClickHandler={() => handleActiveStatus("all")}
             />
           </StAllBtn>
-          <StProcessBtn active={active.pro} name="process">
+          <StProcessBtn active={pro} name="process">
             <Button
               children="진행중"
               size="small_round"
@@ -131,7 +133,7 @@ const MainList = () => {
               onClickHandler={() => handleActiveStatus("process")}
             />
           </StProcessBtn>
-          <StDoneBtn active={active.pro} name="done">
+          <StDoneBtn active={pro} name="done">
             <Button
               children="완료"
               size="small_round"
@@ -178,9 +180,9 @@ const StSelectList = styled.div`
   top: 64px;
   display: flex;
   height: 55px;
-  gap: 5px;
+  gap: 3px;
   justify-content: space-between;
-  padding-left: 3%;
+  padding-left: 2%;
   align-items: center;
   background-color: ${colors.grey7};
   @media screen and (max-width: 350px) {
@@ -190,7 +192,7 @@ const StSelectList = styled.div`
 
 const StMainBtns = styled.div`
   display: flex;
-  padding-right: 3%;
+  padding-right: 2%;
   gap: 4px;
   button {
     font-family: "twayfly", "Noto Sans KR", sans-serif;
