@@ -191,7 +191,7 @@ const EditForm = () => {
       if (
         editText.title.trim().length &&
         editText.price.trim().length &&
-        editText.content.length > MIN_CONTENT_LENGTH &&
+        editText.content.length >= MIN_CONTENT_LENGTH &&
         previewFiles.length
       ) {
         const textData = {
