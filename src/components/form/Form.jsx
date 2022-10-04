@@ -169,7 +169,7 @@ const Form = () => {
 
     if (
       title.trim().length &&
-      desc.trim().length > MIN_CONTENT_LENGTH &&
+      desc.trim().length >= MIN_CONTENT_LENGTH &&
       price.trim().length &&
       files.length &&
       category !== "카테고리를 선택해 주세요."
@@ -448,7 +448,7 @@ const StThirdWrap = styled.div`
 `;
 
 const StButton = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 30px;
   width: ${({ isMobile }) => (isMobile ? "100%" : "430px")};
   left: ${({ isMobile }) => (isMobile ? 0 : null)};
