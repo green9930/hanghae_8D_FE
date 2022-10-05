@@ -7,6 +7,7 @@ import { RecoilRoot } from "recoil";
 import App from "./App";
 import ScrollToTop from "components/etc/ScrollToTop";
 import GlobalStyle from "styles/GlobalStyle";
+import * as serviceWorkerRegistration from "serviceWorkerRegistration";
 
 const queryClient = new QueryClient();
 
@@ -25,3 +26,5 @@ root.render(
     </BrowserRouter>
   </>
 );
+
+serviceWorkerRegistration.register();
