@@ -44,18 +44,19 @@
 - 책첵 내 가장 🎉핫한 게시글을 상단에서 확인할 수 있어요!
 - 원하는 상품의 🗂카테고리별 책정가 문의를 진행 중, 진행 완료로 구분해서 찾아볼 수 있어요.
   
-![mainpage](https://user-images.githubusercontent.com/107227445/194005176-f521367e-09b1-4d46-9ca3-6dab52a34e27.jpeg)
 ![mainpage2](https://user-images.githubusercontent.com/107227445/194006660-f05c5e43-e8a5-4dec-a34a-1b4a84c7fa41.jpeg)
-
 
 </details>
 
 <details>
-<summary><b>🎈 상세 페이지</b></summary>
+<summary><b>📒 상세 페이지</b></summary>
+
+- 본인이 생각하는 적정가를 올리고 🗣️ 의견도 나눌 수 있어요.
+- 상품 사진을 클릭해서 더 🔍 크~~~~게 볼 수 있어요.
+- 적정가를 ✅ 채택 할 수 있어요!
   
-- 책첵 내 가장 🎉핫한 게시글을 상단에서 확인할 수 있어요!
-- 원하는 상품의 🗂카테고리별 책정가 문의를 진행 중, 진행 완료로 구분해서 찾아볼 수 있어요.
-  
+![detailpage2](https://user-images.githubusercontent.com/107227445/194010908-884e8004-2ad8-49d2-bb2f-c4201750cc2d.jpeg)
+![detailpage1](https://user-images.githubusercontent.com/107227445/194009631-f669f8e7-6f64-4487-ab0e-9eaac87e0ea3.jpeg)
 
 </details>
 
@@ -68,13 +69,24 @@
   
 </details>
 
+
+  
 <details>
+<summary><b> ✏️ 게시글 수정 페이지</b></summary>
+  
+-  게시글을 수정 할 수 있어요! 
+  
+![editpage](https://user-images.githubusercontent.com/107227445/194011802-313a4d35-6521-47a0-bf2c-4671c8c5635b.jpeg)
+  
+</details>
+
+<details> 
+  
 <summary><b>🔔 실시간 알림</b></summary>
   
 - 작성한 글에 댓글이 달리면 접속해 있을 때도, 접속하지 않았을 때도 실시간으로 확인할 수 있어요.
   
-  <img width="319" alt="스크린샷 2022-10-05 오전 1 42 17" src="https://user-images.githubusercontent.com/107227445/193877864-3cbc1d87-3484-4c6f-a5fb-6dabf36918a9.png">
-  <img width="321" alt="스크린샷 2022-10-05 오전 1 05 23" src="https://user-images.githubusercontent.com/107227445/193870311-d03ae4b9-360b-458d-9f2f-601818b6a66a.png">
+![alarm](https://user-images.githubusercontent.com/107227445/194009505-e25ae1ae-292b-4670-84be-778d6db4b02d.jpeg)
 
 </details>
 
@@ -84,10 +96,8 @@
 - 본인의 📈 포인트 현황을 확인할 수 있어요.
 - 내가 쓴 🗒 게시물을 볼 수 있어요.
 - 💌 이메일 수신 동의 여부를 변경할 수 있어요.
- 
-<img width="321" alt="스크린샷 2022-10-05 오전 1 04 12" src="https://user-images.githubusercontent.com/107227445/193870198-c599bcd3-7ac1-470c-9d33-e255f681696c.png">
-<img width="321" alt="스크린샷 2022-10-05 오전 1 04 40" src="https://user-images.githubusercontent.com/107227445/193870989-b4a01a8a-e166-44e6-a162-865350a5e0d4.png">
-<img width="320" alt="스크린샷 2022-10-05 오전 1 05 42" src="https://user-images.githubusercontent.com/107227445/193871036-16514ebf-5ed9-43b3-8f05-dcd4e9de8066.png">
+
+  ![mypage](https://user-images.githubusercontent.com/107227445/194009458-cb5a23d1-a3ff-4dd4-a076-9fce83e97e77.jpeg)
 
 </details>
 
@@ -140,14 +150,17 @@
 
 ❓ <b>문제상황</b>
 <br/>
- 외부에서 상세 게시글을 눌렀을 때 이전에 열람했던 게시글과 댓글이 화면에 일시적으로 나타났다가 사라지는 문제가 있었습니다. 
+외부에서 상세 게시글을 눌렀을 때 이전에 열람했던 게시글과 댓글이 화면에 일시적으로 나타났다가 사라지는 문제가 있었습니다. 
 
 `redux`로 상태 관리할 땐 컴포넌트가 unmount될 때 clear함수를 사용해서 이전 게시글을 지울 수 있었습니다. `react-query`를 사용하면서 `useQuery`의 `isLoading`값으로 로딩 상태를 제어했는데 로딩이 끝난 후 이전 게시글이 잠시 나타난 뒤 클릭한 게시글이 나타났고, `react-query`에서 이전 게시글을 지울 방법을 고민하게 되었습니다.
 </br>
+![trouble1](https://user-images.githubusercontent.com/107227445/194015192-fb65401f-5300-4a65-881b-7dad6909bf89.gif)
 
 ✔ <b>해결방안</b>
 <br/>
 react query의 useQuery 중 isRefetching 또는 isLoading 상태가 true이면 즉, refetch하거나 loading중인 상태면 게시글이 보이지 않도록 했습니다.
+</br>
+![solution1](https://user-images.githubusercontent.com/107227445/194015228-a448cb2f-aae9-4b9a-91b8-441c947b65cc.gif)
 
 </details>
 
@@ -162,12 +175,15 @@ react query의 useQuery 중 isRefetching 또는 isLoading 상태가 true이면 �
 
 또한 마이 페이지 로고나 같은 카테고리 버튼을 클릭할 때마다 불필요하게 동일한 정보를 GET 요청하는 문제가 있었습니다.
 </br>
+![trouble2](https://user-images.githubusercontent.com/107227445/194013416-2c0557e1-9fe9-4256-8259-bb97ae16f53d.gif)
 
 ✔ <b>해결방안</b>
 <br/>
 게시글 작성 및 수정의 경우 `react query`의 `isLoading`으로 API 요청 중이면 전송 버튼을 `disabled`처리해 중복 클릭을 방지했습니다. 
 
 마이 페이지 로고, 카테고리 버튼의 중복 클릭은 `useState`, `useEffect`, `useRecoilState` 등 상태 관리를 사용해 동일한 상태일 때 같은 요청을 보낼 수 없도록 했습니다.
+</br>
+![solution2](https://user-images.githubusercontent.com/107227445/194014680-be3b6038-0747-4ff1-bee6-bf2e91b5753f.gif)
 
 </details>
 
