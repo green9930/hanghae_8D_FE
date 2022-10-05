@@ -44,8 +44,7 @@
 - 책첵 내 가장 🎉핫한 게시글을 상단에서 확인할 수 있어요!
 - 원하는 상품의 🗂카테고리별 책정가 문의를 진행 중, 진행 완료로 구분해서 찾아볼 수 있어요.
   
-![mainpage](https://user-images.githubusercontent.com/107227445/194003878-175d888b-68de-4f6e-93b6-4f29757b2c6c.jpeg)
-
+![mainpage](https://user-images.githubusercontent.com/107227445/194005176-f521367e-09b1-4d46-9ca3-6dab52a34e27.jpeg)
 
 </details>
 
@@ -53,10 +52,9 @@
 <summary><b>📝 게시글 작성 페이지</b></summary>
   
 - 🥕 마켓에 물건 올리기 전에 책정가 문의를 작성 할 수 있어요! 
-<img width="319" alt="스크린샷 2022-10-04 오후 11 56 51" src="https://user-images.githubusercontent.com/107227445/193861007-d8745406-aef4-493f-9351-f917ee83d5ba.png">
-<img width="319" alt="스크린샷 2022-10-04 오후 11 57 05" src="https://user-images.githubusercontent.com/107227445/193867980-a96cab93-ad2d-4177-b54c-e6085c255b45.png">
-<img width="319" alt="스크린샷 2022-10-05 오전 12 37 58" src="https://user-images.githubusercontent.com/107227445/193868840-7ab10342-5004-4203-9a64-c10af06adf95.png">
-
+  
+![formpage](https://user-images.githubusercontent.com/107227445/194005683-6aae7f5d-192b-4157-b84f-f5aff71f85a5.jpeg)
+  
 </details>
 
 <details>
