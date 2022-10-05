@@ -1,7 +1,15 @@
 # CHACK CHECK
 
+
+
 ![Frame 33686](https://user-images.githubusercontent.com/107227445/193818873-d2192561-f749-4ec5-a904-e58777c768f2.png)
+
 **'책첵✅'은 중고 거래 전 내가 판매하고 싶은 물건의 적정가를 체크해볼 수 있는 서비스입니다.**
+
+🥕마켓에 물건 올리고 연락이 오지 않아 끌올만 했던 적 있으신가요? <br/>
+🙋‍♂️3년 사용한 아이패드가 1년 사용한 친구 아이패드보다 깨끗하면 더 비싸게 팔릴까요?<br/>
+🙋‍♀️혹은 중고 물품을 사려고 할 때 그 가격이 합리적인지 고민해 보신 적 있지 않으신가요?<br/>
+🙆‍♂️이런 걱정 고민들 책첵✅ 에서 해결하세요!🙆‍♂️<br/>
 <br/>
 <br/>
 ➡️ [책첵✅ 방문하기](https://www.chackcheck99.com/)
@@ -101,6 +109,19 @@
   <img src="https://img.shields.io/badge/-aws%20amplify-FF9900?style=for-the-badge&logo=aws%20amplify&logoColor=white">
 <img src="https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white">
 </p>
+
+<br/>
+
+
+| 이름       | 포지션       | 깃허브 주소        | 담당                             |
+| ---------- | ------------ | ------------------------------ |  ------------------------------ |
+| **배근아** | `프론트엔드` | https://github.com/green9930 |1. 상세 페이지 2. 마이 페이지 3. 수정 페이지 <br/> 4. 소셜 로그인 5. 실시간 알림 
+| **김단비** | `프론트엔드` | https://github.com/Danbee-Kim| 1. 메인 페이지 2. 작성 페이지  3. 무한 스크롤 <br/> 4. 카테고리 검색 5. 이미지 압축
+
+
+<br/>
+
+
 <hr/>
 
 ### 🎯 Trouble Shooting
