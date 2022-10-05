@@ -1,10 +1,9 @@
-# CHACK CHECK
-
+# <img width="50" src="https://user-images.githubusercontent.com/107227445/193999245-4344f8b9-1da4-4e1b-830e-e916fde4e39c.svg"> CHACK CHECK
 
 
 ![Frame 33686](https://user-images.githubusercontent.com/107227445/193818873-d2192561-f749-4ec5-a904-e58777c768f2.png)
 
-**'책첵✅'은 중고 거래 전 내가 판매하고 싶은 물건의 적정가를 체크해볼 수 있는 서비스입니다.**
+**'책첵<img width="20" src="https://user-images.githubusercontent.com/107227445/193999245-4344f8b9-1da4-4e1b-830e-e916fde4e39c.svg">'은 중고 거래 전 내가 판매하고 싶은 물건의 적정가를 체크해볼 수 있는 서비스입니다.**
 
 🥕마켓에 물건 올리고 연락이 오지 않아 끌올만 했던 적 있으신가요? <br/>
 🙋‍♂️3년 사용한 아이패드가 1년 사용한 친구 아이패드보다 깨끗하면 더 비싸게 팔릴까요?<br/>
@@ -12,7 +11,7 @@
 🙆‍♂️이런 걱정 고민들 책첵✅ 에서 해결하세요!🙆‍♂️<br/>
 <br/>
 <br/>
-➡️ [책첵✅ 방문하기](https://www.chackcheck99.com/)
+➡️ [책첵<img width="20" src="https://user-images.githubusercontent.com/107227445/193999245-4344f8b9-1da4-4e1b-830e-e916fde4e39c.svg"> 방문하기](https://www.chackcheck99.com/)
 <hr/>
 
 ### 🛠 Architecture
@@ -45,8 +44,8 @@
 - 책첵 내 가장 🎉핫한 게시글을 상단에서 확인할 수 있어요!
 - 원하는 상품의 🗂카테고리별 책정가 문의를 진행 중, 진행 완료로 구분해서 찾아볼 수 있어요.
   
-<img width="320" alt="스크린샷 2022-10-04 오후 11 55 56" src="https://user-images.githubusercontent.com/107227445/193855399-b6fb5448-d92a-4c92-a10c-a30dbf64e2eb.png">
-<img width="320" alt="스크린샷 2022-10-04 오후 11 56 14" src="https://user-images.githubusercontent.com/107227445/193855439-b1c21a23-96ed-46ca-a54a-b24aa33dba48.png">
+![mainpage](https://user-images.githubusercontent.com/107227445/194003878-175d888b-68de-4f6e-93b6-4f29757b2c6c.jpeg)
+
 
 </details>
 
