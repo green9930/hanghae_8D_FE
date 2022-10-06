@@ -4,9 +4,9 @@
   "display": "standalone",
   "start_url": "https://www.chackcheck99.com",
   "lang": "ko",
-  "orientation": "portait",
-  "theme_color": "none",
-  "background_color": "none",
+  "orientation": "portrait",
+  "theme_color": "#9083F7",
+  "background_color": "#FFFFFF",
   "icons": [
     {
       "src": "./icons/apple-touch-icon-57x57.png",
