@@ -1,4 +1,6 @@
 // import { useEffect } from "react";
+import LoadingMessage from "components/etc/LoadingMessage";
+import { Suspense } from "react";
 import { BrowserView, MobileView } from "react-device-detect";
 import Router from "shared/Router";
 import styled from "styled-components";
@@ -9,7 +11,9 @@ const App = () => {
     <>
       <BrowserView>
         <ResponsiveContainer>
-          <Router />
+          <Suspense fallback={<LoadingMessage />}>
+            <Router />
+          </Suspense>
         </ResponsiveContainer>
       </BrowserView>
       <MobileView>
