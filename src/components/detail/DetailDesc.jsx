@@ -5,16 +5,13 @@ import { colors } from "styles/theme";
 
 const DetailDesc = ({
   nickName,
-  articlesId,
   title,
   content,
   category,
   price,
   selectedPrice,
-  isMyArticles,
   userRank,
   process,
-  createdAt,
   descRef,
 }) => {
   return (
