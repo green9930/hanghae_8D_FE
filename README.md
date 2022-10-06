@@ -12,6 +12,8 @@
 <br/>
 <br/>
 ➡️ [책첵<img width="20" src="https://user-images.githubusercontent.com/107227445/193999245-4344f8b9-1da4-4e1b-830e-e916fde4e39c.svg"> 방문하기](https://www.chackcheck99.com/)
+<br/>
+➡️ [프로젝트 발표 영상](https://www.youtube.com/watch?v=D5EVLVwpUpQ)
 <hr/>
 
 ### 🥇 Members
