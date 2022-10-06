@@ -30,9 +30,15 @@ const DeleteAlert = ({
   /* 게시글 DELETE --------------------------------------------------------------- */
   const { mutate: detailDeleteMutate } = useMutation(deleteDetailCheck, {
     onSuccess: () => {
-      queryClient.invalidateQueries("detailCheck");
       handleOpenModal();
       navigate("/");
+    },
+    // 게시글 삭제 중 회원 정보 만료된 경우
+    onError: ({ response }) => {
+      setDeleteData({
+        isError: true,
+        deleteMessage: response.data.errorMessage,
+      });
     },
   });
   /* 댓글 DELETE ---------------------------------------------------------------- */
