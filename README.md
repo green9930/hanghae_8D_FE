@@ -26,7 +26,7 @@
 <hr/>
 
 ### 🛠 Architecture
-![chackcheck_architecture](https://user-images.githubusercontent.com/107227445/193808705-4a69dcd0-4f1d-4921-9ee0-c5031f7b01af.png)
+![chackcheck_service_architecture](https://user-images.githubusercontent.com/69451758/194438733-4f815fa1-81d6-4cb3-a815-5fc57cc49200.png)
 
 <hr/>
 
