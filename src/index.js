@@ -8,8 +8,14 @@ import App from "./App";
 import ScrollToTop from "components/etc/ScrollToTop";
 import GlobalStyle from "styles/GlobalStyle";
 import * as serviceWorkerRegistration from "serviceWorkerRegistration";
+import LoadingMessage from "components/etc/LoadingMessage";
+import { Suspense } from "react";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    suspense: true,
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,7 +26,9 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <RecoilRoot>
           <ReactQueryDevtools initialIsOpen={true} />
-          <App />
+          <Suspense fallback={<LoadingMessage />}>
+            <App />
+          </Suspense>
         </RecoilRoot>
       </QueryClientProvider>
     </BrowserRouter>

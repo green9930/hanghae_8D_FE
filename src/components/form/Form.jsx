@@ -35,10 +35,6 @@ const Form = () => {
   const navigate = useNavigate();
   const { IconPlus, IconX } = icons;
 
-  const [openImageAlert, setOpenImageAlert] = useState(false);
-  const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
-  const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
-
   const [item, setItem] = useState({
     title: "",
     category: "카테고리를 선택해 주세요.",
@@ -50,6 +46,11 @@ const Form = () => {
 
   const [files, setFiles] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
+
+  /* ------------------------------- IMAGE ALERT ------------------------------ */
+  const [openImageAlert, setOpenImageAlert] = useState(false);
+  const [openImageNumberAlert, setOpenImageNumberAlert] = useState(false);
+  const [openImageFileAlert, setOpenImageFileAlert] = useState(false);
 
   /* ---------------------------------- 유효성검사 --------------------------------- */
   const [validation, setValidation] = useState({
@@ -121,9 +122,8 @@ const Form = () => {
         alert("이미지를 불러올 수 없습니다");
       }
     });
-    files.length >= MIN_LENGTH
-      ? setValidation({ ...validation, validImage: true })
-      : setValidation({ ...validation, validImage: false });
+    if (files.length >= MIN_LENGTH)
+      setValidation({ ...validation, validImage: true });
   };
 
   const handleDeleteImage = (id) => {
@@ -133,10 +133,7 @@ const Form = () => {
   /* ----------------------------- 카테고리 select-box ---------------------------- */
   const handleOnChangeSelectValue = (e) => {
     setItem({ ...item, category: e.target.getAttribute("value") });
-
-    category
-      ? setValidation({ ...validation, validCategory: true })
-      : setValidation({ ...validation, validCategory: false });
+    if (category) setValidation({ ...validation, validCategory: true });
   };
 
   /* -------------------------------- 데이터 Post -------------------------------- */
@@ -167,13 +164,7 @@ const Form = () => {
     if (category === "카테고리를 선택해 주세요.")
       setValidation((prev) => ({ ...prev, validCategory: false }));
 
-    if (
-      title.trim().length &&
-      desc.trim().length >= MIN_CONTENT_LENGTH &&
-      price.trim().length &&
-      files.length &&
-      category !== "카테고리를 선택해 주세요."
-    ) {
+    if (checkVali) {
       let formData = new FormData();
       const dataSet = {
         title,

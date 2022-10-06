@@ -30,7 +30,6 @@ const Detail = ({ page }) => {
 
   const {
     nickName,
-    articlesId,
     title,
     content,
     category,

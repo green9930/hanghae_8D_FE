@@ -3,18 +3,20 @@ import { useQueryClient } from "react-query";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
-import DetailPage from "pages/DetailPage";
-import ErrorPage from "pages/ErrorPage";
-import FormPage from "pages/FormPage";
-import MainPage from "pages/MainPage";
-import EditPage from "pages/EditPage";
-import MyPage from "pages/MyPage";
-import LoginPage from "pages/LoginPage";
-import KakaoLogin from "components/login/KakaoLogin";
-import NaverLogin from "components/login/NaverLogin";
-import GoogleLogin from "components/login/GoogleLogin";
 import { loginState, newAlarmsState } from "state/atom";
 import { getCookie } from "api/cookies";
+import { lazy } from "react";
+
+const DetailPage = lazy(() => import("pages/DetailPage"));
+const ErrorPage = lazy(() => import("pages/ErrorPage"));
+const FormPage = lazy(() => import("pages/FormPage"));
+const MainPage = lazy(() => import("pages/MainPage"));
+const EditPage = lazy(() => import("pages/EditPage"));
+const MyPage = lazy(() => import("pages/MyPage"));
+const LoginPage = lazy(() => import("pages/LoginPage"));
+const KakaoLogin = lazy(() => import("components/login/KakaoLogin"));
+const NaverLogin = lazy(() => import("components/login/NaverLogin"));
+const GoogleLogin = lazy(() => import("components/login/GoogleLogin"));
 
 const Router = () => {
   const [loading, setIsLoading] = useState(false);
