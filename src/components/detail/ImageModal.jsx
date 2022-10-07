@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import Slider from "react-slick";
-import { isMobile } from "react-device-detect";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Button from "components/elements/Button";
 import { colors } from "styles/theme";
 import icons from "assets";
@@ -45,10 +44,7 @@ const ImageModal = ({ images, handleOpenModal }) => {
         </Button>
       </StXBtn>
       <StModalBody>
-        <StCarousel
-          isMobile={isMobile}
-          onClick={(e) => (isMobile ? null : e.stopPropagation())}
-        >
+        <StCarousel>
           <Slider {...settings}>
             {images?.map((val) => {
               return (
@@ -56,7 +52,7 @@ const ImageModal = ({ images, handleOpenModal }) => {
                   <img
                     alt="upload post"
                     src={val}
-                    onClick={(e) => (isMobile ? e.stopPropagation() : null)}
+                    onClick={(e) => e.stopPropagation()}
                   />
                 </StImg>
               );
@@ -70,19 +66,15 @@ const ImageModal = ({ images, handleOpenModal }) => {
 
 const StCarousel = styled.div`
   position: relative;
-  width: ${({ isMobile }) => (isMobile ? "100%" : "500px")};
+  width: 100%;
+  @media screen and (min-width: 950px) {
+    width: 500px;
+  }
   height: auto;
 
   .slick-dots {
     position: fixed;
     bottom: 50px;
-    ${({ isMobile }) => {
-      if (!isMobile) {
-        return css`
-          left: 0;
-        `;
-      }
-    }};
     color: ${colors.white};
     z-index: 222;
 
