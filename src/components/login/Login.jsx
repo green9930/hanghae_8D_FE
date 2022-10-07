@@ -50,6 +50,7 @@ const StLogin = styled.div`
   @media screen and (max-width: 350px) {
     padding: 0 15px;
   }
+  height: calc(100vh - 64px);
   background: ${colors.white};
 `;
 const StLoginMessage = styled.div`
