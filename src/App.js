@@ -1,4 +1,3 @@
-// import { useEffect } from "react";
 import { BrowserView, MobileView } from "react-device-detect";
 import Router from "shared/Router";
 import styled from "styled-components";

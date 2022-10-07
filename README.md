@@ -14,6 +14,7 @@
 ➡️ [책첵<img width="20" src="https://user-images.githubusercontent.com/107227445/193999245-4344f8b9-1da4-4e1b-830e-e916fde4e39c.svg"> 방문하기](https://www.chackcheck99.com/)
 <br/>
 ➡️ [프로젝트 발표 영상](https://www.youtube.com/watch?v=D5EVLVwpUpQ)
+
 <hr/>
 
 ###  💻 페이지 별 기능 보기 
@@ -96,7 +97,7 @@
 | 이름       | 포지션       | Github        | 담당                             |
 | ---------- | ---------------- | -------------------------------- |  --------------------------------- |
 | <img width="130" src ="https://user-images.githubusercontent.com/107227445/194048345-0becf4ad-13cd-4353-ad1e-af426f3b87a0.png"><br/>**<div align=center>배근아</div>** | `프론트엔드` | https://github.com/green9930 | 1. 상세 페이지 2. 마이 페이지 3. 수정 페이지 <br/> 4. 소셜 로그인 5. 실시간 알림 
-|  <img width="130" src ="https://user-images.githubusercontent.com/107227445/194043256-40e67663-c6c6-400d-b3ad-0c2f01424743.png"><br/>**<div align=center>김단비</div>** | `프론트엔드` | https://github.com/Danbee-Kim| 1. 메인 페이지 2. 작성 페이지  3. 무한 스크롤 <br/> 4. 카테고리 검색 5. 이미지 압축
+| <img width="130" src ="https://user-images.githubusercontent.com/107227445/194043256-40e67663-c6c6-400d-b3ad-0c2f01424743.png"><br/>**<div align=center>김단비</div>** | `프론트엔드` | https://github.com/Danbee-Kim| 1. 메인 페이지 2. 작성 페이지  3. 무한 스크롤 <br/> 4. 카테고리 검색 5. 이미지 압축
  
 <hr/>
 

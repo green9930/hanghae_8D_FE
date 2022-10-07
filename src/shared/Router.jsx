@@ -3,6 +3,8 @@ import { useQueryClient } from "react-query";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { EventSourcePolyfill, NativeEventSource } from "event-source-polyfill";
+import { loginState, newAlarmsState } from "state/atom";
+import { getCookie } from "api/cookies";
 import DetailPage from "pages/DetailPage";
 import ErrorPage from "pages/ErrorPage";
 import FormPage from "pages/FormPage";
@@ -13,8 +15,6 @@ import LoginPage from "pages/LoginPage";
 import KakaoLogin from "components/login/KakaoLogin";
 import NaverLogin from "components/login/NaverLogin";
 import GoogleLogin from "components/login/GoogleLogin";
-import { loginState, newAlarmsState } from "state/atom";
-import { getCookie } from "api/cookies";
 
 const Router = () => {
   const [loading, setIsLoading] = useState(false);
