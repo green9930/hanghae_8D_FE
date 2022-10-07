@@ -10,7 +10,6 @@ import { colors } from "styles/theme";
 import icons from "assets";
 import { fontSize } from "styles/theme";
 import styled from "styled-components";
-import { isMobile } from "react-device-detect";
 import { getCookie } from "api/cookies";
 
 const MainList = () => {
@@ -144,7 +143,6 @@ const MainList = () => {
           </StDoneBtn>
         </StMainBtns>
       </StSelectList>
-
       {data?.pages.map((page, idx) => (
         <div key={idx}>
           {page?.data.data.content.map((d) => {
@@ -156,17 +154,18 @@ const MainList = () => {
         {isFetchingNextPage && <div>로딩 중</div>}
         {!isFetchingNextPage && <div>목록의 마지막입니다.</div>}
       </StNext>
-      <StGoBack onClick={onClickScroll} scrollPosition={scrollPosition}>
-        <GoBack />
-      </StGoBack>
-      <StIcon
-        onClick={() =>
-          getCookie("accessToken") ? navigate("/form") : navigate("/login")
-        }
-        isMobile={isMobile}
-      >
-        <IconPlus />
-      </StIcon>
+      <StDiv>
+        <StGoBack onClick={onClickScroll} scrollPosition={scrollPosition}>
+          <GoBack />
+        </StGoBack>
+        <StIcon
+          onClick={() =>
+            getCookie("accessToken") ? navigate("/form") : navigate("/login")
+          }
+        >
+          <IconPlus />
+        </StIcon>
+      </StDiv>
     </StMain>
   );
 };
@@ -235,6 +234,14 @@ const StDoneBtn = styled.div`
   }
 `;
 
+const StDiv = styled.div`
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: inherit;
+`;
+
 const StGoBack = styled.div`
   position: fixed;
   bottom: 75px;
@@ -246,31 +253,37 @@ const StGoBack = styled.div`
   display: ${({ scrollPosition }) => {
     return scrollPosition > 500 ? true : "none";
   }};
+  @media screen and (min-width: 950px) {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 75px;
+  }
 `;
 
 const StIcon = styled.div`
   position: fixed;
   bottom: 20px;
+  right: 8%;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 100px;
   width: 50px;
   height: 50px;
   cursor: pointer;
-  right: ${({ isMobile }) => (isMobile ? "8%" : "13%")};
-
-  @media screen and (min-width: 1800px) {
-    right: 15%;
-  }
-  @media screen and (min-width: 2000px) {
-    right: 16%;
-  }
-  @media screen and (min-width: 2400px) {
-    right: 18%;
-  }
-  @media screen and (min-width: 3000px) {
-    right: 21%;
+  @media screen and (min-width: 950px) {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 20px;
   }
 `;
+
 const StNext = styled.div`
   display: flex;
   text-align: center;

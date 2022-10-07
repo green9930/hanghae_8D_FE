@@ -16,6 +16,7 @@ const Main = () => {
 
 const StMainWrap = styled.div`
   width: 100%;
+  min-height: calc(100vh - 64px);
   position: relative;
   top: 64px;
   left: 0;
@@ -26,6 +27,7 @@ const StMainContainer = styled.div`
   position: sticky;
   top: 64px;
   left: 0;
+  background-color: ${colors.white};
 `;
 
 export default Main;
