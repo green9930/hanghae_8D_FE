@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
-import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
 import Button from "components/elements/Button";
@@ -113,11 +112,7 @@ const DetailCommentForm = ({ isMyArticles, articlesId }) => {
   return (
     <StCommentFormContainer>
       {!isMyArticles && (
-        <StPriceForm
-          isPriceActive={isPriceActive}
-          onSubmit={handleSubmitPrice}
-          isMobile={isMobile}
-        >
+        <StPriceForm isPriceActive={isPriceActive} onSubmit={handleSubmitPrice}>
           <Input
             value={commentPrice}
             name="price"
@@ -174,7 +169,7 @@ const StPriceForm = styled.form`
   bottom: 50px;
   padding: 5px 20px;
   z-index: 111;
-  width: ${({ isMobile }) => (isMobile ? "100%" : "500px")};
+  width: 500px;
   @media screen and (max-width: 950px) {
     width: 100%;
   }
