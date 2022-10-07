@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { postCheck } from "api/formApi";
 import { fontSize } from "styles/theme";
-import { isMobile } from "react-device-detect";
 import {
   CATEGORY_DATA,
   IMAGE_TYPE,
@@ -267,7 +266,7 @@ const Form = () => {
       <StThirdWrap validDesc={validDesc}>
         <Textarea onChangeHandler={handleChange} value={desc} name="desc" />
         <p>*15글자 이상 입력해 주세요.</p>
-        <StButton isMobile={isMobile}>
+        <StButton>
           <Button
             children={"등록하기"}
             theme={checkVali ? "purple" : "disabled"}
@@ -281,10 +280,11 @@ const Form = () => {
 };
 
 const StFormContainer = styled.div`
-  width: 100%;
   position: relative;
   top: 64px;
-  height: calc(100vh - 64px);
+  background: ${colors.white};
+  width: 100%;
+  min-height: calc(100vh - 64px);
 `;
 
 const StFirstWrap = styled.div`
@@ -441,13 +441,13 @@ const StThirdWrap = styled.div`
 const StButton = styled.div`
   position: fixed;
   bottom: 30px;
-  width: ${({ isMobile }) => (isMobile ? "100%" : "430px")};
-  left: ${({ isMobile }) => (isMobile ? 0 : null)};
-  padding: ${({ isMobile }) => (isMobile ? "0px 30px" : null)};
-  @media screen and (max-width: 950px) {
-    width: 100%;
-    left: 0;
-    padding: 0px 30px;
+  width: 100%;
+  left: 0;
+  padding: 0px 30px;
+  @media screen and (min-width: 950px) {
+    width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
   }
   button {
     border-radius: 50px;
