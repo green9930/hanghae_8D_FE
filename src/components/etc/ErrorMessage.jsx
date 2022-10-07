@@ -32,6 +32,7 @@ const StErrorMessage = styled.div`
   top: 64px;
   padding: 70px 35px 0px 35px;
   background: ${colors.white};
+  height: calc(100vh - 64px);
 
   p {
     margin-top: 10px;
@@ -58,6 +59,7 @@ const StErrorHome = styled.div`
   position: absolute;
   top: 26px;
   left: 160px;
+  cursor: pointer;
 `;
 
 export default ErrorMessage;
