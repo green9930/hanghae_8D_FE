@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import imageCompression from "browser-image-compression";
-import { isMobile } from "react-device-detect";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
 import Button from "components/elements/Button";
@@ -328,7 +327,7 @@ const EditForm = () => {
               취소
             </Button>
           </StCancelBtn>
-          <StSendBtn isMobile={isMobile}>
+          <StSendBtn>
             <Button
               size="large_round"
               type="submit"
@@ -346,6 +345,8 @@ const EditForm = () => {
 const StEditForm = styled.form`
   position: relative;
   top: 64px;
+  background: ${colors.white};
+  height: calc(100vh - 64px);
 `;
 
 const StImageContainer = styled.div`
@@ -370,6 +371,7 @@ const StImage = styled.div`
   img {
   }
 `;
+
 const StBgImage = styled.img`
   width: 100%;
   height: 100%;
@@ -511,9 +513,9 @@ const StCancelBtn = styled.div`
 `;
 
 const StSendBtn = styled.div`
-  width: ${({ isMobile }) => (isMobile ? "100%" : "320px")};
-  @media screen and (max-width: 950px) {
-    width: 100%;
+  width: 100%;
+  @media screen and (min-width: 950px) {
+    width: 320px;
   }
 `;
 
