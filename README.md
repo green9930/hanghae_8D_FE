@@ -10,6 +10,7 @@
 🙋‍♀️혹은 중고 물품을 사려고 할 때 그 가격이 합리적인지 고민해 보신 적 있지 않으신가요?<br/>
 🙆‍♂️이런 걱정 고민들 책첵✅에서 해결하세요!🙆‍♂️<br/>
 <br/>
+☑️**책첵은 모바일 화면에 최적화된 서비스입니다.**<br/>
 <br/>
 ➡️ [책첵<img width="20" src="https://user-images.githubusercontent.com/107227445/193999245-4344f8b9-1da4-4e1b-830e-e916fde4e39c.svg"> 방문하기](https://www.chackcheck99.com/)
 <br/>
@@ -52,7 +53,7 @@
 <summary><b>📝 게시글 작성 페이지</b></summary>
   
 - 🥕마켓에 물건 올리기 전 책정가 문의를 작성 할 수 있어요! 
-  
+
 ![formpage](https://user-images.githubusercontent.com/107227445/194005683-6aae7f5d-192b-4157-b84f-f5aff71f85a5.jpeg)
   
 </details>
@@ -102,7 +103,7 @@
 <hr/>
 
 ### 🛠 Architecture
-![chackcheck_architecture](https://user-images.githubusercontent.com/107227445/193808705-4a69dcd0-4f1d-4921-9ee0-c5031f7b01af.png)
+![chackcheck_service_architecture](https://user-images.githubusercontent.com/69451758/194477369-b1114ca1-fd10-49fa-bd84-96a697b6d60c.png)
 
 <hr/>
 
