@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { BrowserView, MobileView } from "react-device-detect";
 import styled from "styled-components";
 import Modal from "components/layout/Modal";
 import MyList from "components/mypage/MyList";
@@ -260,16 +259,9 @@ const UserInfo = () => {
               <RankModal handleOpenModal={handleShowRankModal} />
             </Modal>
           )}
-          <MobileView>
-            <StUserInfoFooter>
-              <MyPageFooter />
-            </StUserInfoFooter>
-          </MobileView>
-          <BrowserView>
-            <StBrowserUserInfoFooter>
-              <MyPageFooter />
-            </StBrowserUserInfoFooter>
-          </BrowserView>
+          <StUserInfoFooter>
+            <MyPageFooter />
+          </StUserInfoFooter>
         </>
       )}
     </UserInfoContainer>
@@ -281,6 +273,8 @@ const UserInfoContainer = styled.div`
   flex-direction: column;
   position: relative;
   top: 64px;
+  min-height: calc(100vh - 64px);
+  background: ${colors.white};
 `;
 
 const StUserInfo = styled.div`
@@ -476,23 +470,6 @@ const StUserInfoFooter = styled.div`
   width: 100%;
   height: calc(100vh - 530px);
   bottom: 0;
-`;
-
-const StBrowserUserInfoFooter = styled.div`
-  flex-grow: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 30px 30px;
-  grid-row-gap: 10px;
-  background: ${colors.grey7};
-  padding-top: 30px;
-  position: fixed;
-  width: 100%;
-  height: calc(100vh - 524px);
-  bottom: 0;
-  @media (min-width: 950px) {
-    width: 500px;
-  }
 `;
 
 export default UserInfo;

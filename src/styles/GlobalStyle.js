@@ -23,8 +23,13 @@ const GlobalStyle = createGlobalStyle`
   }
   
   body {
-    background-color: ${colors.white};
+    background: ${colors.subP};
     margin: 0 auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   h1 {
