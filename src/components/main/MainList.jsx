@@ -240,6 +240,7 @@ const StDiv = styled.div`
   justify-content: flex-end;
   width: 100%;
   max-width: inherit;
+  padding-right: 30px;
 `;
 
 const StGoBack = styled.div`
@@ -254,13 +255,7 @@ const StGoBack = styled.div`
     return scrollPosition > 500 ? true : "none";
   }};
   @media screen and (min-width: 950px) {
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    position: fixed;
-    bottom: 75px;
+    right: auto;
   }
 `;
 
@@ -274,13 +269,7 @@ const StIcon = styled.div`
   height: 50px;
   cursor: pointer;
   @media screen and (min-width: 950px) {
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    position: fixed;
-    bottom: 20px;
+    right: auto;
   }
 `;
 
