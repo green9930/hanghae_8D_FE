@@ -7,6 +7,7 @@ import icons from "assets";
 import { fontSize } from "styles/theme";
 import LoadingMessage from "components/etc/LoadingMessage";
 import Slider from "react-slick";
+import { isMobile } from "react-device-detect";
 
 const MainCarousel = () => {
   const { MainArrow } = icons;
@@ -15,15 +16,12 @@ const MainCarousel = () => {
     arrows: false,
     dots: false,
     initialSlide: 0,
-    // speed: 100,
-    slidesToShow: 4,
+    slidesToShow: 3,
     slidesToScroll: 1,
-    // centerPadding: "30px",
     variableWidth: true,
     autoplay: true,
-    autoplaySpeed: 1400,
+    autoplaySpeed: 1600,
     pauseOnHover: true,
-    draggable: true,
   };
 
   /* -------------------------------- 데이터 Read -------------------------------- */
@@ -40,11 +38,21 @@ const MainCarousel = () => {
         <StMainTitleSpan>책첵</StMainTitleSpan> 진행 중 체크
       </StMainRandomTitle>
       <StMainRandomImg>
-        <Slider {...settings}>
-          {data.data.data?.map((data) => (
-            <MainCarouselCard key={data.articlesId} data={data} />
-          ))}
-        </Slider>
+        {isMobile ? (
+          <StMainRandomImg>
+            {data.data.data?.map((data) => (
+              <MainCarouselCard key={data.articlesId} data={data} />
+            ))}
+          </StMainRandomImg>
+        ) : (
+          <StSlider>
+            <Slider {...settings}>
+              {data.data.data?.map((data) => (
+                <MainCarouselCard key={data.articlesId} data={data} />
+              ))}
+            </Slider>
+          </StSlider>
+        )}
       </StMainRandomImg>
     </StMainRandomContainer>
   );
@@ -76,10 +84,13 @@ const StMainRandomImg = styled.div`
   display: flex;
   gap: 10px;
   overflow-x: scroll;
-  padding: 15px 20px 35px 0px;
-  /* ::-webkit-scrollbar {
+  padding: 15px 0px 35px;
+  ::-webkit-scrollbar {
     display: none;
-  } */
+  }
+`;
+const StSlider = styled.div`
+  padding: 15px 0px 35px;
   .slick-slide {
     padding-right: 10px;
   }
