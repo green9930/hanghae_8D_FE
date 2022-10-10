@@ -139,6 +139,10 @@
 <img src="https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white">
 </p>
 
+<br />
+
+💡[기술적 의사 결정](https://github.com/green9930/hanghae_8D_FE/wiki/%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9D%98%EC%82%AC-%EA%B2%B0%EC%A0%95)
+
 <br/>
 <hr/>
 
