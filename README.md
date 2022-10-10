@@ -16,7 +16,8 @@
 ➡️ [책첵<img width="20" src="https://user-images.githubusercontent.com/107227445/193999245-4344f8b9-1da4-4e1b-830e-e916fde4e39c.svg"> 방문하기](https://www.chackcheck99.com/)  
 <br />
 ➡️ [프로젝트 발표 영상](https://www.youtube.com/watch?v=D5EVLVwpUpQ)  
-➡️ [ChackCheck FE WIKI](https://github.com/green9930/hanghae_8D_FE/wiki)
+➡️ [ChackCheck Team Notion](https://frost-class-aac.notion.site/2-02def98b9fe04e8dbf00e39cba77693d)  
+➡️ [ChackCheck FE WIKI](https://github.com/green9930/hanghae_8D_FE/wiki)  
 
 <br/>
 <hr/>
@@ -216,9 +217,9 @@
 가격 댓글 옆에 달린 채택 버튼을 보고 호기심에 눌렀다가 채택을 취소할 수 없어 불편하다는 피드백을 받았고, 두 가지 개선 방향을 고민했습니다.<br/>
 
 1. 채택 취소 기능을 넣는다.<br/>  
-2. 채택하기 전 사전 안내 문구를 추가하여 채택을 선택할 수 있도록 한다.<br/>  
+2. 채택 전 사전 안내 문구를 추가하여 채택 여부를 선택하도록 한다.<br/>  
 
-저희 팀은 기획 당시 사용자들의 단순 변심으로 인한 잦은 채택 번복을 방지하기 위해 채택 취소 기능을 넣지 않기로 의견을 모은 상태였습니다. 따라서 바로 채택되지 않고 사전 안내로 채택을 결정할 수 있도록 수정했습니다.  
+저희 팀은 기획 당시 사용자들의 단순 변심으로 인한 잦은 채택 번복을 방지하기 위해 채택 취소 기능을 제외하기로 의견을 모은 상태였습니다. 따라서 바로 채택되지 않고 사전 안내 확인 후 결정할 수 있도록 수정했습니다.  
   
 **수정 전**  
 ![c05](https://user-images.githubusercontent.com/69451758/194923100-ebcaa04e-03c2-4cc6-81d6-c0d7f3aff4f3.jpg)
