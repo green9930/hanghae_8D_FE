@@ -31,7 +31,7 @@ const SelectAlert = ({
             <StConfirmMessage>
               채택하면 취소하거나 게시글을 <br />
               수정 또는 삭제할 수 없습니다. <br />
-              <span>삭제하시겠습니까?</span>
+              <span>채택하시겠습니까?</span>
             </StConfirmMessage>
           </StMessage>
           <StButton>
