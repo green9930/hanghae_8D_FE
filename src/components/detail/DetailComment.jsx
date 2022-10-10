@@ -24,27 +24,25 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
 
   const [openSelectAlert, setOpenSelectAlert] = useState(false);
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+  const [isConfirmedSelect, setIsConfirmedSelect] = useState(false);
 
   const { BSalectPurple, BSalectWhite, IconTrash } = icons;
   const queryClient = useQueryClient();
 
-  /* 댓글 채택 -------------------------------------------------------------------- */
+  // /* 댓글 채택 -------------------------------------------------------------------- */
   const { mutate: selectMutate } = useMutation(selectComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("detailCheck");
-      queryClient.invalidateQueries("checkComments");
-    },
+    onSuccess: () => setIsConfirmedSelect(true),
     onError: ({ response }) => window.alert(response.data.errorMessage),
   });
 
-  const handleSelectComment = () => {
-    selectMutate({ articlesId: articlesId, commentsId: commentsId });
+  const handleDeleteAlert = () => setOpenDeleteAlert(false);
+  const handleDeleteComment = () => setOpenDeleteAlert(true);
+  const handleSelectAlert = () => setOpenSelectAlert(false);
+  const handleConfirmedSelectAlert = () => {
+    queryClient.invalidateQueries("detailCheck");
+    queryClient.invalidateQueries("checkComments");
     setOpenSelectAlert(false);
   };
-
-  const handleDeleteComment = () => setOpenDeleteAlert(true);
-  const handleSelectAlert = () => setOpenSelectAlert(true);
-  const handleDeleteAlert = () => setOpenDeleteAlert(false);
 
   return (
     <>
@@ -84,7 +82,10 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
             <StPriceBtnContainer>
               {isMyArticles && !isSelected && process === "진행중" ? (
                 isMyComment ? null : (
-                  <Button variant="image" onClickHandler={handleSelectAlert}>
+                  <Button
+                    variant="image"
+                    onClickHandler={() => setOpenSelectAlert(true)}
+                  >
                     <BSalectWhite width="30px" height="30px" />
                   </Button>
                 )
@@ -100,10 +101,20 @@ const DetailComment = ({ commentVal, isMyArticles, articlesId, process }) => {
         </StPriceComment>
       )}
       {openSelectAlert && (
-        <Modal handleOpenModal={handleSelectComment}>
+        <Modal
+          handleOpenModal={
+            isConfirmedSelect ? handleConfirmedSelectAlert : handleSelectAlert
+          }
+        >
           <SelectAlert
+            isConfirmedSelect={isConfirmedSelect}
             nickName={nickName}
-            handleOpenModal={handleSelectComment}
+            handleSelectComment={() =>
+              selectMutate({ articlesId: articlesId, commentsId: commentsId })
+            }
+            handleOpenModal={
+              isConfirmedSelect ? handleConfirmedSelectAlert : handleSelectAlert
+            }
           />
         </Modal>
       )}

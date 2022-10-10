@@ -23,6 +23,9 @@ const StStart = styled.div`
   background-color: ${colors.mainP};
   height: 100vh;
   padding-top: 50%;
+  @media screen and (max-width: 950px) {
+    width: 100vw;
+  }
 
   svg {
     width: 199px;
