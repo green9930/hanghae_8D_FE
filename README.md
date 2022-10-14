@@ -19,6 +19,14 @@
 ➡️ [ChackCheck Team Notion](https://frost-class-aac.notion.site/2-02def98b9fe04e8dbf00e39cba77693d)  
 ➡️ [ChackCheck FE WIKI](https://github.com/green9930/hanghae_8D_FE/wiki)  
 
+<div align="center">
+
+### 🌟항해99 최고의 프로젝트상 수상🌟
+
+![최고의프로젝트상](https://user-images.githubusercontent.com/69451758/195820323-2b4fd717-9642-416f-afee-560818e9c414.jpeg)
+
+</div>
+
 <br/>
 <hr/>
 
