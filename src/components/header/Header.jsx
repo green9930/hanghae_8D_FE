@@ -25,7 +25,7 @@ const Header = ({ title }) => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { HeaderLogo, MyPageLogo, MyPageAlarm } = icons;
+  const { HeaderLogo, MyPageLogo, MyPageAlarm, SearchLogo } = icons;
 
   const queryClient = useQueryClient();
 
@@ -47,20 +47,32 @@ const Header = ({ title }) => {
         <HeaderLogo />
       </Button>
       <StHeaderTitle>{title}</StHeaderTitle>
-      <Button
-        variant="image"
-        name="mypageLogo"
-        onClickHandler={clickNavigator}
-        isDisabled={
-          !nickName && !alarmList && !myList && location.pathname === "/mypage"
-        }
-      >
-        {isLogin && newAlarms ? (
-          <MyPageAlarm />
-        ) : (
-          <MyPageLogo width="20px" height="20px" />
-        )}
-      </Button>
+      <StButton>
+        <Button
+          variant="image"
+          name="searchLogo"
+          onClickHandler={() => navigate("/search")}
+        >
+          <SearchLogo />
+        </Button>
+        <Button
+          variant="image"
+          name="mypageLogo"
+          onClickHandler={clickNavigator}
+          isDisabled={
+            !nickName &&
+            !alarmList &&
+            !myList &&
+            location.pathname === "/mypage"
+          }
+        >
+          {isLogin && newAlarms ? (
+            <MyPageAlarm />
+          ) : (
+            <MyPageLogo width="20px" height="20px" />
+          )}
+        </Button>
+      </StButton>
     </StHeader>
   );
 };
@@ -83,6 +95,12 @@ const StHeaderTitle = styled.div`
   color: ${colors.white};
   font-family: "twayfly", "Noto Sans KR", sans-serif;
   font-size: ${fontSize.large20};
+`;
+
+const StButton = styled.div`
+  display: flex;
+  align-items: right;
+  gap: 15px;
 `;
 
 export default Header;
