@@ -15,6 +15,7 @@ import LoginPage from "pages/LoginPage";
 import KakaoLogin from "components/login/KakaoLogin";
 import NaverLogin from "components/login/NaverLogin";
 import GoogleLogin from "components/login/GoogleLogin";
+import { SearchPage } from "pages/SearchPage";
 
 const Router = () => {
   const [loading, setIsLoading] = useState(false);
@@ -79,6 +80,7 @@ const Router = () => {
       {loading ? (
         <Routes>
           <Route path="/" element={<MainPage />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route
             path="/login"
             element={isLogin ? <Navigate to="/" /> : <LoginPage />}

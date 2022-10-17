@@ -23,6 +23,8 @@ import { ReactComponent as Unregister } from "assets/svg/unregister.svg";
 import { ReactComponent as Error } from "assets/svg/error.svg";
 import { ReactComponent as ErrorHome } from "assets/svg/errorHome.svg";
 import { ReactComponent as GoBack } from "assets/svg/goBack.svg";
+import { ReactComponent as SearchLogo } from "assets/svg/searchLogo.svg";
+import { ReactComponent as PrevLogo } from "assets/svg/prevLogo.svg";
 
 const icons = {
   Alarm: Alarm,
@@ -50,6 +52,8 @@ const icons = {
   Error: Error,
   ErrorHome: ErrorHome,
   GoBack: GoBack,
+  SearchLogo: SearchLogo,
+  PrevLogo: PrevLogo,
 };
 
 export default icons;
