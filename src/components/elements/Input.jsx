@@ -106,15 +106,6 @@ const StInput = styled.input`
         background: transparent;
       `;
     }
-    if (theme === "search") {
-      return css`
-        height: 40px;
-        border: none;
-        border-radius: 5px;
-        padding: 0 14px;
-        background: ${colors.grey5};
-      `;
-    }
   }}
 `;
 
