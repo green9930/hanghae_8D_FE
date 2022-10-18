@@ -18,15 +18,18 @@ const SearchList = () => {
   const inputRef = useRef();
   const navigate = useNavigate();
   const [item, setItem] = useState("");
+  const [show, setShow] = useState(true);
 
   const changeHandler = (e) => {
     if (e.target.value.length > MAX_LENGTH) return;
     setItem(e.target.value);
+    setShow(false);
   };
   const onSubmitHandler = (e) => {
     e.preventDefault();
     if (item.trim().length !== MIN_LENGTH) refetch();
     inputRef.current.focus();
+    setShow(true);
   };
 
   useEffect(() => {
@@ -75,9 +78,13 @@ const SearchList = () => {
         </StSearchHeader>
       </StFirstContainer>
       <StSecondContainer>
-        {data?.data?.map((data) => (
-          <MainListCard key={data.articlesId} data={data} />
-        ))}
+        {data?.data.length === 0 && show && item.trim().length !== 0 ? (
+          <StResult>"{item}" 검색 결과가 없어요 🥲</StResult>
+        ) : (
+          data?.data?.map((data) => (
+            <MainListCard key={data.articlesId} data={data} />
+          ))
+        )}
       </StSecondContainer>
     </StSearchList>
   );
@@ -133,5 +140,9 @@ const StSecondContainer = styled.div`
   top: 64px;
   min-height: 100vh;
   background: ${colors.white};
+`;
+const StResult = styled.p`
+  text-align: center;
+  padding-top: 40px;
 `;
 export default SearchList;
