@@ -95,7 +95,7 @@ const StButton = styled.button`
           height: 40px;
           border-radius: 5px;
           text-align: center;
-          font-size: ${fontSize.regular14};
+          font-size: ${fontSize.small12};
           letter-spacing: -0.03em;
           @media screen and (max-width: 350px) {
             width: 53px;
