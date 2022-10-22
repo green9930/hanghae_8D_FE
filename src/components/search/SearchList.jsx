@@ -1,24 +1,23 @@
-import Button from "components/elements/Button";
-import React, { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
 import styled from "styled-components";
+import { searchItems } from "api/searchApi";
 import { colors } from "styles/theme";
 import icons from "assets";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import Button from "components/elements/Button";
 import MainListCard from "components/main/MainListCard";
-import { useEffect } from "react";
-import { useQuery } from "react-query";
-import { searchItems } from "api/searchApi";
 import LoadingMessage from "components/etc/LoadingMessage";
 
 const SearchList = () => {
-  const MIN_LENGTH = 0;
-  const MAX_LENGTH = 20;
-  const { PrevLogo } = icons;
-  const inputRef = useRef();
-  const navigate = useNavigate();
   const [item, setItem] = useState("");
   const [show, setShow] = useState(true);
+  const inputRef = useRef();
+
+  const navigate = useNavigate();
+  const { PrevLogo } = icons;
+  const MIN_LENGTH = 0;
+  const MAX_LENGTH = 20;
 
   const changeHandler = (e) => {
     if (e.target.value.length > MAX_LENGTH) return;
