@@ -89,6 +89,20 @@ const StButton = styled.button`
           }
         `;
       }
+      if (size === "small_box") {
+        return css`
+          width: 50px;
+          height: 40px;
+          border-radius: 5px;
+          text-align: center;
+          font-size: ${fontSize.regular14};
+          letter-spacing: -0.03em;
+          @media screen and (max-width: 350px) {
+            width: 53px;
+            font-size: 10px;
+          }
+        `;
+      }
       if (size === "large_round") {
         return css`
           width: 100%;

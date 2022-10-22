@@ -1,3 +1,8 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import styled from "styled-components";
+import imageCompression from "browser-image-compression";
 import SelectBox from "components/elements/SelectBox";
 import Input from "components/elements/Input";
 import Textarea from "components/elements/Textarea";
@@ -6,17 +11,11 @@ import Modal from "components/layout/Modal";
 import ImageAlert from "components/form/ImageAlert";
 import ImageNumAlert from "components/form/ImageNumAlert";
 import ImageFileAlert from "components/form/ImageFileAlert";
+import LoadingMessage from "components/etc/LoadingMessage";
 import icons from "assets";
 import handlePrice from "utils/handlePrice";
-import LoadingMessage from "components/etc/LoadingMessage";
-import styled from "styled-components";
-import imageCompression from "browser-image-compression";
-import { useState } from "react";
-import { colors } from "styles/theme";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "react-query";
+import { colors, fontSize } from "styles/theme";
 import { postCheck } from "api/formApi";
-import { fontSize } from "styles/theme";
 import {
   CATEGORY_DATA,
   IMAGE_TYPE,
@@ -31,9 +30,6 @@ import {
 } from "components/form/formVali";
 
 const Form = () => {
-  const navigate = useNavigate();
-  const { IconPlus, IconX } = icons;
-
   const [item, setItem] = useState({
     title: "",
     category: "카테고리를 선택해 주세요.",
@@ -45,6 +41,9 @@ const Form = () => {
 
   const [files, setFiles] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
+
+  const navigate = useNavigate();
+  const { IconPlus, IconX } = icons;
 
   /* ------------------------------- IMAGE ALERT ------------------------------ */
   const [openImageAlert, setOpenImageAlert] = useState(false);

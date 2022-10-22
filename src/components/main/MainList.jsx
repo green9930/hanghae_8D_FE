@@ -1,16 +1,15 @@
-import Button from "components/elements/Button";
-import SelectBox from "components/elements/SelectBox";
-import MainListCard from "components/main/MainListCard";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInfiniteQuery } from "react-query";
 import { useInView } from "react-intersection-observer";
-import { getMainCheck } from "api/mainApi";
-import { colors } from "styles/theme";
-import icons from "assets";
-import { fontSize } from "styles/theme";
 import styled from "styled-components";
+import Button from "components/elements/Button";
+import SelectBox from "components/elements/SelectBox";
+import MainListCard from "components/main/MainListCard";
+import { getMainCheck } from "api/mainApi";
 import { getCookie } from "api/cookies";
+import { fontSize, colors } from "styles/theme";
+import icons from "assets";
 
 const MainList = () => {
   const { IconPlus, GoBack } = icons;
