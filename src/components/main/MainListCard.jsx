@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import handleRankColor from "utils/handleRankColor";
-import { colors } from "styles/theme";
-import { fontSize } from "styles/theme";
+import { colors, fontSize } from "styles/theme";
 import { getCookie } from "api/cookies";
 
 const MainListCard = ({ data }) => {

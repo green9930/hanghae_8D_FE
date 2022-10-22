@@ -1,13 +1,12 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import MainCarouselCard from "components/main/MainCarouselCard";
-import { getRandomCards } from "api/mainApi";
-import { colors } from "styles/theme";
-import icons from "assets";
-import { fontSize } from "styles/theme";
-import LoadingMessage from "components/etc/LoadingMessage";
 import Slider from "react-slick";
 import { isMobile } from "react-device-detect";
+import icons from "assets";
+import { fontSize, colors } from "styles/theme";
+import { getRandomCards } from "api/mainApi";
+import LoadingMessage from "components/etc/LoadingMessage";
+import MainCarouselCard from "components/main/MainCarouselCard";
 
 const MainCarousel = () => {
   const { MainArrow } = icons;

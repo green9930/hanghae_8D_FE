@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { colors } from "styles/theme";
-import { fontSize } from "styles/theme";
+import { colors, fontSize } from "styles/theme";
 import { getCookie } from "api/cookies";
 
 const MainCarouselCard = ({ data }) => {
