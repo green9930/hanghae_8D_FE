@@ -50,6 +50,15 @@
 </details>
 
 <details>
+<summary><b>🔍 검색 페이지</b></summary>
+  
+- 원하는 상품의 이름이나 내용을 검색해서 찾을 수 있어요!  
+  
+  ![search](https://user-images.githubusercontent.com/107227445/198010702-d9cdeb15-8a53-4277-8403-2bb77ad72161.jpeg)
+
+</details>
+
+<details>
 <summary><b>📒 상세 페이지</b></summary>
 
 - 본인이 생각하는 적정가를 올리고 🗣️의견도 나눌 수 있어요.
